@@ -1,10 +1,9 @@
 import { contractAbi } from "@/abi/abi";
-import { Coins, Cross, CrossIcon, Frown, Gift, Trophy, X } from "lucide-react";
+import { Coins, Frown, Gift, Trophy, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
-import { APP_URL } from "@/lib/constants";
 import { useMutation } from "@tanstack/react-query";
 
 type SpinResultProps = {
@@ -16,8 +15,6 @@ const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
   const { context, actions } = useFrame();
 
   const fid = context?.user?.fid;
-  const username = context?.user?.username;
-  const pfpUrl = context?.user?.pfpUrl;
 
   const { writeContract, isPending, isSuccess, isPaused, isError } =
     useWriteContract();

@@ -1,6 +1,6 @@
 import React from "react";
 import { useFrame } from "../farcaster-provider";
-import { baseSepolia } from "viem/chains";
+import { base } from "viem/chains";
 import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import Button from "./Button";
@@ -14,7 +14,7 @@ const ConnectedAddress = () => {
   const { connect } = useConnect();
 
   if (isConnected) {
-    return chainId === baseSepolia.id ? (
+    return chainId === base.id ? (
       <Button>
         {`${address?.slice(0, 4)}...${address?.slice(
           address.length - 3,
@@ -27,7 +27,7 @@ const ConnectedAddress = () => {
         />
       </Button>
     ) : (
-      <Button onClick={() => switchChain({ chainId: baseSepolia.id })}>
+      <Button onClick={() => switchChain({ chainId: base.id })}>
         Switch chain
       </Button>
     );

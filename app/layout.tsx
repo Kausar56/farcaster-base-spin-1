@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "A template for building mini-apps on Farcaster and Base",
 };
 const config = {
-  rpcUrl: "https://testnet-rpc.monad.xyz",
+  rpcUrl: "https://base-rpc.publicnode.com",
   domain: process.env.DOMAIN,
   siweUri: process.env.DOMAIN,
 };

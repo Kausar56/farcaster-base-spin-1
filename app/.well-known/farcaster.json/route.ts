@@ -9,7 +9,7 @@ export async function GET() {
       homeUrl: "https://base-spin.vercel.app",
       imageUrl: "https://base-spin.vercel.app/image.png",
       buttonTitle: "Play Base Spin",
-      splashImageUrl: "https://monadjam.vercel.app/splash.png",
+      splashImageUrl: "https://base-spin.vercel.app/splash.png",
       splashBackgroundColor: "#1E90FF",
       webhookUrl: "https://base-spin.vercel.app/api/webhook",
       subtitle: "Earn ETH by spin and quiz",

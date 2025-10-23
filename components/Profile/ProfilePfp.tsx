@@ -80,7 +80,7 @@ const ProfilePfp = () => {
             {balanceLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
-              balance && balance.formatted.slice(0, 6)
+              balance && balance.formatted.slice(0, 7)
             )}
           </span>
         </div>

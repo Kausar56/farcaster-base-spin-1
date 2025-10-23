@@ -6,7 +6,6 @@ import {
   FerrisWheel,
   Shield,
 } from "lucide-react";
-import Link from "next/link";
 import { RouteUnion, useFrame } from "../farcaster-provider";
 type MenuButton = {
   name: string;

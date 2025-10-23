@@ -1,6 +1,6 @@
 export const contractAbi = {
   claimPrize: {
-    address: "0xbfb4ef2d74654728cdcca7b6834ff415d2108754",
+    address: "0x08227695cd528c01364b61b6e46a8cdfe8b70545",
     abi: [
       {
         inputs: [
@@ -68,6 +68,19 @@ export const contractAbi = {
         type: "function",
       },
       {
+        inputs: [],
+        name: "MAX_CLAIM",
+        outputs: [
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
         inputs: [
           {
             internalType: "uint256",
@@ -103,6 +116,19 @@ export const contractAbi = {
       {
         inputs: [],
         name: "renounceOwnership",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_max_claim",
+            type: "uint256",
+          },
+        ],
+        name: "setMaxClaim",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -184,7 +210,7 @@ export const contractAbi = {
     ],
   },
   quizGame: {
-    address: "0x61e76896e7c9f81e3952d09a66c9fe93dc054c19",
+    address: "0x88ea919e7805dafd41052ee692c21f4763d40d52",
     abi: [
       {
         inputs: [],
@@ -527,6 +553,19 @@ export const contractAbi = {
           },
         ],
         stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "_reward",
+            type: "uint256",
+          },
+        ],
+        name: "setReward",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
       },
       {

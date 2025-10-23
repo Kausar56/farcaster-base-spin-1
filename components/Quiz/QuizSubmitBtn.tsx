@@ -2,7 +2,7 @@ import React from "react";
 import { useFrame } from "../farcaster-provider";
 import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 import { useAccount, useConnect, useReadContract, useSwitchChain } from "wagmi";
-import { monadTestnet, baseSepolia } from "viem/chains";
+import { base } from "viem/chains";
 import { contractAbi } from "@/abi/abi";
 
 type ButtonProps = {
@@ -58,7 +58,7 @@ const Button = ({
   } else if (state === "switch") {
     return (
       <button
-        onClick={() => switchChain({ chainId: baseSepolia.id })}
+        onClick={() => switchChain({ chainId: base.id })}
         className="mt-4 px-8 py-2 rounded-full text-xl font-bold transition-all duration-300 transform bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:scale-110 hover:shadow-xl active:scale-95"
       >
         Switch To Base
@@ -85,7 +85,7 @@ const QuizSubmitBtn = ({
   const { isConnected, chainId } = useAccount();
 
   if (isConnected) {
-    return chainId === baseSepolia.id ? (
+    return chainId === base.id ? (
       <Button
         handleSubmitAns={handleSubmitAns}
         state="connected"

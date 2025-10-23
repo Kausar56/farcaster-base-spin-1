@@ -1,4 +1,4 @@
-import { Calendar, Coins, Target } from "lucide-react";
+import { Calendar, Target } from "lucide-react";
 import React from "react";
 
 type SpinDashboardProps = {

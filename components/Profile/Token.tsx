@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React from "react";
-import { formatUnits, parseEther } from "viem";
 import { useAccount, useBalance } from "wagmi";
 
 type TokenProps = {
@@ -34,7 +33,7 @@ const Token = ({ name, code, img, address, decimal }: TokenProps) => {
       </div>
 
       <div className="text-gray-100">
-        {balance ? balance.formatted.slice(0, 6) : "0.00"}
+        {balance ? balance.formatted.slice(0, 7) : "0.00"}
       </div>
     </div>
   );

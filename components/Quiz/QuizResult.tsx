@@ -46,7 +46,7 @@ const QuizResult = ({ isAnswerRight, setShowResult }: SpinResultProps) => {
         {isAnswerRight ? (
           <div className="flex flex-col items-center justify-center gap-2 mb-6">
             <span className="text-2xl font-bold text-green-600 flex items-center gap-2">
-              <CoinsIcon /> +0.1 MON
+              <CoinsIcon /> +0.00001 ETH
             </span>
             <p className="text-indigo-200">Reward already sent!</p>
           </div>
