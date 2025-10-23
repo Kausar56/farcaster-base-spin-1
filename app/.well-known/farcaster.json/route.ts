@@ -11,7 +11,7 @@ export async function GET() {
       imageUrl: "https://base-spin.vercel.app/image.png",
       buttonTitle: "Play Base Spin",
       splashImageUrl: "https://monadjam.vercel.app/splash.png",
-      splashBackgroundColor: "#8E44AD",
+      splashBackgroundColor: "#1E90FF",
       webhookUrl: "https://base-spin.vercel.app/api/webhook",
       subtitle: "Earn ETH by spin and quiz",
       description: "Win ETH token by spinning wheel and complete quiz.",
@@ -21,9 +21,11 @@ export async function GET() {
       ogTitle: "Base Spin - Play and Earn ETH",
     },
     accountAssociation: {
-      header: "",
-      payload: "",
-      signature: "",
+      header:
+        "eyJmaWQiOjIzOTUzMCwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDY1RDVDMDhGNkIyNzg1MTRkNjQyQkY1NDlBOTRkYjUzN2JEMUYzQmMifQ",
+      payload: "eyJkb21haW4iOiJiYXNlLXNwaW4udmVyY2VsLmFwcCJ9",
+      signature:
+        "jz3Rx55O6+JqjF9mU8tbCQuE0OJoOr9CzdQmsY9alyBD9P9bFfna2Iesy8GAdec/0Gh92f8qHFCIjytqsWC5tBs=",
     },
   };
 
