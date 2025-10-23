@@ -4,6 +4,8 @@ import React, { useRef, useState } from "react";
 // import { Wheel } from "react-custom-roulette";
 import SpinButton from "./SpinButton";
 import dynamic from "next/dynamic";
+import { UseMutateFunction } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
 
 const Wheel = dynamic(
   () => import("react-custom-roulette").then((mod) => ({ default: mod.Wheel })),
@@ -46,6 +48,12 @@ type WheelSpinProps = {
   totalSpins: number;
   dailySpins: number;
   saveData: (totalSpins: number, dailySpin: number) => void;
+  signMessage: UseMutateFunction<
+    { signature: string; nonce: bigint; isSuccess: boolean },
+    Error,
+    { userAddress: `0x${string}`; amount: string },
+    unknown
+  >;
 };
 
 const WheelSpin = ({
@@ -55,18 +63,25 @@ const WheelSpin = ({
   totalSpins,
   canSpin,
   saveData,
+  signMessage,
 }: WheelSpinProps) => {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { address } = useAccount();
 
   const handleSpinClick = () => {
-    if (!mustSpin && canSpin) {
+    if (!mustSpin && canSpin && address) {
       const newPrizeNumber = Math.floor(Math.random() * data.length);
       setPrizeNumber(newPrizeNumber);
       setWinDetails(data[newPrizeNumber].option);
       setMustSpin(true);
+
+      if (data[newPrizeNumber].option != "Nothing!") {
+        const prize = data[newPrizeNumber].option.split(" ")[0];
+        signMessage({ userAddress: address, amount: prize });
+      }
 
       if (audioRef.current && !isPlaying) {
         // Reset to start so playback always begins from the start

@@ -1,12 +1,17 @@
 export const contractAbi = {
   claimPrize: {
-    address: "0x08227695cd528c01364b61b6e46a8cdfe8b70545",
+    address: "0x0437e66c709be26660ec8e7ee822c8fd8868f475",
     abi: [
       {
         inputs: [
           {
             internalType: "address",
             name: "initialOwner",
+            type: "address",
+          },
+          {
+            internalType: "address",
+            name: "_signerAddress",
             type: "address",
           },
         ],
@@ -55,6 +60,32 @@ export const contractAbi = {
         type: "event",
       },
       {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "account",
+            type: "address",
+          },
+        ],
+        name: "Paused",
+        type: "event",
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: false,
+            internalType: "address",
+            name: "account",
+            type: "address",
+          },
+        ],
+        name: "Unpaused",
+        type: "event",
+      },
+      {
         inputs: [],
         name: "MAX_ACTIONS_PER_DAY",
         outputs: [
@@ -83,12 +114,35 @@ export const contractAbi = {
       {
         inputs: [
           {
+            internalType: "string",
+            name: "_code",
+            type: "string",
+          },
+        ],
+        name: "changeSafeCode",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
             internalType: "uint256",
             name: "_amount",
             type: "uint256",
           },
+          {
+            internalType: "uint256",
+            name: "_nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "bytes",
+            name: "_signature",
+            type: "bytes",
+          },
         ],
-        name: "claimPrize",
+        name: "claimSpinWinPrize",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -108,6 +162,26 @@ export const contractAbi = {
             internalType: "address",
             name: "",
             type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "pause",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "paused",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
           },
         ],
         stateMutability: "view",
@@ -147,6 +221,32 @@ export const contractAbi = {
         type: "function",
       },
       {
+        inputs: [
+          {
+            internalType: "address",
+            name: "_newSigner",
+            type: "address",
+          },
+        ],
+        name: "setSignerAddress",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "signerAddress",
+        outputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+        ],
+        stateMutability: "view",
+        type: "function",
+      },
+      {
         inputs: [],
         name: "totalEarned",
         outputs: [
@@ -170,6 +270,37 @@ export const contractAbi = {
         name: "transferOwnership",
         outputs: [],
         stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [],
+        name: "unpause",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
+      },
+      {
+        inputs: [
+          {
+            internalType: "address",
+            name: "",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "",
+            type: "uint256",
+          },
+        ],
+        name: "usedNonces",
+        outputs: [
+          {
+            internalType: "bool",
+            name: "",
+            type: "bool",
+          },
+        ],
+        stateMutability: "view",
         type: "function",
       },
       {

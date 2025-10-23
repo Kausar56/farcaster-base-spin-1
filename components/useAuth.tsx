@@ -55,12 +55,49 @@ const useAuth = () => {
     });
   };
 
+  const {
+    mutate: signMessage,
+    isPending: isSigning,
+    data: signMessageData,
+  } = useMutation({
+    mutationFn: async ({
+      userAddress,
+      amount,
+    }: {
+      userAddress: `0x${string}`;
+      amount: string;
+    }) => {
+      const res = await fetch("/api/auth/signature", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userAddress,
+          amount,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => null);
+        throw new Error(text || `Request failed with status ${res.status}`);
+      }
+
+      return (await res.json()) as {
+        signature: string;
+        nonce: bigint;
+        isSuccess: boolean;
+      };
+    },
+  });
+
   return {
     register: registerAsync,
     authCheck,
     registerPending,
     registerSuccess,
     registerData,
+    signMessage,
+    isSigning,
+    signMessageData,
   };
 };
 

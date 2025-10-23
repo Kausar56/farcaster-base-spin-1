@@ -9,9 +9,16 @@ import { useMutation } from "@tanstack/react-query";
 type SpinResultProps = {
   selectedPrize: string;
   setShowResult: (result: boolean) => void;
+  signMessageData?: { signature: string; nonce: bigint; isSuccess: boolean };
+  isSigning?: boolean;
 };
 
-const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
+const SpinResult = ({
+  selectedPrize,
+  setShowResult,
+  signMessageData,
+  isSigning,
+}: SpinResultProps) => {
   const { context, actions } = useFrame();
 
   const fid = context?.user?.fid;
@@ -31,7 +38,16 @@ const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
   });
 
   const claimPrize = () => {
-    if (!selectedPrize || isPending || isSuccess) return;
+    if (
+      !selectedPrize ||
+      isPending ||
+      isSuccess ||
+      !signMessageData ||
+      !signMessageData?.signature ||
+      !signMessageData?.nonce
+    ) {
+      return;
+    }
     const amount = selectedPrize.split(" ")[0];
 
     if (typeof parseFloat(amount) === "string") return;
@@ -40,8 +56,12 @@ const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
       {
         abi: contractAbi.claimPrize.abi,
         address: contractAbi.claimPrize.address,
-        functionName: "claimPrize",
-        args: [parseEther(amount)],
+        functionName: "claimSpinWinPrize",
+        args: [
+          parseEther(amount),
+          signMessageData?.nonce!,
+          signMessageData?.signature! as `0x${string}`,
+        ],
       },
       {
         onSuccess(data) {
@@ -104,11 +124,15 @@ const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
           !isSuccess && (
             <button
               onClick={claimPrize}
-              disabled={isPending}
+              disabled={isPending || isSigning}
               className="px-6 flex mx-auto gap-2 items-center py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg animate-bounce transition-shadow"
             >
               <Gift />
-              {!isError && isPending ? "Claiming..." : "Claim!"}
+              {isSigning
+                ? "Initializing..."
+                : !isError && isPending
+                ? "Claiming..."
+                : "Claim!"}
             </button>
           )
         )}

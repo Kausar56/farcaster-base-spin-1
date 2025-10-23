@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import SpinDashboard from "./SpinPannel";
 import SpinResult from "./SpinResult";
 import WheelSpin from "./Wheel";
+import useAuth from "../useAuth";
 
 const SpinWheelGame = () => {
   const [winDetails, setWinDetails] = useState<string | null>(null);
@@ -11,6 +12,7 @@ const SpinWheelGame = () => {
   const [totalSpins, setTotalSpins] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [canSpin, setCanSpin] = useState(true);
+  const { signMessage, isSigning, signMessageData } = useAuth();
 
   // Load saved data on component mount
   useEffect(() => {
@@ -28,7 +30,7 @@ const SpinWheelGame = () => {
     }
 
     setTotalSpins(savedData.totalSpins || 0);
-    // localStorage.removeItem("animalSpinData");
+    localStorage.removeItem("animalSpinData");
   }, []);
 
   const saveData = (newDailySpins: number, newTotalSpins: number) => {
@@ -59,6 +61,7 @@ const SpinWheelGame = () => {
         saveData={saveData}
         dailySpins={dailySpins}
         totalSpins={totalSpins}
+        signMessage={signMessage}
       />
 
       {/* Stats Dashboard */}
@@ -66,7 +69,12 @@ const SpinWheelGame = () => {
 
       {/* Result Display */}
       {showResult && winDetails && (
-        <SpinResult selectedPrize={winDetails} setShowResult={setShowResult} />
+        <SpinResult
+          signMessageData={signMessageData}
+          selectedPrize={winDetails}
+          setShowResult={setShowResult}
+          isSigning={isSigning}
+        />
       )}
     </div>
   );
