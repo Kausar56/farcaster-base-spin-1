@@ -63,10 +63,10 @@ const SpinResult = ({ selectedPrize, setShowResult }: SpinResultProps) => {
 
   const handleGenerateCustomOGImage = () => {
     actions?.composeCast({
-      text: `🎉 I just claimed ${selectedPrize} playing the MonadJam Mini Game! 🚀  
+      text: `🎉 I just claimed ${selectedPrize} playing the Base Spin Game! 🚀
 
     Think you can beat my score? Try it now 👇`,
-      embeds: ["https://farcaster.xyz/miniapps/j34aMVBzWE9z/monadjam"],
+      embeds: ["https://farcaster.xyz/miniapps/OVGXH7QGFT1j/base-spin"],
     });
 
     setShowResult(false);

@@ -1,12 +1,13 @@
+import { contractAbi } from "@/abi/abi";
 import React from "react";
 import { useBalance } from "wagmi";
 
 const ContractBalance = () => {
   const { data: spinGameBalance } = useBalance({
-    address: "0xSpinGameContractAddress",
+    address: contractAbi.claimPrize.address,
   });
   const { data: quizGameBalance } = useBalance({
-    address: "0xQuizGameContractAddress",
+    address: contractAbi.quizGame.address,
   });
   return (
     <div className="w-full flex flex-col items-center gap-2">

@@ -25,7 +25,7 @@ const Admin = () => {
     });
   };
   return (
-    <div className="w-full px-4">
+    <div className="w-full px-4 space-y-4">
       <ContractBalance />
 
       <AddQuestionPanel />

@@ -54,19 +54,19 @@ const ProfilePfp = () => {
 
       <div className="text-center">
         <p className="text-lg text-white">{context?.user?.displayName}</p>
-        <p className="text-sm text-gray-300">@{context?.user?.username}</p>
+        <p className="text-sm text-indigo-600">@{context?.user?.username}</p>
       </div>
 
       <div className="bg-indigo-200/20 text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full grid grid-cols-2 gap-2 p-3">
         <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Total spins:{" "}
-          <span className="text-md text-indigo-200 font-semibold">
+          <span className="text-md text-indigo-500 font-semibold">
             {totalSpins}
           </span>
         </div>
         <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between items-center">
           Total quiz:{" "}
-          <span className="text-md text-indigo-200 font-semibold">
+          <span className="text-md text-indigo-500 font-semibold">
             {totalAnswerLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
@@ -75,8 +75,8 @@ const ProfilePfp = () => {
           </span>
         </div>
         <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          MON:{" "}
-          <span className="text-md text-indigo-200 font-semibold">
+          ETH:{" "}
+          <span className="text-md text-indigo-500 font-semibold">
             {balanceLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
@@ -86,7 +86,7 @@ const ProfilePfp = () => {
         </div>
         <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Right answer:{" "}
-          <span className="text-md text-indigo-200 font-semibold">
+          <span className="text-md text-indigo-500 font-semibold">
             {scoreLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (

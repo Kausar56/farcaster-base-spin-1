@@ -7,7 +7,7 @@ const AddQuestion = () => {
   const [options, setOptions] = useState<
     readonly [string, string, string, string]
   >(["", "", "", ""]);
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
   const [error, setError] = useState("");
   const [rightAnswer, setRightAnswer] = useState(0);
 
@@ -33,12 +33,21 @@ const AddQuestion = () => {
       setError("Please provide at least 4 options.");
       return;
     }
-    writeContract({
-      abi: contractAbi.quizGame.abi,
-      address: contractAbi.quizGame.address,
-      functionName: "addQuestion",
-      args: [question, options, rightAnswer],
-    });
+    writeContract(
+      {
+        abi: contractAbi.quizGame.abi,
+        address: contractAbi.quizGame.address,
+        functionName: "addQuestion",
+        args: [question, options, rightAnswer],
+      },
+      {
+        onSuccess(data) {
+          setQuestion("");
+          setOptions(["", "", "", ""]);
+          setRightAnswer(0);
+        },
+      }
+    );
     setError("");
   };
 
@@ -55,6 +64,7 @@ const AddQuestion = () => {
           placeholder="Enter question"
           type="text"
           onChange={(e) => setQuestion(e.target.value)}
+          value={question}
           className="w-full bg-gray-800 text-white p-2 rounded mb-2"
         />
         <select
@@ -74,31 +84,39 @@ const AddQuestion = () => {
           type="text"
           onChange={(e) => handleOptionChange(0, e.target.value)}
           className="w-full bg-gray-800 text-white p-2 rounded mb-2"
+          value={options[0]}
         />
         <input
           placeholder="Enter option 2"
           type="text"
           onChange={(e) => handleOptionChange(1, e.target.value)}
           className="w-full bg-gray-800 text-white p-2 rounded mb-2"
+          value={options[1]}
         />
         <input
           placeholder="Enter option 3"
           type="text"
           onChange={(e) => handleOptionChange(2, e.target.value)}
           className="w-full bg-gray-800 text-white p-2 rounded mb-2"
+          value={options[2]}
         />
         <input
           placeholder="Enter option 4"
           type="text"
           onChange={(e) => handleOptionChange(3, e.target.value)}
           className="w-full bg-gray-800 text-white p-2 rounded mb-2"
+          value={options[3]}
         />
       </div>
 
       {error && <p className="text-red-500 text-xs">{error}</p>}
 
-      <button onClick={handleAddQuestion} className="py-2 px-3 bg-black mt-2">
-        Add Question
+      <button
+        onClick={handleAddQuestion}
+        className="py-2 px-3 bg-blue-500 rounded-md mt-2 text-white"
+        disabled={isPending}
+      >
+        {isPending ? "Adding Question..." : "Add Question"}
       </button>
     </div>
   );

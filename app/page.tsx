@@ -11,8 +11,8 @@ const frame = {
       type: "launch_frame",
       name: "Base Spin",
       url: APP_URL,
-      splashImageUrl: `${APP_URL}/images/splash.png`,
-      splashBackgroundColor: "#f7f7f7",
+      splashImageUrl: `${APP_URL}/splash.png`,
+      splashBackgroundColor: "#1E90FF",
     },
   },
 };

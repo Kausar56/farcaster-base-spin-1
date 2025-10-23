@@ -13,27 +13,27 @@ const Wheel = dynamic(
 const data = [
   {
     option: "0.00003 ETH",
-    style: { backgroundColor: "#0E3386", textColor: "#F8FAFC" },
+    style: { backgroundColor: "#09128f", textColor: "#F8FAFC" },
   },
   {
     option: "0.00004 ETH",
-    style: { backgroundColor: "#0E3386", textColor: "#FFFFFF" },
+    style: { backgroundColor: "#1717c9", textColor: "#FFFFFF" },
   },
   {
     option: "Nothing!",
-    style: { backgroundColor: "#0E3386", textColor: "#F9FAFB" },
+    style: { backgroundColor: "#2121d9", textColor: "#f5b939" },
   },
   {
     option: "0.00001 ETH",
-    style: { backgroundColor: "#0E3386", textColor: "#FFFBEB" },
+    style: { backgroundColor: "#1818fa", textColor: "#FFFBEB" },
   },
   {
     option: "0.00002 ETH",
-    style: { backgroundColor: "#0E3386", textColor: "#F0F9FF" },
+    style: { backgroundColor: "#224fee", textColor: "#F0F9FF" },
   },
   {
     option: "Nothing!",
-    style: { backgroundColor: "#0E3386", textColor: "#f5b939" },
+    style: { backgroundColor: "#375cee", textColor: "#f5b939" },
   },
 ];
 

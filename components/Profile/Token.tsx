@@ -21,7 +21,7 @@ const Token = ({ name, code, img, address, decimal }: TokenProps) => {
     <div className="flex items-center justify-between p-2 backdrop-blur-md rounded-md">
       <div className="flex items-center gap-2">
         <Image
-          className="rounded-full"
+          className="rounded-full h-6 w-6"
           src={img}
           alt="token img"
           width={24}

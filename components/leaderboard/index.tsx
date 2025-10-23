@@ -25,7 +25,7 @@ const Leaderboard = () => {
         </div>
       )}
 
-      <div className="w-full flex flex-col gap-1">
+      <div className="w-full flex flex-col backdrop-blur-md bg-indigo-500/20 rounded-md">
         {data &&
           data?.users?.map(
             (

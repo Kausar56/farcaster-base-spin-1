@@ -16,7 +16,7 @@ export default function Home() {
   if (isLoading || authLoading) {
     return (
       <SafeAreaContainer insets={context?.client.safeAreaInsets}>
-        <div className="flex w-full min-h-screen bg-gradient-to-tr from-violet-800 via-purple-800 to-indigo-800 flex-col items-center justify-center p-4 space-y-8">
+        <div className="flex w-full min-h-screen bg-gradient-to-tr from-blue-700 via-blue-300 to-indigo-600 flex-col items-center justify-center p-4 space-y-8">
           <Image
             src="/splash.png"
             alt="loading image"

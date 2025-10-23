@@ -1,6 +1,6 @@
 export const contractAbi = {
   claimPrize: {
-    address: "0xc5bdcf924cf914caeb0342bbdd3069335c578bac",
+    address: "0xbfb4ef2d74654728cdcca7b6834ff415d2108754",
     abi: [
       {
         inputs: [
@@ -184,7 +184,7 @@ export const contractAbi = {
     ],
   },
   quizGame: {
-    address: "0xb20c13c0309e97dcde525a3b409d24c3e2ea8f36",
+    address: "0x61e76896e7c9f81e3952d09a66c9fe93dc054c19",
     abi: [
       {
         inputs: [],
