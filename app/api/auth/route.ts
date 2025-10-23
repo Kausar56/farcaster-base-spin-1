@@ -6,6 +6,7 @@ import { z } from "zod";
 const requestSchema = z.object({
   address: z.string(),
   fid: z.number(),
+  username: z.string(),
 });
 
 export async function POST(request: NextRequest) {

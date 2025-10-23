@@ -4,6 +4,7 @@ import { useFrame } from "./farcaster-provider";
 type AuthArgs = {
   fid: number;
   address?: `0x${string}`;
+  username: string;
 };
 
 const useAuth = () => {
@@ -14,13 +15,14 @@ const useAuth = () => {
     isPending: registerPending,
     isSuccess: registerSuccess,
   } = useMutation({
-    mutationFn: async ({ fid, address }: AuthArgs) => {
+    mutationFn: async ({ fid, address, username }: AuthArgs) => {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fid,
           address,
+          username,
         }),
       });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 // import { Wheel } from "react-custom-roulette";
 import SpinButton from "./SpinButton";
 import dynamic from "next/dynamic";
@@ -69,8 +69,24 @@ const WheelSpin = ({
       setMustSpin(true);
 
       if (audioRef.current && !isPlaying) {
-        audioRef.current.play();
-        setIsPlaying(true);
+        // Reset to start so playback always begins from the start
+        try {
+          audioRef.current.currentTime = 0;
+        } catch (e) {
+          // ignore if not ready
+        }
+        // Play returns a promise; await to handle autoplay restrictions
+        const playPromise = audioRef.current.play();
+        if (playPromise && typeof playPromise.then === "function") {
+          playPromise
+            .then(() => setIsPlaying(true))
+            .catch(() => {
+              // If playback is blocked (autoplay policy), still mark as not playing
+              setIsPlaying(false);
+            });
+        } else {
+          setIsPlaying(true);
+        }
       }
     }
   };
@@ -81,6 +97,11 @@ const WheelSpin = ({
 
     if (audioRef.current && isPlaying) {
       audioRef.current.pause();
+      try {
+        audioRef.current.currentTime = 0;
+      } catch (e) {
+        // ignore
+      }
       setIsPlaying(false);
     }
 
@@ -97,6 +118,8 @@ const WheelSpin = ({
         className="hidden"
         ref={audioRef}
         src="/wheel-sound.mp3"
+        preload="auto"
+        playsInline
         // onTimeUpdate={handleTimeUpdate}
         // onLoadedMetadata={handleLoadedMetadata}
         onEnded={() => setIsPlaying(false)}

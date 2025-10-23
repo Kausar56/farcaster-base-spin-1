@@ -30,11 +30,25 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    user.earned += prize;
+    user.earned += prizeNumber;
     await user.save();
     return NextResponse.json({ isSuccess: true }, { status: 200 });
   } catch (error) {
     console.error("Error claiming prize:", error);
     return new Response("Error claiming prize", { status: 500 });
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    await dbConnect();
+    const users = await User.find({})
+      .sort({ earned: -1 }) // Sort by earned field in descending order
+      .limit(10); // Limit to top 10 users
+
+    return NextResponse.json({ success: true, users }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return new Response("Error fetching users", { status: 500 });
   }
 }

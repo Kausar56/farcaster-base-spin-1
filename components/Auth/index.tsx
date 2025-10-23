@@ -12,10 +12,11 @@ const Auth = ({ refetch }: { refetch: () => void }) => {
 
   const handleRegister = async () => {
     const fid = context?.user?.fid;
-    if (!fid || !address) return;
+    const username = context?.user?.username;
+    if (!fid || !address || !username) return;
 
     try {
-      await register({ fid, address });
+      await register({ fid, address, username });
       refetch();
       if (actions) {
         actions?.addMiniApp();

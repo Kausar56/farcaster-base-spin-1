@@ -6,6 +6,10 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    username: {
+      type: String,
+      required: true,
+    },
     address: {
       type: String,
       required: true,

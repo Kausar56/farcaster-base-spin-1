@@ -1,6 +1,8 @@
 import { contractAbi } from "@/abi/abi";
 import React from "react";
 import { useWriteContract } from "wagmi";
+import AddQuestionPanel from "./AddQuestion";
+import ContractBalance from "./ContractBalance";
 
 const Admin = () => {
   const { writeContract } = useWriteContract();
@@ -23,10 +25,10 @@ const Admin = () => {
     });
   };
   return (
-    <div className="w-full">
-      <button onClick={AddQuestion} className="py-2 bg-black">
-        Add Question
-      </button>
+    <div className="w-full px-4">
+      <ContractBalance />
+
+      <AddQuestionPanel />
     </div>
   );
 };
