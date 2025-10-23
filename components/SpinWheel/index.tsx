@@ -30,7 +30,7 @@ const SpinWheelGame = () => {
     }
 
     setTotalSpins(savedData.totalSpins || 0);
-    localStorage.removeItem("animalSpinData");
+    // localStorage.removeItem("animalSpinData");
   }, []);
 
   const saveData = (newDailySpins: number, newTotalSpins: number) => {
