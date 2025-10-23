@@ -16,16 +16,14 @@ export async function GET() {
       subtitle: "Earn ETH by spin and quiz",
       description: "Win ETH token by spinning wheel and complete quiz.",
       primaryCategory: "games",
-      tags: ["game", "social", "base-spin", "earn", "community"],
+      tags: ["game", "social", "base", "earn", "community"],
       tagline: "Earn ETH with Base Spin",
       ogTitle: "Base Spin - Play and Earn ETH",
     },
     accountAssociation: {
-      header:
-        "eyJmaWQiOjMxNzI2MSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweDQ5ZWUzMjNFYTFCYjY1RjY4RkE3NWRmMGM2RDQ0MWQyMGQ4M0E4Q2QifQ",
-      payload: "eyJkb21haW4iOiJtb25hZGphbS52ZXJjZWwuYXBwIn0",
-      signature:
-        "YxqBNw9Ly04ybEvH1RAheaMzRyWB+1D8IP/LuCjoXg5vgTsvCdJwZWYbRN5sg8ttvnAs0asYGr0t7jNlcmIU5Rw=",
+      header: "",
+      payload: "",
+      signature: "",
     },
   };
 
