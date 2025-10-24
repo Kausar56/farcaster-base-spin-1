@@ -34,7 +34,6 @@ interface FrameProviderProps {
 
 export function FrameProvider({ children }: FrameProviderProps) {
   const [route, setRoute] = useState<RouteUnion>("spin");
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const farcasterContextQuery = useQuery({
     queryKey: ["farcaster-context"],
     queryFn: async () => {

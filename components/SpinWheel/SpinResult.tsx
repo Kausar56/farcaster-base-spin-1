@@ -51,6 +51,7 @@ const SpinResult = ({
     const amount = selectedPrize.split(" ")[0];
 
     if (typeof parseFloat(amount) === "string") return;
+    const ethAmount = parseFloat(amount) / 4000;
 
     writeContract(
       {
@@ -58,14 +59,14 @@ const SpinResult = ({
         address: contractAbi.claimPrize.address,
         functionName: "claimSpinWinPrize",
         args: [
-          parseEther(amount),
+          parseEther(ethAmount.toFixed(6).toString()),
           signMessageData?.nonce!,
           signMessageData?.signature! as `0x${string}`,
         ],
       },
       {
         onSuccess(data) {
-          updatePrize(amount);
+          updatePrize(ethAmount.toFixed(2).toString());
         },
       }
     );

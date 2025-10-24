@@ -10,10 +10,10 @@ import Auth from "../Auth";
 export default function Home() {
   const { context, isLoading, isSDKLoaded } = useFrame();
   const fid = context?.user?.fid;
-  const { authCheck } = useAuth();
+  const { authCheck, configData, isConfigLoading } = useAuth();
   const { data, isLoading: authLoading, refetch } = authCheck(fid);
 
-  if (isLoading || authLoading) {
+  if (isLoading || authLoading || isConfigLoading) {
     return (
       <SafeAreaContainer insets={context?.client.safeAreaInsets}>
         <div className="flex w-full min-h-screen bg-gradient-to-tr from-blue-700 via-blue-300 to-indigo-600 flex-col items-center justify-center p-4 space-y-8">

@@ -2,6 +2,8 @@ import { contractAbi } from "@/abi/abi";
 import React from "react";
 import AddQuestionPanel from "./AddQuestion";
 import ContractBalance from "./ContractBalance";
+import PauseSpin from "./PauseSpin";
+import AppConfig from "./AppConfig";
 
 const Admin = () => {
   return (
@@ -10,7 +12,11 @@ const Admin = () => {
 
       <AddQuestionPanel />
 
-      <div className="bg-indigo-200/20 text-sm text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full p-4 space-y-2">
+      <AppConfig />
+
+      <PauseSpin />
+
+      {/* <div className="bg-indigo-200/20 text-sm text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full p-4 space-y-2">
         <p>
           Spin contract address:{" "}
           <span className="text-indigo-500">
@@ -23,7 +29,7 @@ const Admin = () => {
             {contractAbi.quizGame.address}
           </span>
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

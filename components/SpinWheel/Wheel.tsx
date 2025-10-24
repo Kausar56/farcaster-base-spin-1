@@ -6,38 +6,12 @@ import SpinButton from "./SpinButton";
 import dynamic from "next/dynamic";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
+import { spinOptions } from "@/lib/constants";
 
 const Wheel = dynamic(
   () => import("react-custom-roulette").then((mod) => ({ default: mod.Wheel })),
   { ssr: false }
 );
-
-const data = [
-  {
-    option: "0.00003 ETH",
-    style: { backgroundColor: "#09128f", textColor: "#F8FAFC" },
-  },
-  {
-    option: "0.00004 ETH",
-    style: { backgroundColor: "#1717c9", textColor: "#FFFFFF" },
-  },
-  {
-    option: "Nothing!",
-    style: { backgroundColor: "#2121d9", textColor: "#f5b939" },
-  },
-  {
-    option: "0.00001 ETH",
-    style: { backgroundColor: "#1818fa", textColor: "#FFFBEB" },
-  },
-  {
-    option: "0.00002 ETH",
-    style: { backgroundColor: "#224fee", textColor: "#F0F9FF" },
-  },
-  {
-    option: "Nothing!",
-    style: { backgroundColor: "#375cee", textColor: "#f5b939" },
-  },
-];
 
 type WheelSpinProps = {
   setShowResult: (result: boolean) => void;
@@ -73,14 +47,18 @@ const WheelSpin = ({
 
   const handleSpinClick = () => {
     if (!mustSpin && canSpin && address) {
-      const newPrizeNumber = Math.floor(Math.random() * data.length);
+      const newPrizeNumber = Math.floor(Math.random() * spinOptions.length);
       setPrizeNumber(newPrizeNumber);
-      setWinDetails(data[newPrizeNumber].option);
+      setWinDetails(spinOptions[newPrizeNumber].option);
       setMustSpin(true);
 
-      if (data[newPrizeNumber].option != "Nothing!") {
-        const prize = data[newPrizeNumber].option.split(" ")[0];
-        signMessage({ userAddress: address, amount: prize });
+      if (spinOptions[newPrizeNumber].option != "Nothing!") {
+        const prize = spinOptions[newPrizeNumber].option.split(" ")[0];
+        const ethAmount = parseFloat(prize) / 4000;
+        signMessage({
+          userAddress: address,
+          amount: ethAmount.toFixed(6).toString(),
+        });
       }
 
       if (audioRef.current && !isPlaying) {
@@ -144,7 +122,7 @@ const WheelSpin = ({
           outerBorderColor="#191970"
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber}
-          data={data}
+          data={spinOptions}
           onStopSpinning={handleStopSpin}
           pointerProps={{ style: {} }}
           innerBorderColor="blue"
