@@ -8,15 +8,16 @@ import Quiz from "../Quiz";
 import { Profile } from "../Profile";
 import Leaderboard from "../leaderboard";
 import Admin from "../admin/Admin";
+import Lottery from "../Lottery";
 
 export function Demo() {
   const { route } = useFrame();
   return (
     <>
-      <ConnectedAddress />
-      <div className="flex flex-col w-full h-full items-center justify-center">
+      {/* <ConnectedAddress /> */}
+      <div className="">
+        {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}
-        {route === "quiz" && <Quiz />}
         {route === "profile" && <Profile />}
         {route === "leaderboard" && <Leaderboard />}
         {route === "admin" && <Admin />}

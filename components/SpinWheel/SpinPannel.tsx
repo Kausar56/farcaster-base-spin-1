@@ -9,7 +9,7 @@ type SpinDashboardProps = {
 const SpinDashboard = ({ dailySpins, totalSpins }: SpinDashboardProps) => {
   return (
     <div className="grid grid-cols-2 gap-4 px-4">
-      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-2 text-center">
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-2 text-center">
         <h3 className="text-white text-sm font-semibold mb-2">Daily Spins</h3>
         <div className="flex items-center justify-center gap-2">
           <p className="text-xl font-bold text-yellow-300">{dailySpins}/5</p>
@@ -17,11 +17,11 @@ const SpinDashboard = ({ dailySpins, totalSpins }: SpinDashboardProps) => {
         </div>
       </div>
 
-      <div className="bg-white/20 backdrop-blur-md rounded-2xl p-2 text-center">
+      <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl p-2 text-center">
         <h3 className="text-white text-sm font-semibold mb-2">Total Spins</h3>
         <div className="flex items-center justify-center gap-2">
-          <p className="text-xl font-bold text-blue-700">{totalSpins}</p>
-          <Target className=" text-blue-700" size={24} />
+          <p className="text-xl font-bold text-white">{totalSpins}</p>
+          <Target className=" text-white" size={24} />
         </div>
       </div>
     </div>

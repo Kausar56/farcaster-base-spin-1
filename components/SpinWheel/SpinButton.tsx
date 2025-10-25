@@ -23,7 +23,7 @@ const Button = ({ handleSpinClick, canSpin, mustSpin, state }: ButtonProps) => {
         disabled={!canSpin || mustSpin}
         className={`mt-4 px-8 py-4 rounded-full text-xl font-bold transition-all duration-300 transform ${
           canSpin
-            ? "bg-gradient-to-r from-[#0000FF] to-[#191970] text-white hover:scale-110 hover:shadow-xl active:scale-95"
+            ? "bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:scale-110 hover:shadow-xl active:scale-95"
             : "bg-gray-400 text-gray-600 cursor-not-allowed"
         }`}
       >

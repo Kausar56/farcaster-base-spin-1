@@ -39,7 +39,7 @@ const ProfilePfp = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-2 ">
+    <div className="flex flex-col items-center gap-2 px-4">
       <div className="w-20 h-20 ring-1 rounded-full overflow-hidden bg-indigo-500">
         {context?.user?.pfpUrl && (
           <img
@@ -53,20 +53,18 @@ const ProfilePfp = () => {
       </div>
 
       <div className="text-center">
-        <p className="text-lg text-white">{context?.user?.displayName}</p>
+        <p className="text-lg text-blue-600">{context?.user?.displayName}</p>
         <p className="text-sm text-indigo-600">@{context?.user?.username}</p>
       </div>
 
-      <div className="bg-indigo-200/20 text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full grid grid-cols-2 gap-2 p-3">
-        <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
+      <div className="bg-white rounded-2xl p-3 shadow-lg w-full grid grid-cols-2 gap-2">
+        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Total spins:{" "}
-          <span className="text-md text-indigo-500 font-semibold">
-            {totalSpins}
-          </span>
+          <span className="text-md text-white font-semibold">{totalSpins}</span>
         </div>
-        <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between items-center">
+        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between items-center">
           Total quiz:{" "}
-          <span className="text-md text-indigo-500 font-semibold">
+          <span className="text-md  font-semibold">
             {totalAnswerLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
@@ -74,9 +72,9 @@ const ProfilePfp = () => {
             )}
           </span>
         </div>
-        <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
+        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
           ETH:{" "}
-          <span className="text-md text-indigo-500 font-semibold">
+          <span className="text-md  font-semibold">
             {balanceLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
@@ -84,9 +82,9 @@ const ProfilePfp = () => {
             )}
           </span>
         </div>
-        <div className="backdrop-blur-md rounded-md overflow-hidden p-2 text-sm flex justify-between">
+        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Right answer:{" "}
-          <span className="text-md text-indigo-500 font-semibold">
+          <span className="text-md  font-semibold">
             {scoreLoading ? (
               <Loader size={18} className="animate-spin" />
             ) : (
@@ -97,12 +95,12 @@ const ProfilePfp = () => {
       </div>
 
       {/* Balance */}
-      <div className="bg-indigo-300/20 w-full backdrop-blur-md rounded-md overflow-hidden p-2 text-sm shadow-md">
-        <h2 className="text-white font-bold">My balance </h2>
+      <div className="bg-white rounded-2xl w-full backdrop-blur-md  overflow-hidden p-3 text-sm shadow-md">
+        <h2 className="text-black font-bold">My balance </h2>
 
         <div className="pt-4 flex flex-col gap-1 max-h-48 overflow-x-auto ">
-          {tokens.map((token) => (
-            <Token {...token} />
+          {tokens.map((token, index) => (
+            <Token {...token} key={index} />
           ))}
         </div>
       </div>

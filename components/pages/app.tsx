@@ -45,7 +45,9 @@ export default function Home() {
 
   return (
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
-      {data && data.success ? <Demo /> : <Auth refetch={refetch} />}
+      <div className="bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen overflow-x-hidden">
+        {data && data.success ? <Demo /> : <Auth refetch={refetch} />}
+      </div>
       {/* <Demo /> */}
     </SafeAreaContainer>
   );

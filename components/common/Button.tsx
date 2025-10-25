@@ -10,7 +10,7 @@ const Button = (props: ButtonPros) => {
   return (
     <button
       {...rest}
-      className="bg-indigo-500/50 text-white backdrop-blur-md shadow px-4 py-1 rounded-full my-3 text-sm flex items-center gap-1 fixed left-1/2 top-0 -translate-x-1/2 z-50 hover:shadow-md duration-300"
+      className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold flex gap-2 items-center"
     >
       {children}
     </button>

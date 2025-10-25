@@ -1,6 +1,6 @@
 import React from "react";
 import { useFrame } from "../farcaster-provider";
-import { base } from "viem/chains";
+import { baseSepolia as base } from "viem/chains";
 import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import Button from "./Button";

@@ -17,7 +17,7 @@ const Token = ({ name, code, img, address, decimal }: TokenProps) => {
     token: address,
   });
   return (
-    <div className="flex items-center justify-between p-2 backdrop-blur-md rounded-md">
+    <div className="flex items-center justify-between p-2 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg">
       <div className="flex items-center gap-2">
         <Image
           className="rounded-full h-6 w-6"

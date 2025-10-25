@@ -5,6 +5,8 @@ import SpinDashboard from "./SpinPannel";
 import SpinResult from "./SpinResult";
 import WheelSpin from "./Wheel";
 import useAuth from "../useAuth";
+import SpinHeader from "./SpinHeader";
+import AppHeader from "../common/AppHeader";
 
 const SpinWheelGame = () => {
   const [winDetails, setWinDetails] = useState<string | null>(null);
@@ -49,7 +51,7 @@ const SpinWheelGame = () => {
   return (
     <div className="w-full">
       {/* Header */}
-      {/* <SpinHeader /> */}
+      <AppHeader headerName="Daily Spin" />
 
       {/* Spin Wheel */}
       <WheelSpin

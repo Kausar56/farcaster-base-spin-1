@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/lottery/draw",
+      "schedule": "* * * * *"
+    },
+    {
+      "path": "/api/lottery/exit-cooldown",
+      "schedule": "* * * * *"
+    }
+  ]
+}

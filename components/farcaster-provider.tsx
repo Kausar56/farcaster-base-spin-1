@@ -3,7 +3,12 @@ import sdk from "@farcaster/miniapp-sdk";
 import { useQuery } from "@tanstack/react-query";
 import { type ReactNode, createContext, useContext, useState } from "react";
 
-export type RouteUnion = "spin" | "quiz" | "leaderboard" | "profile" | "admin";
+export type RouteUnion =
+  | "spin"
+  | "lottery"
+  | "leaderboard"
+  | "profile"
+  | "admin";
 
 interface FrameContextValue {
   context: Context.MiniAppContext | undefined;
