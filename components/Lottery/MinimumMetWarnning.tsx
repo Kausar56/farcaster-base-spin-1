@@ -20,7 +20,7 @@ const MinimumMetWarning = () => {
         <div className="flex items-center justify-between mb-1">
           <span className="text-gray-600 text-sm">Current</span>
           <span className="text-xl font-bold text-orange-600">
-            {participantCount}/{5}
+            {participantCount}/{3}
           </span>
         </div>
 
@@ -28,18 +28,18 @@ const MinimumMetWarning = () => {
         <div className="relative w-full h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
           <div
             className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-500 to-orange-400 transition-all duration-500"
-            style={{ width: `${(participantCount / 5) * 100}%` }}
+            style={{ width: `${(participantCount / 3) * 100}%` }}
           ></div>
         </div>
 
         <div className="text-center">
           <span className="text-sm text-gray-600">Need </span>
           <span className="text-xl font-bold text-orange-600">
-            {5 - participantCount}
+            {3 - participantCount}
           </span>
           <span className="text-sm text-gray-600">
             {" "}
-            more {5 - participantCount === 1 ? "person" : "people"}
+            more {3 - participantCount === 1 ? "person" : "people"}
           </span>
         </div>
       </div>
@@ -49,9 +49,8 @@ const MinimumMetWarning = () => {
           <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
 
           <p className="text-orange-600 text-xs">
-            If we don't reach {5} participants by draw time, the round will be
-            cancelled and the pot will carry over to the next round for a bigger
-            jackpot! 🎁
+            If we don't reach {3} participants by draw time, the round will be
+            cancelled and entry fee will refunded!
           </p>
         </div>
       </div>

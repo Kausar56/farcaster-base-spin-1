@@ -22,45 +22,63 @@ import InfoCards from "./InfoCards";
 import AppHeader from "../common/AppHeader";
 import useCheckLastRoundResult from "./hooks/useCheckLastRoundResult";
 import RoundCancelled from "./RoundCancelled";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 export default function Lottery() {
-  const { inCooldown, isLoadingLotteryStatus } = useGetLotteryStatus();
-  const { meetsMinimum } = useGetDrawStatus();
-  const { wasCancelled } = useCheckLastRoundResult();
+  const { inCooldown, isLoadingLotteryStatus, refetchLotteryData } =
+    useGetLotteryStatus();
+  const { meetsMinimum, isLoadingDrawStatus, refetchDrawStatus } =
+    useGetDrawStatus();
+  const { wasCancelled, isLoadingLastRoundResult } = useCheckLastRoundResult();
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      refetchLotteryData();
+      refetchDrawStatus();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, [refetchLotteryData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 pb-6">
       {/* Header */}
       <AppHeader headerName="Daily Lottery" />
 
-      <div className="px-4 -mt-4 space-y-4">
-        {/* Minimum Met Warning */}
-        {!inCooldown && !meetsMinimum && <MinimumMetWarning />}
+      {isLoadingLotteryStatus ||
+      isLoadingDrawStatus ||
+      isLoadingLastRoundResult ? (
+        <LoadingSkeleton />
+      ) : (
+        <div className="px-4 -mt-4 space-y-4">
+          {/* Draw Countdown Timer */}
+          {!inCooldown && <DrawCountDown />}
 
-        {/* Was cancelled */}
-        {inCooldown && wasCancelled && <RoundCancelled />}
+          {/* Cooldown Banner */}
+          {inCooldown && <CooldownBanner />}
 
-        {/** Winner Status */}
-        {inCooldown && <WinnerStatus />}
+          {/* Minimum Met Warning */}
+          {!inCooldown && !meetsMinimum && <MinimumMetWarning />}
 
-        {/* Cooldown Banner */}
-        {inCooldown && <CooldownBanner />}
+          {/* Was cancelled */}
+          {inCooldown && wasCancelled && <RoundCancelled />}
 
-        {/* Draw Countdown Timer */}
-        {!inCooldown && <DrawCountDown />}
+          {/** Winner Status */}
+          {inCooldown && !wasCancelled && <WinnerStatus />}
 
-        {/* Stats Grid */}
-        {!inCooldown && <StatsGrid />}
+          {/* Stats Grid */}
+          {!inCooldown && meetsMinimum && <StatsGrid />}
 
-        {/* Prize Info */}
-        {!inCooldown && meetsMinimum && <PrizeInfo />}
+          {/* Prize Info */}
+          {!inCooldown && meetsMinimum && <PrizeInfo />}
 
-        {/* Entry Button */}
-        {!inCooldown && <EntryButton />}
+          {/* Entry Button */}
+          {!inCooldown && <EntryButton />}
 
-        {/* Info card */}
-        {inCooldown && <InfoCards />}
-      </div>
+          {/* Info card */}
+          {inCooldown && <InfoCards />}
+        </div>
+      )}
     </div>
   );
 }

@@ -28,12 +28,15 @@ const useGetDrawStatus = () => {
     estimatedPrizePerWinner: "0",
   });
 
-  const { data: drawStatusData, isLoading: isLoadingDrawStatus } =
-    useReadContract({
-      address: contractAbi.DailyLottery.address as `0x${string}`,
-      abi: contractAbi.DailyLottery.abi,
-      functionName: "getDrawStatus",
-    });
+  const {
+    data: drawStatusData,
+    isLoading: isLoadingDrawStatus,
+    refetch: refetchDrawStatus,
+  } = useReadContract({
+    address: contractAbi.DailyLottery.address as `0x${string}`,
+    abi: contractAbi.DailyLottery.abi,
+    functionName: "getDrawStatus",
+  });
 
   useEffect(() => {
     if (drawStatusData && Array.isArray(drawStatusData)) {
@@ -65,7 +68,7 @@ const useGetDrawStatus = () => {
     }
   }, [drawStatusData]);
 
-  return { ...drawStatus, isLoadingDrawStatus };
+  return { ...drawStatus, isLoadingDrawStatus, refetchDrawStatus };
 };
 
 export default useGetDrawStatus;

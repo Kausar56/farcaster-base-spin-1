@@ -22,7 +22,7 @@ const StatsGrid = () => {
           <div className="text-xs text-green-600 mt-1">✓ Min reached</div>
         ) : (
           <div className="text-xs text-orange-600 mt-1">
-            Need {5 - participantCount} more
+            Need {3 - participantCount} more
           </div>
         )}
       </div>

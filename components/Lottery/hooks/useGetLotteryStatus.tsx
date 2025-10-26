@@ -23,12 +23,15 @@ const useGetLotteryStatus = () => {
     cooldownEndsAt: 0,
     isPaused: false,
   });
-  const { data: lotteryStatusData, isLoading: isLoadingLotteryStatus } =
-    useReadContract({
-      address: contractAbi.DailyLottery.address as `0x${string}`,
-      abi: contractAbi.DailyLottery.abi,
-      functionName: "getLotteryStatus",
-    });
+  const {
+    data: lotteryStatusData,
+    isLoading: isLoadingLotteryStatus,
+    refetch: refetchLotteryData,
+  } = useReadContract({
+    address: contractAbi.DailyLottery.address as `0x${string}`,
+    abi: contractAbi.DailyLottery.abi,
+    functionName: "getLotteryStatus",
+  });
 
   useEffect(() => {
     if (lotteryStatusData && Array.isArray(lotteryStatusData)) {
@@ -54,7 +57,7 @@ const useGetLotteryStatus = () => {
     }
   }, [lotteryStatusData]);
 
-  return { ...lotteryStatus, isLoadingLotteryStatus };
+  return { ...lotteryStatus, isLoadingLotteryStatus, refetchLotteryData };
 };
 
 export default useGetLotteryStatus;

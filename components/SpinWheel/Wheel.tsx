@@ -106,7 +106,7 @@ const WheelSpin = ({
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center mb-4">
+    <div className="w-full mt-4 flex flex-col items-center justify-center mb-4">
       <audio
         className="hidden"
         ref={audioRef}
@@ -119,7 +119,7 @@ const WheelSpin = ({
       />
       <div className="relative">
         <Wheel
-          outerBorderColor="#191970"
+          outerBorderColor="#2563eb"
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber}
           data={spinOptions}
@@ -127,7 +127,7 @@ const WheelSpin = ({
           pointerProps={{ style: {} }}
           innerBorderColor="blue"
           outerBorderWidth={8}
-          radiusLineColor="#3498DB"
+          radiusLineColor="#2563eb"
         />
       </div>
 

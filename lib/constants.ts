@@ -9,23 +9,27 @@ if (!APP_URL) {
 const spinOptions = [
   {
     option: "Nothing!",
-    style: { backgroundColor: "#09128f", textColor: "#f5b939" },
+    style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
     option: "0.1 USD",
-    style: { backgroundColor: "#1717c9", textColor: "#FFFFFF" },
+    style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
   {
     option: "Nothing!",
-    style: { backgroundColor: "#2121d9", textColor: "#f5b939" },
+    style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
     option: "0.05 USD",
-    style: { backgroundColor: "#1818fa", textColor: "#FFFBEB" },
+    style: { backgroundColor: "#90cdf4", textColor: "#FFFBEB" },
   },
   {
     option: "Nothing!",
-    style: { backgroundColor: "#224fee", textColor: "#f5b939" },
+    style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
+  },
+  {
+    option: "0.01 USD",
+    style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
 ];
 

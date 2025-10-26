@@ -6,6 +6,7 @@ import { useAccount, useBalance, useReadContract } from "wagmi";
 import { contractAbi } from "@/abi/abi";
 import { Loader } from "lucide-react";
 import { formatUnits } from "viem";
+import RefundAndClaimBtn from "./RefundAndClaimBtn";
 
 const ProfilePfp = () => {
   const { context } = useFrame();
@@ -59,13 +60,16 @@ const ProfilePfp = () => {
         </div>
       </div>
 
+      {/* Refund & claim */}
+      <RefundAndClaimBtn />
+
       <div className="bg-white rounded-2xl p-3 shadow-lg w-full grid grid-cols-2 gap-2 ">
         <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Total spins:{" "}
           <span className="text-md text-white font-semibold">{totalSpins}</span>
         </div>
         <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between items-center">
-          Total quiz:{" "}
+          Total Entry:{" "}
           <span className="text-md  font-semibold">
             {totalAnswerLoading ? (
               <Loader size={18} className="animate-spin" />
@@ -75,7 +79,7 @@ const ProfilePfp = () => {
           </span>
         </div>
         <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          ETH:{" "}
+          Earned ETH:{" "}
           <span className="text-md  font-semibold">
             {balanceLoading ? (
               <Loader size={18} className="animate-spin" />
@@ -85,7 +89,7 @@ const ProfilePfp = () => {
           </span>
         </div>
         <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          Right answer:{" "}
+          Total win:{" "}
           <span className="text-md  font-semibold">
             {scoreLoading ? (
               <Loader size={18} className="animate-spin" />

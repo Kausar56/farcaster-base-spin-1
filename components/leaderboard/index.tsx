@@ -17,7 +17,7 @@ const Leaderboard = () => {
     <>
       <AppHeader headerName="Leaderboard" />
       <div className="w-full px-4 flex flex-col items-center gap-4 mb-8">
-        <div className="bg-white -mt-4 rounded-xl px-6 py-2 shadow-lg w-full flex justify-between">
+        <div className="bg-white -mt-4 rounded-xl px-6 py-6 shadow-lg w-full flex justify-between">
           <h1 className="text-gray-800 text-md font-bold text-center">
             Username
           </h1>
@@ -28,13 +28,13 @@ const Leaderboard = () => {
 
         {isLoading && (
           <div className="w-full flex flex-col items-center justify-center mt-4">
-            <Loader className="animate-spin text-white" />
+            <Loader className="animate-spin text-blue-600 h-8 w-8" />
           </div>
         )}
 
-        <div className="w-full flex flex-col bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-4 shadow-lg">
-          {data &&
-            data?.users?.map(
+        {!isLoading && data && (
+          <div className="w-full flex flex-col bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-4 shadow-lg">
+            {data?.users?.map(
               (
                 user: {
                   fid: number;
@@ -56,7 +56,8 @@ const Leaderboard = () => {
                 />
               )
             )}
-        </div>
+          </div>
+        )}
       </div>
     </>
   );

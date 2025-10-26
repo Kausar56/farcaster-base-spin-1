@@ -3,11 +3,17 @@ import { Zap } from "lucide-react";
 import React from "react";
 import { formatEther } from "viem";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import useGetDrawStatus from "./hooks/useGetDrawStatus";
 
 const EntryButton = () => {
   const { address } = useAccount();
+  const { refetchDrawStatus } = useGetDrawStatus();
 
-  const { data: userEntered, refetch: refetchUserEntered } = useReadContract({
+  const {
+    data: userEntered,
+    refetch: refetchUserEntered,
+    isFetching,
+  } = useReadContract({
     address: contractAbi.DailyLottery.address as `0x${string}`,
     abi: contractAbi.DailyLottery.abi,
     functionName: "hasEntered",
@@ -23,13 +29,20 @@ const EntryButton = () => {
 
   const handleEnter = async () => {
     try {
-      await writeContractAsync({
-        address: contractAbi.DailyLottery.address as `0x${string}`,
-        abi: contractAbi.DailyLottery.abi,
-        functionName: "enter",
-        value: entryFee,
-      });
-      await refetchUserEntered();
+      await writeContractAsync(
+        {
+          address: contractAbi.DailyLottery.address as `0x${string}`,
+          abi: contractAbi.DailyLottery.abi,
+          functionName: "enter",
+          value: entryFee,
+        },
+        {
+          onSuccess: () => {
+            refetchUserEntered();
+            refetchDrawStatus();
+          },
+        }
+      );
     } catch (error) {
       console.error("Error entering lottery:", error);
     }
@@ -48,9 +61,9 @@ const EntryButton = () => {
         <>
           <button
             onClick={handleEnter}
-            disabled={isEntering || isLoadingEntryFee}
+            disabled={isEntering || isLoadingEntryFee || isFetching}
             className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
-              isEntering || isLoadingEntryFee
+              isEntering || isLoadingEntryFee || isFetching
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg hover:shadow-xl active:scale-95"
             }`}
@@ -58,7 +71,7 @@ const EntryButton = () => {
             {isEntering ? (
               <span className="flex items-center justify-center gap-2">
                 <div className="w-5 h-5 border-3 border-gray-400 border-t-gray-600 rounded-full animate-spin"></div>
-                Entering...
+                {isFetching ? "Checking..." : "Entering..."}
               </span>
             ) : (
               `Enter With ${entryFee ? formatEther(entryFee) : "0"} ETH`

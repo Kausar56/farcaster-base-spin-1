@@ -3769,7 +3769,7 @@ export const contractAbi = {
     ],
   },
   DailyLottery: {
-    address: "0xb3e1181d7a478da25b6bc07d02660bc92e79ff68",
+    address: "0xaa9db5033998ee0ec8346e7db0a0ba0171c1fd42",
     abi: [
       {
         inputs: [
