@@ -1,7 +1,7 @@
 import { contractAbi } from "@/abi/abi";
 import { Frown, PartyPopper, User } from "lucide-react";
-import React from "react";
-import { useAccount, useReadContract } from "wagmi";
+import React, { useMemo } from "react";
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import { formatEther } from "viem";
 
@@ -13,6 +13,41 @@ const WinnerStatus = () => {
     functionName: "checkLastRoundResult",
     args: [address as `0x${string}`],
   });
+  const {
+    data: pendingPrize,
+    refetch,
+    isLoading,
+  } = useReadContract({
+    address: contractAbi.DailyLottery.address as `0x${string}`,
+    abi: contractAbi.DailyLottery.abi,
+    functionName: "checkPendingPrize",
+    args: [address as `0x${string}`],
+  });
+
+  const { writeContractAsync, isPending } = useWriteContract();
+
+  const handleClaimPrize = async () => {
+    try {
+      await writeContractAsync(
+        {
+          address: contractAbi.DailyLottery.address,
+          abi: contractAbi.DailyLottery.abi,
+          functionName: "withdrawPrize",
+        },
+        {
+          onSuccess: () => {
+            refetch();
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isNotClaimed = useMemo(() => {
+    return pendingPrize && parseFloat(formatEther(pendingPrize[0])) > 0;
+  }, [pendingPrize]);
   return (
     <div
       className={`bg-gradient-to-br ${
@@ -35,11 +70,20 @@ const WinnerStatus = () => {
           </h3>
           <p className="text-green-100 text-sm">Round #{winStatus?.[2]}</p>
         </div>
+        {/* <p>{pendingPrize && parseFloat(formatEther(pendingPrize[0]))}</p> */}
       </div>
 
       {winStatus?.[0] && (
-        <button className="mt-2 w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full">
-          Claim {formatEther(winStatus?.[1] ?? BigInt(0))} ETH
+        <button
+          disabled={isPending || isLoading || !isNotClaimed}
+          onClick={handleClaimPrize}
+          className="mt-2 w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 px-4 rounded-full"
+        >
+          {pendingPrize && isNotClaimed
+            ? isPending
+              ? "Claiming..."
+              : `Claim ${formatEther(winStatus?.[1] ?? BigInt(0))} ETH`
+            : "Claimed"}
         </button>
       )}
     </div>

@@ -39,25 +39,27 @@ const ProfilePfp = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-2 px-4">
-      <div className="w-20 h-20 ring-1 rounded-full overflow-hidden bg-indigo-500">
-        {context?.user?.pfpUrl && (
-          <img
-            src={context?.user?.pfpUrl}
-            className="w-full h-full rounded-full"
-            alt="User Profile"
-            width={56}
-            height={56}
-          />
-        )}
+    <div className="flex flex-col items-center gap-2 px-4 -mt-4">
+      <div className="bg-white rounded-2xl p-3 shadow-lg w-full flex items-center gap-4">
+        <div className="w-20 h-20 ring-1 rounded-full overflow-hidden bg-indigo-500">
+          {context?.user?.pfpUrl && (
+            <img
+              src={context?.user?.pfpUrl}
+              className="w-full h-full rounded-full"
+              alt="User Profile"
+              width={56}
+              height={56}
+            />
+          )}
+        </div>
+
+        <div className="">
+          <p className="text-lg text-blue-600">{context?.user?.displayName}</p>
+          <p className="text-sm text-indigo-600">@{context?.user?.username}</p>
+        </div>
       </div>
 
-      <div className="text-center">
-        <p className="text-lg text-blue-600">{context?.user?.displayName}</p>
-        <p className="text-sm text-indigo-600">@{context?.user?.username}</p>
-      </div>
-
-      <div className="bg-white rounded-2xl p-3 shadow-lg w-full grid grid-cols-2 gap-2">
+      <div className="bg-white rounded-2xl p-3 shadow-lg w-full grid grid-cols-2 gap-2 ">
         <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
           Total spins:{" "}
           <span className="text-md text-white font-semibold">{totalSpins}</span>

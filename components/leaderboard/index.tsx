@@ -16,8 +16,8 @@ const Leaderboard = () => {
   return (
     <>
       <AppHeader headerName="Leaderboard" />
-      <div className="w-full px-4 flex flex-col items-center gap-4 mt-4 mb-8">
-        <div className="bg-white rounded-xl px-6 py-2 shadow-lg w-full flex justify-between">
+      <div className="w-full px-4 flex flex-col items-center gap-4 mb-8">
+        <div className="bg-white -mt-4 rounded-xl px-6 py-2 shadow-lg w-full flex justify-between">
           <h1 className="text-gray-800 text-md font-bold text-center">
             Username
           </h1>

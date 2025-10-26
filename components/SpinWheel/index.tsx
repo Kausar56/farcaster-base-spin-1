@@ -52,6 +52,8 @@ const SpinWheelGame = () => {
     <div className="w-full">
       {/* Header */}
       <AppHeader headerName="Daily Spin" />
+      {/* Stats Dashboard */}
+      <SpinDashboard dailySpins={dailySpins} totalSpins={totalSpins} />
 
       {/* Spin Wheel */}
       <WheelSpin
@@ -65,9 +67,6 @@ const SpinWheelGame = () => {
         totalSpins={totalSpins}
         signMessage={signMessage}
       />
-
-      {/* Stats Dashboard */}
-      <SpinDashboard dailySpins={dailySpins} totalSpins={totalSpins} />
 
       {/* Result Display */}
       {showResult && winDetails && (

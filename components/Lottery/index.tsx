@@ -19,19 +19,26 @@ import CooldownBanner from "./CooldownBanner";
 import MinimumMetWarning from "./MinimumMetWarnning";
 import WinnerStatus from "./WinnerStatus";
 import InfoCards from "./InfoCards";
+import AppHeader from "../common/AppHeader";
+import useCheckLastRoundResult from "./hooks/useCheckLastRoundResult";
+import RoundCancelled from "./RoundCancelled";
 
 export default function Lottery() {
   const { inCooldown, isLoadingLotteryStatus } = useGetLotteryStatus();
   const { meetsMinimum } = useGetDrawStatus();
+  const { wasCancelled } = useCheckLastRoundResult();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 pb-6">
       {/* Header */}
-      <LotteryHeader />
+      <AppHeader headerName="Daily Lottery" />
 
       <div className="px-4 -mt-4 space-y-4">
         {/* Minimum Met Warning */}
         {!inCooldown && !meetsMinimum && <MinimumMetWarning />}
+
+        {/* Was cancelled */}
+        {inCooldown && wasCancelled && <RoundCancelled />}
 
         {/** Winner Status */}
         {inCooldown && <WinnerStatus />}

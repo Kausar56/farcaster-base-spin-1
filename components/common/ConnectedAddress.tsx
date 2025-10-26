@@ -10,8 +10,8 @@ const ConnectedAddress = () => {
   const { isEthProviderAvailable } = useFrame();
   const { isConnected, address, chainId } = useAccount();
   const { disconnect } = useDisconnect();
-  const { switchChain } = useSwitchChain();
-  const { connect } = useConnect();
+  const { switchChain, isPending: switching } = useSwitchChain();
+  const { connect, isPending: connecting } = useConnect();
 
   if (isConnected) {
     return chainId === base.id ? (
@@ -28,7 +28,7 @@ const ConnectedAddress = () => {
       </Button>
     ) : (
       <Button onClick={() => switchChain({ chainId: base.id })}>
-        Switch chain
+        {switching ? "Switching" : "Switch chain"}
       </Button>
     );
   }
@@ -36,7 +36,7 @@ const ConnectedAddress = () => {
   if (isEthProviderAvailable) {
     return (
       <Button onClick={() => connect({ connector: miniAppConnector() })}>
-        Connect
+        {connecting ? "Connecting..." : "Connect"}
       </Button>
     );
   }
