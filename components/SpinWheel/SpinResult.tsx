@@ -5,6 +5,7 @@ import { parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
 import { useMutation } from "@tanstack/react-query";
+import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 
 type SpinResultProps = {
   selectedPrize: string;
@@ -26,16 +27,7 @@ const SpinResult = ({
   const { writeContract, isPending, isSuccess, isPaused, isError } =
     useWriteContract();
 
-  const { mutate: updatePrize } = useMutation({
-    mutationFn: async (prize: string) => {
-      const res = await fetch("/api/claim", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fid, prize }),
-      });
-      return res.json();
-    },
-  });
+  const { updateEarnedPrize } = useUpdateEarnedPrize();
 
   const claimPrize = () => {
     if (
@@ -66,7 +58,7 @@ const SpinResult = ({
       },
       {
         onSuccess(data) {
-          updatePrize(ethAmount.toFixed(2).toString());
+          updateEarnedPrize(ethAmount.toFixed(2).toString());
         },
       }
     );

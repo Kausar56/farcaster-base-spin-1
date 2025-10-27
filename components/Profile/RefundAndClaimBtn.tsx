@@ -3,10 +3,12 @@ import { Box } from "lucide-react";
 import React, { useMemo } from "react";
 import { formatEther } from "viem";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 
 const RefundAndClaimBtn = () => {
   const { address } = useAccount();
   const { writeContractAsync, isPending, isSuccess } = useWriteContract();
+  const { updateEarnedPrize } = useUpdateEarnedPrize();
   const {
     data: pendingPrize,
     refetch,
@@ -30,6 +32,9 @@ const RefundAndClaimBtn = () => {
         {
           onSuccess: () => {
             refetch();
+            if (pendingPrize) {
+              updateEarnedPrize(formatEther(pendingPrize[0]));
+            }
           },
         }
       );

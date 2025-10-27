@@ -5,7 +5,6 @@ import SpinDashboard from "./SpinPannel";
 import SpinResult from "./SpinResult";
 import WheelSpin from "./Wheel";
 import useAuth from "../useAuth";
-import SpinHeader from "./SpinHeader";
 import AppHeader from "../common/AppHeader";
 
 const SpinWheelGame = () => {
@@ -25,7 +24,7 @@ const SpinWheelGame = () => {
 
     if (savedData.date === today) {
       setDailySpins(savedData.dailySpins || 0);
-      setCanSpin((savedData.dailySpins || 0) < 5);
+      setCanSpin((savedData.dailySpins || 0) < 2);
     } else {
       setDailySpins(0);
       setCanSpin(true);
@@ -39,7 +38,7 @@ const SpinWheelGame = () => {
     const today = new Date().toDateString();
     setDailySpins(newDailySpins);
     setTotalSpins(newTotalSpins);
-    setCanSpin(newDailySpins < 5);
+    setCanSpin(newDailySpins < 2);
     const dataToSave = {
       date: today,
       dailySpins: newDailySpins,

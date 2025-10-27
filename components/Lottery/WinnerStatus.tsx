@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import { formatEther } from "viem";
+import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 
 const WinnerStatus = () => {
   const { address } = useAccount();
@@ -25,6 +26,7 @@ const WinnerStatus = () => {
   });
 
   const { writeContractAsync, isPending } = useWriteContract();
+  const { updateEarnedPrize } = useUpdateEarnedPrize();
 
   const handleClaimPrize = async () => {
     try {
@@ -37,6 +39,9 @@ const WinnerStatus = () => {
         {
           onSuccess: () => {
             refetch();
+            if (pendingPrize) {
+              updateEarnedPrize(formatEther(pendingPrize[0]));
+            }
           },
         }
       );

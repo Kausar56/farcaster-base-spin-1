@@ -7,37 +7,10 @@ import { contractAbi } from "@/abi/abi";
 import { Loader } from "lucide-react";
 import { formatUnits } from "viem";
 import RefundAndClaimBtn from "./RefundAndClaimBtn";
+import UserHIstroy from "./UserHIstroy";
 
 const ProfilePfp = () => {
   const { context } = useFrame();
-  const { quizGame } = contractAbi;
-  const { address } = useAccount();
-  const [totalSpins, setTotalSpins] = useState(0);
-  const { data: totalAnswered, isLoading: totalAnswerLoading } =
-    useReadContract({
-      abi: quizGame.abi,
-      address: quizGame.address,
-      functionName: "totalAnswered",
-      args: [address!],
-    });
-  const { data: scores, isLoading: scoreLoading } = useReadContract({
-    abi: quizGame.abi,
-    address: quizGame.address,
-    functionName: "scores",
-    args: [address!],
-  });
-
-  const { data: balance, isLoading: balanceLoading } = useBalance({
-    address,
-  });
-
-  useEffect(() => {
-    const savedData = JSON.parse(
-      localStorage.getItem("animalSpinData") || "{}"
-    );
-
-    setTotalSpins(savedData.totalSpins || 0);
-  }, []);
 
   return (
     <div className="flex flex-col items-center gap-2 px-4 -mt-4">
@@ -63,42 +36,8 @@ const ProfilePfp = () => {
       {/* Refund & claim */}
       <RefundAndClaimBtn />
 
-      <div className="bg-white rounded-2xl p-3 shadow-lg w-full grid grid-cols-2 gap-2 ">
-        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          Total spins:{" "}
-          <span className="text-md text-white font-semibold">{totalSpins}</span>
-        </div>
-        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between items-center">
-          Total Entry:{" "}
-          <span className="text-md  font-semibold">
-            {totalAnswerLoading ? (
-              <Loader size={18} className="animate-spin" />
-            ) : (
-              totalAnswered?.toString()
-            )}
-          </span>
-        </div>
-        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          Earned ETH:{" "}
-          <span className="text-md  font-semibold">
-            {balanceLoading ? (
-              <Loader size={18} className="animate-spin" />
-            ) : (
-              balance && balance.formatted.slice(0, 7)
-            )}
-          </span>
-        </div>
-        <div className="bg-gradient-to-r text-white from-blue-500 to-blue-600 rounded-md overflow-hidden p-2 text-sm flex justify-between">
-          Total win:{" "}
-          <span className="text-md  font-semibold">
-            {scoreLoading ? (
-              <Loader size={18} className="animate-spin" />
-            ) : (
-              scores?.toString()
-            )}
-          </span>
-        </div>
-      </div>
+      {/* User history */}
+      <UserHIstroy />
 
       {/* Balance */}
       <div className="bg-white rounded-2xl w-full backdrop-blur-md  overflow-hidden p-3 text-sm shadow-md">

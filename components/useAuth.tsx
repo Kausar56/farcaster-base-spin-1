@@ -89,58 +89,6 @@ const useAuth = () => {
     },
   });
 
-  const { data: configData, isLoading: isConfigLoading } = useQuery({
-    queryKey: ["config"],
-    queryFn: async () => {
-      const res = await fetch("/api/config");
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => null);
-        throw new Error(text || `Request failed with status ${res.status}`);
-      }
-
-      return (await res.json()) as {
-        isSuccess: boolean;
-        config: {
-          maintenanceMode: boolean;
-          isSpinPaused: boolean;
-          isQuizPaused: boolean;
-        };
-      };
-    },
-  });
-
-  const { mutate: updateConfig, isPending: isUpdatingConfig } = useMutation({
-    mutationFn: async (configUpdates: {
-      maintenanceMode?: boolean;
-      isSpinPaused?: boolean;
-      isQuizPaused?: boolean;
-    }) => {
-      const res = await fetch("/api/config", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_CONFIG_API_KEY}`,
-        },
-        body: JSON.stringify(configUpdates),
-      });
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => null);
-        throw new Error(text || `Request failed with status ${res.status}`);
-      }
-
-      return (await res.json()) as {
-        isSuccess: boolean;
-        config: {
-          maintenanceMode: boolean;
-          isSpinPaused: boolean;
-          isQuizPaused: boolean;
-        };
-      };
-    },
-  });
-
   return {
     register: registerAsync,
     authCheck,
@@ -150,10 +98,6 @@ const useAuth = () => {
     signMessage,
     isSigning,
     signMessageData,
-    configData,
-    isConfigLoading,
-    updateConfig,
-    isUpdatingConfig,
   };
 };
 
