@@ -54,13 +54,13 @@ contract DailyLottery is
     //////////////////////////////////////////////////////////////*/
 
     /// @notice Minimum participants required for a draw to occur
-    uint256 public constant MIN_PARTICIPANTS = 5;
+    uint256 public constant MIN_PARTICIPANTS = 3;
 
-    uint256 public constant MIN_ENTRY_FEE = 0.0001 ether;
+    uint256 public constant MIN_ENTRY_FEE = 0.0000001 ether;
     uint256 public constant MAX_ENTRY_FEE = 10 ether;
-    uint256 public constant MIN_DRAW_INTERVAL = 30 minutes;
+    uint256 public constant MIN_DRAW_INTERVAL = 10 minutes;
     uint256 public constant MAX_DRAW_INTERVAL = 7 days;
-    uint256 public constant MIN_COOLDOWN_PERIOD = 30 minutes;
+    uint256 public constant MIN_COOLDOWN_PERIOD = 5 minutes;
     uint256 public constant MAX_COOLDOWN_PERIOD = 24 hours;
 
     /*//////////////////////////////////////////////////////////////
@@ -203,9 +203,9 @@ contract DailyLottery is
         i_nativePayment = nativePayment;
 
         // Default Lottery settings
-        entryFee = 0.001 ether;
-        drawInterval = 30 minutes;
-        cooldownPeriod = 30 minutes;
+        entryFee = 0.000005 ether;
+        drawInterval = 10 minutes;
+        cooldownPeriod = 5 minutes;
 
         roundId = 1;
         roundStartTime = block.timestamp;
@@ -239,7 +239,6 @@ contract DailyLottery is
 
         bool canDraw = (!isInCooldown &&
             block.timestamp >= nextDrawTime &&
-            participants.length > 0 &&
             s_requestId == 0); // No pending VRF request
 
         bool canExitCooldown = (isInCooldown &&
@@ -273,12 +272,11 @@ contract DailyLottery is
                 block.timestamp >= nextDrawTime,
                 "DailyLottery: Draw time not reached"
             );
-            require(participants.length > 0, "DailyLottery: No participants");
             require(s_requestId == 0, "DailyLottery: VRF request pending");
             require(!paused(), "DailyLottery: Contract is paused");
 
             // Check minimum participants and either draw or cancel
-            if (participants.length < MIN_PARTICIPANTS) {
+            if (participants.length < MIN_PARTICIPANTS || participants.length == 0) {
                 _cancelRoundAndRefund();
             } else {
                 _requestRandomness();

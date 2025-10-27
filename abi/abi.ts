@@ -750,7 +750,7 @@ export const contractAbi = {
       },
     ],
   },
-  DailyLotteryV0: {
+  DailyLotteryV0Testnet: {
     address: "0x8ba7931f709bb77b45c2b0b1fd26f65cef647f41",
     abi: [
       {
@@ -2228,7 +2228,7 @@ export const contractAbi = {
       },
     ],
   },
-  DailyLotteryV1: {
+  DailyLotteryV1Testnet: {
     address: "0x976b42fc84f904f825a1c92abc41705dd23a4710",
     abi: [
       {
