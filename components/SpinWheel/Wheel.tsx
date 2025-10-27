@@ -57,7 +57,7 @@ const WheelSpin = ({
         const ethAmount = parseFloat(prize) / 4000;
         signMessage({
           userAddress: address,
-          amount: ethAmount.toFixed(6).toString(),
+          amount: ethAmount.toFixed(7).toString(),
         });
       }
 

@@ -17,13 +17,13 @@ const ContractBalance = () => {
       <div className="bg-gradient-to-tr from-blue-600 to-blue-500  text-sm text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full grid grid-cols-2 gap-2 p-3">
         <div className="rounded-md overflow-hidden flex flex-col justify-center items-center">
           <span>Spin Game: </span>
-          <span className=" text-black font-semibold">
+          <span className=" text-white font-semibold">
             {spinGameBalance?.formatted.slice(0, 7)} ETH
           </span>
         </div>
         <div className="rounded-md overflow-hidden flex flex-col justify-center items-center">
           <span>Lottery reserve: </span>
-          <span className=" text-black font-semibold">
+          <span className=" text-white font-semibold">
             {quizGameBalance?.formatted.slice(0, 7)} ETH
           </span>
         </div>

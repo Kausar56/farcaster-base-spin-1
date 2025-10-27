@@ -4,7 +4,6 @@ import React, { useEffect } from "react";
 import { parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
-import { useMutation } from "@tanstack/react-query";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 
 type SpinResultProps = {
@@ -20,9 +19,7 @@ const SpinResult = ({
   signMessageData,
   isSigning,
 }: SpinResultProps) => {
-  const { context, actions } = useFrame();
-
-  const fid = context?.user?.fid;
+  const { actions } = useFrame();
 
   const { writeContract, isPending, isSuccess, isPaused, isError } =
     useWriteContract();
@@ -51,14 +48,14 @@ const SpinResult = ({
         address: contractAbi.claimPrize.address,
         functionName: "claimSpinWinPrize",
         args: [
-          parseEther(ethAmount.toFixed(6).toString()),
+          parseEther(ethAmount.toFixed(7).toString()),
           signMessageData?.nonce!,
           signMessageData?.signature! as `0x${string}`,
         ],
       },
       {
         onSuccess(data) {
-          updateEarnedPrize(ethAmount.toFixed(2).toString());
+          updateEarnedPrize(ethAmount.toFixed(7).toString());
         },
       }
     );

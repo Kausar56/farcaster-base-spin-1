@@ -5,9 +5,11 @@ import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import { formatEther } from "viem";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
+import { useFrame } from "../farcaster-provider";
 
 const WinnerStatus = () => {
   const { address } = useAccount();
+  const { actions } = useFrame();
   const { data: winStatus } = useReadContract({
     address: contractAbi.DailyLottery.address as `0x${string}`,
     abi: contractAbi.DailyLottery.abi,
@@ -39,6 +41,7 @@ const WinnerStatus = () => {
         {
           onSuccess: () => {
             refetch();
+            handleSharePost();
             if (pendingPrize) {
               updateEarnedPrize(formatEther(pendingPrize[0]));
             }
@@ -48,6 +51,17 @@ const WinnerStatus = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSharePost = () => {
+    actions?.composeCast({
+      text: `🎉 I just won ${
+        pendingPrize ? formatEther(pendingPrize[0]) : "ETH"
+      } playing the Base Spin Lottery Game! 🚀
+
+    Think you can beat my score? Try it now 👇`,
+      embeds: ["https://farcaster.xyz/miniapps/OVGXH7QGFT1j/base-spin"],
+    });
   };
 
   const isNotClaimed = useMemo(() => {
