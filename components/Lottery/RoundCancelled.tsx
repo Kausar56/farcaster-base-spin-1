@@ -1,7 +1,9 @@
 import { AlertCircle, TrendingUp } from "lucide-react";
 import React from "react";
+import useGetDrawStatus from "./hooks/useGetDrawStatus";
 
 const RoundCancelled = () => {
+  const { participantCount } = useGetDrawStatus();
   return (
     <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-3 shadow-xl text-white">
       <div className="flex items-center gap-3 mb-2">
@@ -18,7 +20,9 @@ const RoundCancelled = () => {
         <div className="text-xs text-orange-100 mb-2">
           Minimum participants not met
         </div>
-        <div className="text-md font-semibold">Only 2 joined (need 5)</div>
+        <div className="text-md font-semibold">
+          Only {participantCount} joined (need 3)
+        </div>
       </div>
 
       <div className="text-xs text-orange-100 text-center">

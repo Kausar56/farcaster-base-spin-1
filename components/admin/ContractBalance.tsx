@@ -7,26 +7,24 @@ const ContractBalance = () => {
     address: contractAbi.claimPrize.address,
   });
   const { data: quizGameBalance } = useBalance({
-    address: contractAbi.quizGame.address,
+    address: contractAbi.DailyLottery.address,
   });
   return (
-    <div className="w-full flex flex-col items-center gap-2">
+    <div className="w-full flex flex-col items-center gap-2 bg-white rounded-2xl shadow-lg p-2">
       <div>
-        <h1 className="text-white text-xl font-bold text-center">
-          Contract Balances
-        </h1>
+        <h1 className="text-blue-600 text-md font-bold">Contract Balances</h1>
       </div>
-      <div className="bg-indigo-200/20 text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full grid grid-cols-2 gap-2 p-3">
-        <div className="rounded-md overflow-hidden text-sm">
-          Spin Game:{" "}
-          <span className="text-md text-blue-700 font-semibold">
-            {spinGameBalance?.formatted} ETH
+      <div className="bg-gradient-to-tr from-blue-600 to-blue-500  text-sm text-gray-200 backdrop-blur-md shadow-sm rounded-xl w-full grid grid-cols-2 gap-2 p-3">
+        <div className="rounded-md overflow-hidden flex flex-col justify-center items-center">
+          <span>Spin Game: </span>
+          <span className=" text-black font-semibold">
+            {spinGameBalance?.formatted.slice(0, 7)} ETH
           </span>
         </div>
-        <div className=" rounded-md overflow-hidden text-sm ">
-          Quiz Game:{" "}
-          <span className="text-md text-blue-700 font-semibold">
-            {quizGameBalance?.formatted} ETH
+        <div className="rounded-md overflow-hidden flex flex-col justify-center items-center">
+          <span>Lottery reserve: </span>
+          <span className=" text-black font-semibold">
+            {quizGameBalance?.formatted.slice(0, 7)} ETH
           </span>
         </div>
       </div>
