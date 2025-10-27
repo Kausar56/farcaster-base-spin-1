@@ -19,15 +19,15 @@ const NotifyUsers = () => {
 
   const { mutate: sendNotification, isPending: isSendingNotification } =
     useMutation({
-      mutationFn: async () => {
+      mutationFn: async ({ title, body }: { title: string; body: string }) => {
         if (!fid) throw new Error("No fid");
 
         return await fetch("/api/send-notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            fid,
-            notificationDetails,
+            title: "Test notify",
+            body: "test body",
           }),
         });
       },
@@ -47,16 +47,30 @@ const NotifyUsers = () => {
         <h1 className="text-blue-600 text-md font-bold">Send Notifications</h1>
       </div>
       <div className="w-full grid grid-cols-2 items-center gap-2 ">
-        {
-          <button
-            onClick={() => sendNotification()}
-            className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
-          >
-            Draw Started
-          </button>
-        }
-        <button className="py-2 px-3 bg-blue-600 rounded-2xl text-white">
-          Winner Selected
+        <button
+          disabled={isSendingNotification}
+          onClick={() =>
+            sendNotification({
+              title: "Draw started",
+              body: "Join now to win rewards!",
+            })
+          }
+          className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
+        >
+          {isSendingNotification ? "Sending..." : "Draw Started"}
+        </button>
+
+        <button
+          disabled={isSendingNotification}
+          onClick={() =>
+            sendNotification({
+              title: "Winners selected",
+              body: "Check if you won or not!",
+            })
+          }
+          className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
+        >
+          {isSendingNotification ? "Sending..." : "Winner Selected"}
         </button>
       </div>
 

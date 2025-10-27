@@ -51,8 +51,8 @@ export async function POST(request: NextRequest) {
         await setUserNotificationDetails(fid, event.notificationDetails);
         await sendFrameNotification({
           fid,
-          title: "Welcome to Frames v2",
-          body: "Frame is now added to your client",
+          title: "Welcome to Base Spin",
+          body: "Spin and Win Lottery Prize",
         });
       } else {
         await deleteUserNotificationDetails(fid);
@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
       await setUserNotificationDetails(fid, event.notificationDetails);
       await sendFrameNotification({
         fid,
-        title: "Ding ding ding",
-        body: "Notifications are now enabled",
+        title: "Great Job!",
+        body: "You are enabled notification!",
       });
 
       break;

@@ -1,18 +1,21 @@
-import { notificationDetailsSchema } from "@farcaster/miniapp-core";
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { setUserNotificationDetails } from "@/lib/kv";
-import { sendFrameNotification } from "@/lib/notifs";
+import {
+  deleteUserNotificationDetails,
+  getUsersNotificationDetails,
+} from "@/lib/kv";
+import { APP_URL } from "@/lib/constants";
 
 const requestSchema = z.object({
-  fid: z.number(),
-  notificationDetails: notificationDetailsSchema,
+  title: z.string(),
+  body: z.string(),
 });
 
 export async function POST(request: NextRequest) {
   const requestJson = await request.json();
+  console.log(requestJson);
   const requestBody = requestSchema.safeParse(requestJson);
-
+  console.log(requestBody);
   if (requestBody.success === false) {
     return Response.json(
       { success: false, errors: requestBody.error.errors },
@@ -20,28 +23,61 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  await setUserNotificationDetails(
-    requestBody.data.fid,
-    requestBody.data.notificationDetails
-  );
+  const allKeys = await getUsersNotificationDetails();
 
-  const sendResult = await sendFrameNotification({
-    fid: requestBody.data.fid,
-    title: "Test notification",
-    body: "Sent at " + new Date().toISOString(),
-  });
+  const BATCH_SIZE = 100;
 
-  if (sendResult.state === "error") {
-    return Response.json(
-      { success: false, error: sendResult.error },
-      { status: 500 }
-    );
-  } else if (sendResult.state === "rate_limit") {
-    return Response.json(
-      { success: false, error: "Rate limited" },
-      { status: 429 }
-    );
+  for (let i = 0; i < allKeys.length; i += BATCH_SIZE) {
+    const batch = allKeys.slice(i, i + BATCH_SIZE);
+    const url = batch[0].url;
+    const tokens = batch.map((u) => u.token);
+    const notificationId = `broadcast-${Date.now()}`;
+
+    const payload = {
+      notificationId,
+      title: requestBody.data.title,
+      body: requestBody.data.body,
+      targetUrl: `${APP_URL}`,
+      tokens,
+    };
+
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.status === 200) {
+        const json = await res.json();
+        console.log("Batch sent:", {
+          successful: json.successfulTokens,
+          invalid: json.invalidTokens,
+          rateLimited: json.rateLimitedTokens,
+        });
+        // ৩. invalidTokens removed
+        if (json.invalidTokens && json.invalidTokens.length) {
+          await deleteUserNotificationDetails(json.invalidTokens);
+        }
+        return NextResponse.json({
+          error: "Notification",
+          success: true,
+        });
+      } else {
+        console.error("Error sending batch:", await res.text());
+        return NextResponse.json({
+          error: "Error sending batch:",
+          success: false,
+        });
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      return NextResponse.json(
+        { error: "Notification not sent!", success: false },
+        { status: 500 }
+      );
+    }
   }
-
-  return Response.json({ success: true });
 }
