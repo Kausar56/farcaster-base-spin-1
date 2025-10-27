@@ -20,14 +20,12 @@ const NotifyUsers = () => {
   const { mutate: sendNotification, isPending: isSendingNotification } =
     useMutation({
       mutationFn: async ({ title, body }: { title: string; body: string }) => {
-        if (!fid) throw new Error("No fid");
-
         return await fetch("/api/send-notification", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: "Test notify",
-            body: "test body",
+            title,
+            body,
           }),
         });
       },
