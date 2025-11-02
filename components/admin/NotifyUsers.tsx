@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFrame } from "../farcaster-provider";
 import { MiniAppNotificationDetails } from "@farcaster/miniapp-core";
 import { useMutation } from "@tanstack/react-query";
+import { notificationsBtn } from "@/lib/constants";
 
 const NotifyUsers = () => {
   const { context, actions } = useFrame();
@@ -45,31 +46,21 @@ const NotifyUsers = () => {
         <h1 className="text-blue-600 text-md font-bold">Send Notifications</h1>
       </div>
       <div className="w-full grid grid-cols-2 items-center gap-2 ">
-        <button
-          disabled={isSendingNotification}
-          onClick={() =>
-            sendNotification({
-              title: "🎉 Draw started",
-              body: "Join now to win big rewards 💰!",
-            })
-          }
-          className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
-        >
-          {isSendingNotification ? "Sending..." : "Draw Started"}
-        </button>
-
-        <button
-          disabled={isSendingNotification}
-          onClick={() =>
-            sendNotification({
-              title: "🏆Winners selected!",
-              body: "Check if you won or not 🥇!",
-            })
-          }
-          className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
-        >
-          {isSendingNotification ? "Sending..." : "Winner Selected"}
-        </button>
+        {notificationsBtn.map((notify) => (
+          <button
+            key={notify.id}
+            disabled={isSendingNotification}
+            onClick={() =>
+              sendNotification({
+                title: notify.title,
+                body: notify.body,
+              })
+            }
+            className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
+          >
+            {isSendingNotification ? "Sending..." : notify.name}
+          </button>
+        ))}
       </div>
 
       {result && <p className="mt-2 text-sm text-black">{result}</p>}

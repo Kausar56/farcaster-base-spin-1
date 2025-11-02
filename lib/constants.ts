@@ -33,4 +33,31 @@ const spinOptions = [
   },
 ];
 
-export { APP_URL, spinOptions };
+const notificationsBtn = [
+  {
+    id: 1,
+    name: "Draw Started",
+    title: "🎉 Draw started",
+    body: "Join now to win big rewards 💰!",
+  },
+  {
+    id: 2,
+    name: "Winner Selected",
+    title: "🏆 Winners selected!",
+    body: "Check if you won or not 🥇!",
+  },
+  {
+    id: 3,
+    name: "Giveaway Started",
+    title: "🎉 Claim your prize now!",
+    body: "FCFS giveaway started. Open app and claim now ⚡!",
+  },
+  {
+    id: 4,
+    name: "Daily spin",
+    title: "🛞 You forgot to spin!",
+    body: "Open app and claim daily free spin ⚡!",
+  },
+];
+
+export { APP_URL, spinOptions, notificationsBtn };
