@@ -12,7 +12,7 @@ const ClaimGiveaway = ({
   signature: string;
 }) => {
   const { writeContractAsync, isPending } = useWriteContract();
-  const { context } = useFrame();
+  const { context, actions } = useFrame();
 
   const handleClaim = async () => {
     const fid = context?.user?.fid;
@@ -29,10 +29,20 @@ const ClaimGiveaway = ({
       },
       {
         onSuccess: () => {
+          handleCast();
           setShow(false);
         },
       }
     );
+  };
+
+  const handleCast = () => {
+    actions?.composeCast({
+      text: `🎉 The first 500 users (FCFS) can claim $0.10 USDT each 🚀
+
+    You can also earn by joining this app’s lottery and get 2 free spins daily 👇`,
+      embeds: ["https://farcaster.xyz/miniapps/OVGXH7QGFT1j/base-spin"],
+    });
   };
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 ">
