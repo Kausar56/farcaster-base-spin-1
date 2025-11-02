@@ -3,7 +3,6 @@ import { Coins, Gift, PartyPopper, X } from "lucide-react";
 import React from "react";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
-import { base } from "viem/chains";
 
 const ClaimGiveaway = ({
   setShow,
@@ -21,14 +20,12 @@ const ClaimGiveaway = ({
     if (!context || !fid) {
       return;
     }
-    console.log(signature);
     await writeContractAsync(
       {
         address: contractAbi.Giveaway.address,
         abi: contractAbi.Giveaway.abi,
         functionName: "claimGiveawayPrize",
         args: [BigInt(fid), signature as `0x${string}`],
-        chainId: base.id,
       },
       {
         onSuccess: () => {

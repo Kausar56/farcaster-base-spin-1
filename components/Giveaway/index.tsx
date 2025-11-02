@@ -59,16 +59,16 @@ const Giveaway = () => {
 
   useEffect(() => {
     const username = context?.user?.username;
-    if (isPausedLoading || isClaimLoading) {
-      return;
-    }
+
     if (
       isPaused != true &&
       isClaimed != true &&
       isConnected &&
       address &&
       username &&
-      !signMessageData
+      !signMessageData &&
+      !isPausedLoading &&
+      !isClaimLoading
     ) {
       signMessage({ userAddress: address, username });
     }
