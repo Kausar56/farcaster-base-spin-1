@@ -11,29 +11,33 @@ const ClaimGiveaway = ({
   setShow: (show: boolean) => void;
   signature: string;
 }) => {
-  const { writeContractAsync, isPending } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
   const { context, actions } = useFrame();
 
-  const handleClaim = async () => {
+  const handleClaim = () => {
     const fid = context?.user?.fid;
 
-    if (!context || !fid) {
+    if (!context || !fid || !signature) {
       return;
     }
-    await writeContractAsync(
-      {
-        address: contractAbi.Giveaway.address,
-        abi: contractAbi.Giveaway.abi,
-        functionName: "claimGiveawayPrize",
-        args: [BigInt(fid), signature as `0x${string}`],
-      },
-      {
-        onSuccess: () => {
-          handleCast();
-          setShow(false);
+    try {
+      writeContract(
+        {
+          address: contractAbi.Giveaway.address,
+          abi: contractAbi.Giveaway.abi,
+          functionName: "claimGiveawayPrize",
+          args: [BigInt(fid), signature as `0x${string}`],
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            handleCast();
+            setShow(false);
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCast = () => {
