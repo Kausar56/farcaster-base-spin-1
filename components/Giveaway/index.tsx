@@ -9,12 +9,12 @@ const Giveaway = () => {
   const { context } = useFrame();
   const { address, isConnected } = useAccount();
   const [show, setShow] = useState(false);
-  const { data: isPaused } = useReadContract({
+  const { data: isPaused, isLoading: isPausedLoading } = useReadContract({
     address: contractAbi.Giveaway.address as `0x${string}`,
     abi: contractAbi.Giveaway.abi,
     functionName: "paused",
   });
-  const { data: isClaimed } = useReadContract({
+  const { data: isClaimed, isLoading: isClaimLoading } = useReadContract({
     address: contractAbi.Giveaway.address as `0x${string}`,
     abi: contractAbi.Giveaway.abi,
     functionName: "claimedFid",
@@ -59,9 +59,12 @@ const Giveaway = () => {
 
   useEffect(() => {
     const username = context?.user?.username;
+    if (isPausedLoading || isClaimLoading) {
+      return;
+    }
     if (
-      !isPaused &&
-      !isClaimed &&
+      isPaused != true &&
+      isClaimed != true &&
       isConnected &&
       address &&
       username &&
@@ -69,7 +72,16 @@ const Giveaway = () => {
     ) {
       signMessage({ userAddress: address, username });
     }
-  }, [address, isConnected, context, isPaused, isClaimed, signMessageData]);
+  }, [
+    address,
+    isConnected,
+    context,
+    isPaused,
+    isClaimed,
+    signMessageData,
+    isPausedLoading,
+    isClaimLoading,
+  ]);
 
   useEffect(() => {
     if (signMessageData && isSignSuccess) {
