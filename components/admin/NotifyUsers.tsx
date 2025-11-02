@@ -49,8 +49,8 @@ const NotifyUsers = () => {
           disabled={isSendingNotification}
           onClick={() =>
             sendNotification({
-              title: "Draw started",
-              body: "Join now to win rewards!",
+              title: "🎉 Draw started",
+              body: "Join now to win big rewards 💰!",
             })
           }
           className="py-2 px-3 bg-blue-600 rounded-2xl text-white"
@@ -62,8 +62,8 @@ const NotifyUsers = () => {
           disabled={isSendingNotification}
           onClick={() =>
             sendNotification({
-              title: "Winners selected",
-              body: "Check if you won or not!",
+              title: "🏆Winners selected!",
+              body: "Check if you won or not 🥇!",
             })
           }
           className="py-2 px-3 bg-blue-600 rounded-2xl text-white"

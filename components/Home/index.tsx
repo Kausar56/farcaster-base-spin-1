@@ -6,11 +6,13 @@ import { Profile } from "../Profile";
 import Leaderboard from "../leaderboard";
 import Admin from "../admin/Admin";
 import Lottery from "../Lottery";
+import Giveaway from "../Giveaway";
 
 export function Demo() {
   const { route } = useFrame();
   return (
     <>
+      <Giveaway />
       <div className="">
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}
