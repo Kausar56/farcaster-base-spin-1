@@ -66,11 +66,10 @@ export function Menu() {
             route={menu.route}
           />
         ))}
-        {(context &&
-          context?.user?.username === process.env.NEXT_PUBLIC_ADMIN_ACCOUNT) ||
-          (context?.user?.username === "sukanto01899" && (
+        {context &&
+          context?.user?.username === process.env.NEXT_PUBLIC_ADMIN_ACCOUNT && (
             <MenuButton key="436" name="Admin" Icon={Shield} route="admin" />
-          ))}
+          )}
       </div>
     </nav>
   );

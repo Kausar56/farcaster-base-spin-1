@@ -13,13 +13,11 @@ const requestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   const requestJson = await request.json();
-  console.log(requestJson);
   const requestBody = requestSchema.safeParse(requestJson);
-  console.log(requestBody);
   if (requestBody.success === false) {
     return Response.json(
       { success: false, errors: requestBody.error.errors },
-      { status: 400 }
+      { status: 429 }
     );
   }
 
@@ -67,10 +65,13 @@ export async function POST(request: NextRequest) {
         });
       } else {
         console.error("Error sending batch:", await res.text());
-        return NextResponse.json({
-          error: "Error sending batch:",
-          success: false,
-        });
+        return NextResponse.json(
+          {
+            error: "Error sending batch:",
+            success: false,
+          },
+          { status: 429 }
+        );
       }
     } catch (error) {
       console.error("Fetch error:", error);
