@@ -54,10 +54,9 @@ const WheelSpin = ({
 
       if (spinOptions[newPrizeNumber].option != "Nothing!") {
         const prize = spinOptions[newPrizeNumber].option.split(" ")[0];
-        const ethAmount = parseFloat(prize) / 4000;
         signMessage({
           userAddress: address,
-          amount: ethAmount.toFixed(7).toString(),
+          amount: prize,
         });
       }
 

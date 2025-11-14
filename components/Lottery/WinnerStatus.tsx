@@ -3,7 +3,7 @@ import { Frown, PartyPopper, User } from "lucide-react";
 import React, { useMemo } from "react";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 import { useFrame } from "../farcaster-provider";
 
@@ -43,7 +43,7 @@ const WinnerStatus = () => {
             refetch();
             handleSharePost();
             if (pendingPrize) {
-              updateEarnedPrize(formatEther(pendingPrize[0]));
+              updateEarnedPrize(formatUnits(pendingPrize[0], 18));
             }
           },
         }
@@ -56,7 +56,7 @@ const WinnerStatus = () => {
   const handleSharePost = () => {
     actions?.composeCast({
       text: `🎉 I just won ${
-        pendingPrize ? formatEther(pendingPrize[0]) : "ETH"
+        pendingPrize ? pendingPrize[0].toString() : "ETH"
       } playing the Base Spin Lottery Game! 🚀
 
     Think you can beat my score? Try it now 👇`,
@@ -65,7 +65,7 @@ const WinnerStatus = () => {
   };
 
   const isNotClaimed = useMemo(() => {
-    return pendingPrize && parseFloat(formatEther(pendingPrize[0])) > 0;
+    return pendingPrize && parseFloat(pendingPrize[0].toString()) > 0;
   }, [pendingPrize]);
   return (
     <div
@@ -101,7 +101,7 @@ const WinnerStatus = () => {
           {pendingPrize && isNotClaimed
             ? isPending
               ? "Claiming..."
-              : `Claim ${formatEther(winStatus?.[1] ?? BigInt(0))} ETH`
+              : `Claim ${formatUnits(winStatus?.[1], 18) ?? BigInt(0)} BXP`
             : "Claimed"}
         </button>
       )}

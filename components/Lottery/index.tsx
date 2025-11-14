@@ -1,14 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Clock,
-  Users,
-  Trophy,
-  Coins,
-  Zap,
-  Timer,
-  Sparkles,
-} from "lucide-react";
-import LotteryHeader from "./LotteryHeader";
+import React, { useEffect } from "react";
+// import LotteryHeader from "./LotteryHeader";
 import PrizeInfo from "./PrizeInfo";
 import EntryButton from "./EntryButton";
 import StatsGrid from "./StatsGrid";

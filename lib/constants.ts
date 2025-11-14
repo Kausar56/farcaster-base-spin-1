@@ -8,27 +8,27 @@ if (!APP_URL) {
 
 const spinOptions = [
   {
-    option: "Nothing!",
+    option: "100 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "0.1 USD",
+    option: "80 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
   {
-    option: "Nothing!",
+    option: "60 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "0.05 USD",
+    option: "40 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFBEB" },
   },
   {
-    option: "Nothing!",
+    option: "20 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "0.01 USD",
+    option: "10 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
 ];

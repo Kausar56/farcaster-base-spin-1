@@ -12,5 +12,6 @@ export interface LeaderProps {
     earned: number;
     username: string;
     index: number;
+    pfp: string;
   };
 }

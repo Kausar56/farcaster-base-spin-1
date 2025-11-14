@@ -5,6 +5,7 @@ import { parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
+import toast from "react-hot-toast";
 
 type SpinResultProps = {
   selectedPrize: string;
@@ -21,12 +22,12 @@ const SpinResult = ({
 }: SpinResultProps) => {
   const { actions } = useFrame();
 
-  const { writeContract, isPending, isSuccess, isPaused, isError } =
+  const { writeContractAsync, isPending, isSuccess, isPaused, isError } =
     useWriteContract();
 
   const { updateEarnedPrize } = useUpdateEarnedPrize();
 
-  const claimPrize = () => {
+  const claimPrize = async () => {
     if (
       !selectedPrize ||
       isPending ||
@@ -38,24 +39,25 @@ const SpinResult = ({
       return;
     }
     const amount = selectedPrize.split(" ")[0];
-
-    if (typeof parseFloat(amount) === "string") return;
-    const ethAmount = parseFloat(amount) / 4000;
-
-    writeContract(
+    const spinRewardToast = toast.loading("Claiming...");
+    await writeContractAsync(
       {
         abi: contractAbi.claimPrize.abi,
         address: contractAbi.claimPrize.address,
         functionName: "claimSpinWinPrize",
         args: [
-          parseEther(ethAmount.toFixed(7).toString()),
+          parseEther(amount),
           signMessageData?.nonce!,
           signMessageData?.signature! as `0x${string}`,
         ],
       },
       {
         onSuccess(data) {
-          updateEarnedPrize(ethAmount.toFixed(7).toString());
+          toast.success("Claim success", { id: spinRewardToast });
+          updateEarnedPrize(amount);
+        },
+        onError: () => {
+          toast.error("Claim failed", { id: spinRewardToast });
         },
       }
     );

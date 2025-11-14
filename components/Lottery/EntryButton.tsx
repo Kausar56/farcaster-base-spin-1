@@ -1,7 +1,6 @@
 import { contractAbi } from "@/abi/abi";
 import { Zap } from "lucide-react";
 import React from "react";
-import { formatEther } from "viem";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 
@@ -19,11 +18,6 @@ const EntryButton = () => {
     functionName: "hasEntered",
     args: [address as `0x${string}`],
   });
-  const { data: entryFee, isLoading: isLoadingEntryFee } = useReadContract({
-    address: contractAbi.DailyLottery.address as `0x${string}`,
-    abi: contractAbi.DailyLottery.abi,
-    functionName: "entryFee",
-  });
 
   const { writeContractAsync, isPending: isEntering } = useWriteContract();
 
@@ -34,7 +28,6 @@ const EntryButton = () => {
           address: contractAbi.DailyLottery.address as `0x${string}`,
           abi: contractAbi.DailyLottery.abi,
           functionName: "enter",
-          value: entryFee,
         },
         {
           onSuccess: () => {
@@ -61,9 +54,9 @@ const EntryButton = () => {
         <>
           <button
             onClick={handleEnter}
-            disabled={isEntering || isLoadingEntryFee || isFetching}
+            disabled={isEntering || isFetching}
             className={`w-full py-4 rounded-xl font-bold text-lg transition-all ${
-              isEntering || isLoadingEntryFee || isFetching
+              isEntering || isFetching
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg hover:shadow-xl active:scale-95"
             }`}
@@ -74,7 +67,7 @@ const EntryButton = () => {
                 {isFetching ? "Checking..." : "Entering..."}
               </span>
             ) : (
-              `Enter With ${entryFee ? formatEther(entryFee) : "0"} ETH`
+              `Enter To Win`
             )}
           </button>
           <p className="text-xs text-center text-gray-500 mt-3">

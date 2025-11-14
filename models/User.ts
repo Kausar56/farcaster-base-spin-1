@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    pfp: {
+      type: String,
+    },
     earned: {
       type: Number,
       default: 0,
@@ -24,4 +27,4 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.models.Order || mongoose.model("Order", UserSchema);
+export default mongoose.models.User || mongoose.model("User", UserSchema);

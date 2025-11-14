@@ -7,6 +7,7 @@ const requestSchema = z.object({
   address: z.string(),
   fid: z.number(),
   username: z.string(),
+  pfp: z.string(),
 });
 
 export async function POST(request: NextRequest) {

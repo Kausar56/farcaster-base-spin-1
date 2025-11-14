@@ -5,6 +5,7 @@ type AuthArgs = {
   fid: number;
   address?: `0x${string}`;
   username: string;
+  pfp: string;
 };
 
 const useAuth = () => {
@@ -15,7 +16,7 @@ const useAuth = () => {
     isPending: registerPending,
     isSuccess: registerSuccess,
   } = useMutation({
-    mutationFn: async ({ fid, address, username }: AuthArgs) => {
+    mutationFn: async ({ fid, address, username, pfp }: AuthArgs) => {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -23,6 +24,7 @@ const useAuth = () => {
           fid,
           address,
           username,
+          pfp,
         }),
       });
 
@@ -35,7 +37,7 @@ const useAuth = () => {
       return (await res.json()) as { success?: boolean; [key: string]: any };
     },
     onSuccess: (data) => {
-      if (setRoute && data?.success) setRoute("spin");
+      if (setRoute && data?.success) setRoute("lottery");
     },
   });
 

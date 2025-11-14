@@ -24,7 +24,7 @@ const SpinWheelGame = () => {
 
     if (savedData.date === today) {
       setDailySpins(savedData.dailySpins || 0);
-      setCanSpin((savedData.dailySpins || 0) < 2);
+      setCanSpin((savedData.dailySpins || 0) < 5);
     } else {
       setDailySpins(0);
       setCanSpin(true);
@@ -38,7 +38,7 @@ const SpinWheelGame = () => {
     const today = new Date().toDateString();
     setDailySpins(newDailySpins);
     setTotalSpins(newTotalSpins);
-    setCanSpin(newDailySpins < 2);
+    setCanSpin(newDailySpins < 5);
     const dataToSave = {
       date: today,
       dailySpins: newDailySpins,

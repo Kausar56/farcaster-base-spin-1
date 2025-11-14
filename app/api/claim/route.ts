@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
   // Call the smart contract function to claim the prize
   try {
     await dbConnect();
+    console.log({ fid, prize });
     const user = await User.findOne({ fid });
     if (!user) {
       return NextResponse.json(
@@ -23,7 +24,7 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-    const prizeNumber = parseFloat(prize);
+    const prizeNumber = parseInt(prize);
     if (isNaN(prizeNumber)) {
       return NextResponse.json(
         { success: false, message: "Invalid prize amount" },

@@ -1,9 +1,10 @@
 import { contractAbi } from "@/abi/abi";
 import { Box } from "lucide-react";
 import React, { useMemo } from "react";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import { useAccount, useReadContract, useWriteContract } from "wagmi";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
+import toast from "react-hot-toast";
 
 const RefundAndClaimBtn = () => {
   const { address } = useAccount();
@@ -23,6 +24,7 @@ const RefundAndClaimBtn = () => {
 
   const handleClaimPrize = async () => {
     try {
+      const claimBXPToast = toast.loading("Claiming...");
       await writeContractAsync(
         {
           address: contractAbi.DailyLottery.address,
@@ -31,10 +33,14 @@ const RefundAndClaimBtn = () => {
         },
         {
           onSuccess: () => {
+            toast.success("Successfully Claimed", { id: claimBXPToast });
             refetch();
             if (pendingPrize) {
-              updateEarnedPrize(formatEther(pendingPrize[0]));
+              updateEarnedPrize(formatUnits(pendingPrize[0], 18));
             }
+          },
+          onError: () => {
+            toast.error("Claim failed", { id: claimBXPToast });
           },
         }
       );
@@ -44,7 +50,7 @@ const RefundAndClaimBtn = () => {
   };
 
   const isNotClaimed = useMemo(() => {
-    return pendingPrize && parseFloat(formatEther(pendingPrize[0])) > 0;
+    return pendingPrize && parseFloat(pendingPrize[0].toString()) > 0;
   }, [pendingPrize]);
   return (
     isNotClaimed &&
@@ -54,7 +60,7 @@ const RefundAndClaimBtn = () => {
       >
         <div className="flex items-center gap-2 mb-1">
           <Box className="w-5 h-5" />
-          <h3 className="font-bold text-sm">Claim pending prize & refund!</h3>
+          <h3 className="font-bold text-sm">Your unclaimed prize!</h3>
         </div>
 
         <button
@@ -66,7 +72,9 @@ const RefundAndClaimBtn = () => {
             ? "Claimed"
             : isPending
             ? "Claiming..."
-            : `Claim ${formatEther(pendingPrize[0] ?? BigInt(0))} ETH`}
+            : `Claim ${
+                parseInt(formatUnits(pendingPrize[0], 18)) ?? BigInt(0)
+              } BXP`}
         </button>
       </div>
     )

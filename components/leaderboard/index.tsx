@@ -19,10 +19,10 @@ const Leaderboard = () => {
       <div className="w-full px-4 flex flex-col items-center gap-4 mb-8">
         <div className="bg-white -mt-4 rounded-xl px-6 py-6 shadow-lg w-full flex justify-between">
           <h1 className="text-gray-800 text-md font-bold text-center">
-            Username
+            User Rank
           </h1>
           <h1 className="text-gray-800 text-md font-bold text-center">
-            Earned
+            Earned BXP
           </h1>
         </div>
 
@@ -33,7 +33,7 @@ const Leaderboard = () => {
         )}
 
         {!isLoading && data && (
-          <div className="w-full flex flex-col bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-4 shadow-lg">
+          <div className="w-full flex flex-col gap-2 bg-white rounded-xl p-3 shadow-lg">
             {data?.users?.map(
               (
                 user: {
@@ -41,6 +41,7 @@ const Leaderboard = () => {
                   address: string;
                   earned: number;
                   username: string;
+                  pfp: string;
                 },
                 index: number
               ) => (
@@ -52,6 +53,7 @@ const Leaderboard = () => {
                     earned: user.earned,
                     username: user.username,
                     index: index + 1,
+                    pfp: user.pfp,
                   }}
                 />
               )

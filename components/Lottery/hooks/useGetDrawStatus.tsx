@@ -1,6 +1,6 @@
 import { contractAbi } from "@/abi/abi";
 import React, { useEffect } from "react";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import { useReadContract } from "wagmi";
 
 type DrawStatusState = {
@@ -9,7 +9,6 @@ type DrawStatusState = {
   canDrawNow: boolean;
   participantCount: number;
   currentPot: string;
-  totalPot: number;
   meetsMinimum: boolean;
   expectedWinners: number;
   estimatedPrizePerWinner: string;
@@ -22,7 +21,6 @@ const useGetDrawStatus = () => {
     canDrawNow: false,
     participantCount: 0,
     currentPot: "0",
-    totalPot: 0,
     meetsMinimum: false,
     expectedWinners: 0,
     estimatedPrizePerWinner: "0",
@@ -44,26 +42,23 @@ const useGetDrawStatus = () => {
       const drawTime = Number(drawStatusData[1] ?? 0);
       const canDrawNow = Boolean(drawStatusData[2]);
       const participantCount = Number(drawStatusData[3] ?? 0);
-      const currentPot = BigInt(drawStatusData[4] ?? 0);
-      const totalPot = BigInt(drawStatusData[5] ?? 0);
-      const meetsMinimum = Boolean(drawStatusData[6]);
-      const expectedWinners = Number(drawStatusData[7] ?? 0);
-      const estimatedPrizePerWinner = BigInt(drawStatusData[8] ?? 0);
+      const currentPrizePool = BigInt(drawStatusData[4] ?? 0);
+      const meetsMinimum = Boolean(drawStatusData[5]);
+      const expectedWinners = Number(drawStatusData[6] ?? 0);
+      const estimatedPrizePerWinner = BigInt(drawStatusData[7] ?? 0);
 
-      const currentPotETH = formatEther(currentPot);
+      const currentPool = formatEther(currentPrizePool);
       const estimatedPrizeETH = formatEther(estimatedPrizePerWinner);
-      const totalPotETH = parseFloat(formatEther(totalPot));
 
       setDrawStatus({
         timeUntilDraw,
         drawTime,
         canDrawNow,
         participantCount,
-        currentPot: currentPotETH,
-        totalPot: totalPotETH,
+        currentPot: currentPrizePool.toString(),
         meetsMinimum,
         expectedWinners,
-        estimatedPrizePerWinner: estimatedPrizeETH,
+        estimatedPrizePerWinner: estimatedPrizePerWinner.toString(),
       });
     }
   }, [drawStatusData]);

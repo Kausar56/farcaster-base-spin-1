@@ -3,14 +3,11 @@ import React from "react";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import { parse } from "path";
 import useGetLotteryStatus from "./hooks/useGetLotteryStatus";
+import { formatUnits } from "viem";
 
 const PrizeInfo = () => {
-  const {
-    expectedWinners,
-    estimatedPrizePerWinner,
-    isLoadingDrawStatus,
-    totalPot,
-  } = useGetDrawStatus();
+  const { expectedWinners, estimatedPrizePerWinner, isLoadingDrawStatus } =
+    useGetDrawStatus();
   const { currentEntryFee } = useGetLotteryStatus();
   return (
     <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-3 shadow-lg text-white">
@@ -27,9 +24,11 @@ const PrizeInfo = () => {
         {/* <div className="h-px bg-white/20"></div> */}
         <div className="flex flex-col items-center">
           <span className="text-xs text-blue-100 mb-1">Prize Each</span>
-          <span className="text-md font-bold">{estimatedPrizePerWinner}</span>
+          <span className="text-md font-bold">
+            {formatUnits(BigInt(estimatedPrizePerWinner), 18)}
+          </span>
         </div>
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <div className="text-xs text-blue-100 mb-1">Potential ROI</div>
           <div className="text-md font-bold text-yellow-300">
             {currentEntryFee && estimatedPrizePerWinner
@@ -42,7 +41,7 @@ const PrizeInfo = () => {
               : 0}
             x
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

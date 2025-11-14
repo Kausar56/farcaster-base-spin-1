@@ -50,7 +50,7 @@ const MinimumMetWarning = () => {
 
           <p className="text-orange-600 text-xs">
             If we don't reach {3} participants by draw time, the round will be
-            cancelled and entry fee will refunded!
+            cancelled!
           </p>
         </div>
       </div>

@@ -51,3 +51,7 @@ body {
     background: #c0a0b9;
   }
 }
+
+.bg-primary {
+  @apply bg-gradient-to-r from-blue-600 to-blue-500 shadow-lg rounded-xl;
+}

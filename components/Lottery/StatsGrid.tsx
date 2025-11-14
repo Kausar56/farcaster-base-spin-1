@@ -1,10 +1,10 @@
 import React from "react";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import { Coins, Users } from "lucide-react";
+import { formatUnits } from "viem";
 
 const StatsGrid = () => {
-  const { participantCount, currentPot, meetsMinimum, totalPot } =
-    useGetDrawStatus();
+  const { participantCount, currentPot, meetsMinimum } = useGetDrawStatus();
   return (
     <div className="grid grid-cols-2 gap-3">
       {/* Total Participants */}
@@ -33,11 +33,13 @@ const StatsGrid = () => {
           <div className="bg-blue-100 p-2 rounded-lg">
             <Coins className="w-4 h-4 text-blue-600" />
           </div>
-          <span className="text-xs text-gray-600">Total Pot</span>
+          <span className="text-xs text-gray-600">Total Prize Pool</span>
         </div>
         <div className="text-xl font-bold text-blue-600">
-          <div className="text-lg font-bold text-gray-800">{totalPot}</div>
-          <span className="text-xs text-gray-500 mt-1">ETH</span>
+          <div className="text-lg font-bold text-gray-800">
+            {formatUnits(BigInt(currentPot), 18)}
+          </div>
+          <span className="text-xs text-gray-500 mt-1">BXP</span>
         </div>
       </div>
     </div>
