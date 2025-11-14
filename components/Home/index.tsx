@@ -11,12 +11,17 @@ import DailyStreak from "../DailyStreak";
 import { Toaster } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
+import { Settings } from "lucide-react";
 
 export function Demo() {
   const { route } = useFrame();
   const { isConnected } = useAccount();
   return isConnected ? (
     <>
+      <p className="bg-gray-900 text-white p-3 text-center flex justify-center gap-2">
+        App is maintenance mode for upgrading{" "}
+        <Settings className="animate-spin" />
+      </p>
       <DailyStreak />
       <div className="">
         {route === "lottery" && <Lottery />}
