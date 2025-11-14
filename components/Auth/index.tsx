@@ -1,12 +1,9 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { useFrame } from "../farcaster-provider";
 import useAuth from "../useAuth";
 import { useAccount } from "wagmi";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { TCanvasConfettiInstance } from "react-canvas-confetti/dist/types";
-
-// import { SignInButton } from "@farcaster/auth-kit";
 
 const Auth = ({ refetch }: { refetch: () => void }) => {
   const { register, registerPending } = useAuth();

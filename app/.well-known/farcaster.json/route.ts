@@ -4,7 +4,7 @@ export async function GET() {
   const farcasterConfig = {
     frame: {
       name: "Base Spin",
-      version: "1",
+      version: "2",
       iconUrl: "https://base-spin.vercel.app/icon.png",
       homeUrl: "https://base-spin.vercel.app",
       imageUrl: "https://base-spin.vercel.app/image.png",
