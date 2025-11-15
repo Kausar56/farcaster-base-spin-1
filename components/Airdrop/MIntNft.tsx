@@ -89,7 +89,7 @@ const NFTMintPage = () => {
     });
   };
 
-  const supply = totalSupply ? Number(totalSupply) + 7572 : 0;
+  const supply = totalSupply ? Number(totalSupply) : 0;
   const canMint = canMintData ?? true;
   const userMintCount = mintedCount ? Number(mintedCount) : 0;
   const progress = (supply / MAX_SUPPLY) * 100;
