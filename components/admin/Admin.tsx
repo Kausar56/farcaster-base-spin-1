@@ -3,38 +3,38 @@ import ContractBalance from "./ContractBalance";
 import PauseSpin from "./PauseSpin";
 import { contractAbi } from "@/abi/abi";
 import NotifyUsers from "./NotifyUsers";
+import AppHeader from "../common/AppHeader";
 
 const Admin = () => {
   return (
-    <div className="w-full px-4 space-y-4">
-      <ContractBalance />
-      <PauseSpin />
+    <>
+      <AppHeader headerName="Admin panel" />
+      <div className="w-full px-4 space-y-4 mb-16 -mt-4">
+        <ContractBalance />
+        <PauseSpin />
 
-      <NotifyUsers />
+        <NotifyUsers />
 
-      <div className="bg-white text-black shadow-lg rounded-2xl text-sm backdrop-blur-md  w-full p-4 space-y-2">
-        <p className="text-wrap overflow-hidden">
-          Spin contract address:{" "}
-          <a
-            target="_blank"
-            href={`https://basescan.org/address/${contractAbi.claimPrize.address}`}
-            className="text-indigo-500 text-xs"
-          >
-            {contractAbi.claimPrize.address}
-          </a>
-        </p>
-        <p className="text-wrap overflow-hidden">
-          Lottery contract address:{" "}
-          <a
-            target="_blank"
-            href={`https://basescan.org/address/${contractAbi.DailyLottery.address}`}
-            className="text-indigo-500  text-xs"
-          >
-            {contractAbi.DailyLottery.address}
-          </a>
-        </p>
+        <div className="bg-white text-black shadow-lg rounded-2xl text-sm backdrop-blur-md  w-full p-4 space-y-2">
+          {Object.keys(contractAbi).map((key) => {
+            type ContractKey = keyof typeof contractAbi;
+            const currentKey: ContractKey = key as ContractKey;
+            return (
+              <p className="text-wrap overflow-hidden">
+                <a
+                  target="_blank"
+                  href={`https://basescan.org/address/${contractAbi[currentKey].address}`}
+                  className="text-indigo-500 text-xs"
+                >
+                  {key}:{" "}
+                </a>
+                {contractAbi[currentKey].address}
+              </p>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

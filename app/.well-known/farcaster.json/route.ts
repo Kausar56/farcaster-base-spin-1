@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   const farcasterConfig = {
-    frame: {
+    miniapp: {
       name: "Base Spin",
       version: "2",
       iconUrl: "https://base-spin.vercel.app/icon.png",

@@ -33,7 +33,7 @@ const Leaderboard = () => {
         )}
 
         {!isLoading && data && (
-          <div className="w-full flex flex-col gap-2 bg-white rounded-xl p-3 shadow-lg">
+          <div className="w-full flex flex-col gap-2 bg-white rounded-xl p-3 shadow-lg mb-16">
             {data?.users?.map(
               (
                 user: {

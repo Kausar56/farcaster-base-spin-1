@@ -5,6 +5,7 @@ import {
   FerrisWheel,
   Shield,
   Ticket,
+  Coins,
 } from "lucide-react";
 import { RouteUnion, useFrame } from "../farcaster-provider";
 type MenuButton = {
@@ -23,6 +24,11 @@ const menus: MenuButton[] = [
     name: "Spin",
     Icon: FerrisWheel,
     route: "spin",
+  },
+  {
+    name: "Airdrop",
+    Icon: Coins,
+    route: "airdrop",
   },
   {
     name: "Leaderboard",

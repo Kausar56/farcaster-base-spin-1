@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
 import { Settings } from "lucide-react";
+import Airdrop from "../Airdrop";
 
 export function Demo() {
   const { route } = useFrame();
@@ -27,6 +28,7 @@ export function Demo() {
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}
         {route === "profile" && <Profile />}
+        {route === "airdrop" && <Airdrop />}
         {route === "leaderboard" && <Leaderboard />}
         {route === "admin" && <Admin />}
       </div>

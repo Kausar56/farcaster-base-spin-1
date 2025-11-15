@@ -4,6 +4,7 @@ import RefundAndClaimBtn from "./RefundAndClaimBtn";
 // import UserHIstroy from "./UserHIstroy";
 import XpAndStreak from "./XpAndStreak";
 import ClaimReward from "./ClaimReward";
+import FlexibleBXPSwap from "../common/FlexibleBXPSwap";
 
 const ProfilePfp = () => {
   const { context } = useFrame();
@@ -39,9 +40,10 @@ const ProfilePfp = () => {
 
       {/* User history */}
       {/* <UserHIstroy /> */}
+      <FlexibleBXPSwap />
 
       {/* Claim reward */}
-      <ClaimReward />
+      {/* <ClaimReward /> */}
 
       {/* Balance
       <div className="bg-white rounded-2xl w-full backdrop-blur-md  overflow-hidden p-3 text-sm shadow-md">

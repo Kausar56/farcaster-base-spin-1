@@ -8,27 +8,27 @@ if (!APP_URL) {
 
 const spinOptions = [
   {
-    option: "100 BXP",
+    option: "5 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "80 BXP",
+    option: "2 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
   {
-    option: "60 BXP",
+    option: "5 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "40 BXP",
+    option: "3 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFBEB" },
   },
   {
-    option: "20 BXP",
+    option: "2 BXP",
     style: { backgroundColor: "#60a5fa", textColor: "#f5b939" },
   },
   {
-    option: "10 BXP",
+    option: "1 BXP",
     style: { backgroundColor: "#90cdf4", textColor: "#FFFFFF" },
   },
 ];
@@ -57,6 +57,12 @@ const notificationsBtn = [
     name: "Daily spin",
     title: "🛞 You forgot to spin!",
     body: "Open app and claim daily free spin ⚡!",
+  },
+  {
+    id: 4,
+    name: "MINT Nft",
+    title: "🛞 You forgot to spin!",
+    body: "Get Exclusive rewards and utilities for our community ⚡!",
   },
 ];
 

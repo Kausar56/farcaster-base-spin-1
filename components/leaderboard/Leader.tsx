@@ -25,7 +25,9 @@ const Leader = ({ leader }: LeaderProps) => {
           )}
         </p>
         <div className="bg-white rounded-full w-8 h-8 overflow-hidden">
-          <Image src={leader.pfp} alt="pfp" width={35} height={35} />
+          {leader?.pfp && (
+            <Image src={leader?.pfp} alt="pfp" width={35} height={35} />
+          )}
         </div>
         <p>
           {context?.user?.username === leader?.username ? (

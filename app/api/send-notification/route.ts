@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       notificationId,
       title: requestBody.data.title,
       body: requestBody.data.body,
-      targetUrl: `${APP_URL}`,
+      targetUrl: `https://base-spin.vercel.app`,
       tokens,
     };
 

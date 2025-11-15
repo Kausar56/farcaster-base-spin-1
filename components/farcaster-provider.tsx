@@ -8,7 +8,8 @@ export type RouteUnion =
   | "lottery"
   | "leaderboard"
   | "profile"
-  | "admin";
+  | "admin"
+  | "airdrop";
 
 interface FrameContextValue {
   context: Context.MiniAppContext | undefined;
