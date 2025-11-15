@@ -3,7 +3,7 @@ import React from "react";
 import { useFrame } from "../farcaster-provider";
 import { farcasterMiniApp as miniAppConnector } from "@farcaster/miniapp-wagmi-connector";
 import { useAccount, useConnect, useSwitchChain } from "wagmi";
-import { baseSepolia as base } from "viem/chains";
+import { base } from "viem/chains";
 
 type ButtonProps = {
   handleSpinClick?: () => void;

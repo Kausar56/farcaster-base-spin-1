@@ -53,7 +53,7 @@ export default function FlexibleBXPSwap() {
   const { data: bxpToUsdtRate } = useReadContract({
     address: SWAP_CONTRACT_ADDRESS,
     abi: SWAP_ABI,
-    functionName: "bxpToUsdtRate",
+    functionName: "bxpToUsdcRate",
     query: { enabled: true },
   });
 
@@ -154,18 +154,22 @@ export default function FlexibleBXPSwap() {
     return parseInt(formatUnits(bxpBalance, 18));
   };
 
-  const getUSDTAmount = () => {
-    if (!bxpBalance) return "0.00";
-    const bxp = parseFloat(formatUnits(bxpBalance, 18));
-    return (bxp * 0.001).toFixed(2);
-  };
-
   const getBxpToUsdtRate = () => {
     if (!bxpToUsdtRate) return "0.00";
     const rate = parseFloat(formatUnits(bxpToUsdtRate, 6));
-    return rate.toFixed(3);
+    return rate.toFixed(4);
   };
 
+  const getUSDTAmount = () => {
+    if (
+      !bxpBalance ||
+      !getBxpToUsdtRate() ||
+      parseFloat(getBxpToUsdtRate()) === 0
+    )
+      return "0.00";
+    const bxp = parseFloat(formatUnits(bxpBalance, 18));
+    return (bxp * parseFloat(getBxpToUsdtRate())).toFixed(3);
+  };
   const isProcessing =
     isApproving || isApproveConfirming || isSwapping || isSwapConfirming;
 
@@ -180,7 +184,7 @@ export default function FlexibleBXPSwap() {
             <h1 className="text-xl font-bold">Swap BXP</h1>
           </div>
           <p className="text-blue-100 text-sm">
-            Instant Exchange • 1 BXP = {getBxpToUsdtRate()} USDT
+            Instant Exchange • 1 BXP = {getBxpToUsdtRate()} USDC
           </p>
         </div>
 
@@ -220,7 +224,7 @@ export default function FlexibleBXPSwap() {
                   <p className="text-xl font-bold text-blue-500">
                     {getUSDTAmount()}
                   </p>
-                  <span className="text-sm text-gray-500">USDT</span>
+                  <span className="text-sm text-gray-500">USDC</span>
                 </div>
               </div>
             </div>

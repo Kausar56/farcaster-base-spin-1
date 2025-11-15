@@ -160,16 +160,6 @@ const NFTMintPage = () => {
                 <p className="text-sm text-green-600">
                   Your NFT has been minted to your wallet.
                 </p>
-                {mintData && (
-                  <a
-                    href={`https://etherscan.io/tx/${mintData}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-blue-500 hover:underline flex items-center mt-1"
-                  >
-                    View on Etherscan <ExternalLink className="w-3 h-3 ml-1" />
-                  </a>
-                )}
               </div>
             </div>
           )}

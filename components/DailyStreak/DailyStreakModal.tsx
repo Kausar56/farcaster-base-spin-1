@@ -59,7 +59,7 @@ const DailyStreakModal = ({
 
         <div className="flex items-center justify-center gap-2 mb-6">
           <Coins className="text-yellow-500" size={24} />
-          <span className="text-2xl font-bold text-green-300">+100 BXP</span>
+          <span className="text-2xl font-bold text-green-300">+50 BXP</span>
         </div>
 
         <button
