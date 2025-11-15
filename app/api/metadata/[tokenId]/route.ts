@@ -1,10 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export function GET() {
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ tokenId: string }> }
+) {
+  const { tokenId } = await context.params;
+  const nftId = tokenId.split(".")[0];
   return NextResponse.json({
-    name: "My Cool NFT #1",
+    name: `Pixel Cat #${nftId}`,
     description: "An awesome NFT from my collection",
-    image: "ipfs://QmY5678efgh/1.png",
+    image: "https://base-spin.vercel.app/pixel-cat.png",
     attributes: [
       {
         trait_type: "Background",
