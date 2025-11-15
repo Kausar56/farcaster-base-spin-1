@@ -60,7 +60,7 @@ const RefundAndClaimBtn = () => {
       >
         <div className="flex items-center gap-2 mb-1">
           <Box className="w-5 h-5" />
-          <h3 className="font-bold text-sm">Your unclaimed prize!</h3>
+          <h3 className="font-bold text-sm">Your unclaimed rewards!</h3>
         </div>
 
         <button

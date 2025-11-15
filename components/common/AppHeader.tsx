@@ -4,11 +4,11 @@ import ConnectedAddress from "./ConnectedAddress";
 
 const AppHeader = ({ headerName }: { headerName: string }) => {
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 py-6 rounded-b-3xl shadow-lg">
+    <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-6 pb-6 pt-3 rounded-b-3xl shadow-lg">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Sparkles className="w-6 h-6" />
-          <h1 className="text-2xl font-bold">{headerName}</h1>
+          <h1 className="text-lg font-bold">{headerName}</h1>
         </div>
         {/* <div className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold">
           Round #15

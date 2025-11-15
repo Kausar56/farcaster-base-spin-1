@@ -34,10 +34,10 @@ const DailyStreakModal = ({
         },
         {
           onSuccess: (data) => {
+            updateEarnedPrize("50");
             if (data) {
               setShow(false);
             }
-            updateEarnedPrize("100");
           },
         }
       );

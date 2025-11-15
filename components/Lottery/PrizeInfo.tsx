@@ -11,12 +11,12 @@ const PrizeInfo = () => {
   const { currentEntryFee } = useGetLotteryStatus();
   return (
     <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-3 shadow-lg text-white">
-      <div className="flex items-center gap-2 mb-4">
+      <div className="flex items-center gap-2 mb-2">
         <Trophy className="w-5 h-5" />
         <h3 className="font-semibold">Prize Breakdown</h3>
       </div>
 
-      <div className="flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+      <div className="flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-center">
         <div className="flex flex-col items-center">
           <span className="text-xs text-blue-100 mb-1">Winners</span>
           <span className="text-md font-bold">{expectedWinners}</span>

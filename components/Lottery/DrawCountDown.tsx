@@ -1,6 +1,6 @@
 import React from "react";
 import useTimeCountDown from "./hooks/useTimeCountDown";
-import { Clock } from "lucide-react";
+import { AlertCircle, Clock } from "lucide-react";
 import useGetDrawStatus from "./hooks/useGetDrawStatus";
 import useGetLotteryStatus from "./hooks/useGetLotteryStatus";
 
@@ -12,7 +12,7 @@ const DrawCountDown = () => {
   });
   return (
     <div className="bg-white rounded-2xl px-6 py-2 shadow-lg">
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-2">
         <Clock className="w-5 h-5 text-blue-600" />
         <h3 className="font-semibold text-gray-800">
           Draw Countdown Round{" "}

@@ -14,6 +14,7 @@ import AppHeader from "../common/AppHeader";
 import useCheckLastRoundResult from "./hooks/useCheckLastRoundResult";
 import RoundCancelled from "./RoundCancelled";
 import LoadingSkeleton from "./LoadingSkeleton";
+import { AlertCircle } from "lucide-react";
 
 export default function Lottery() {
   const { inCooldown, isLoadingLotteryStatus, refetchLotteryData } =
@@ -41,9 +42,23 @@ export default function Lottery() {
       isLoadingLastRoundResult ? (
         <LoadingSkeleton />
       ) : (
-        <div className="px-4 -mt-4 space-y-4">
+        <div className="px-4 -mt-4 space-y-3">
           {/* Draw Countdown Timer */}
           {!inCooldown && <DrawCountDown />}
+
+          {!inCooldown && (
+            <div className="bg-primary rounded-2xl px-6 py-2 shadow-lg">
+              <p className="flex gap-2 items-center text-white text-xs font-semibold">
+                <span>
+                  <AlertCircle className="h-4 w-4" />
+                </span>
+                <span>
+                  If you <span className="text-orange-300 font-bold">win</span>{" "}
+                  previous round, rewards will be available on profile tab!
+                </span>
+              </p>
+            </div>
+          )}
 
           {/* Cooldown Banner */}
           {inCooldown && <CooldownBanner />}

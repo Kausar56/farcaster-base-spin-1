@@ -63,7 +63,7 @@ export function Menu() {
   const { context } = useFrame();
   return (
     <nav className="w-full fixed z-50 bottom-0 left-0">
-      <div className="flex justify-between bg-gradient-to-r from-blue-600 to-blue-500  shadow-md  rounded-t-3xl">
+      <div className="flex justify-between bg-primary rounded-t-3xl">
         {menus.map((menu) => (
           <MenuButton
             key={menu.route}
