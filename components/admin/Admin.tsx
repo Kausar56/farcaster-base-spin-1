@@ -4,6 +4,7 @@ import PauseSpin from "./PauseSpin";
 import { contractAbi } from "@/abi/abi";
 import NotifyUsers from "./NotifyUsers";
 import AppHeader from "../common/AppHeader";
+import ChangeLotteryPrizePool from "./ChangeLotteryPrizePool";
 
 const Admin = () => {
   return (
@@ -11,6 +12,7 @@ const Admin = () => {
       <AppHeader headerName="Admin panel" />
       <div className="w-full px-4 space-y-4 mb-16 -mt-4">
         <ContractBalance />
+        <ChangeLotteryPrizePool />
         <PauseSpin />
 
         <NotifyUsers />
@@ -19,6 +21,7 @@ const Admin = () => {
           {Object.keys(contractAbi).map((key) => {
             type ContractKey = keyof typeof contractAbi;
             const currentKey: ContractKey = key as ContractKey;
+            if (key === "BXPSwap") return;
             return (
               <p className="text-wrap overflow-hidden">
                 <a

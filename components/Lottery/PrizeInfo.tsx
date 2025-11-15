@@ -25,7 +25,7 @@ const PrizeInfo = () => {
         <div className="flex flex-col items-center">
           <span className="text-xs text-blue-100 mb-1">Prize Each</span>
           <span className="text-md font-bold">
-            {formatUnits(BigInt(estimatedPrizePerWinner), 18)}
+            {parseInt(formatUnits(BigInt(estimatedPrizePerWinner), 18))} BXP
           </span>
         </div>
         {/* <div className="flex flex-col items-center">

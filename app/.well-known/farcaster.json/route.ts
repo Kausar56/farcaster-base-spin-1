@@ -4,7 +4,7 @@ export async function GET() {
   const farcasterConfig = {
     miniapp: {
       name: "Base Spin",
-      version: "2",
+      version: "1",
       iconUrl: "https://base-spin.vercel.app/icon.png",
       homeUrl: "https://base-spin.vercel.app",
       imageUrl: "https://base-spin.vercel.app/image.png",
@@ -16,10 +16,10 @@ export async function GET() {
       tagline: "Spin and Win Lottery Prize",
       ogTitle: "Base Spin - Fun Lotto and Spin",
       ogDescription:
-        "Don't miss the next draw! Enter our lottery and spin to multiply your ETH 300x today.",
+        "Don't miss the next draw! Join lottery and spin to earn BXP token.",
       subtitle: "ETH Lotto and Spin Fun",
       description:
-        "Join the daily ETH rush! Spin the wheel or enter the lotto for a chance to win crypto. Players are winning up to 10x their entry every 6 hours!",
+        "Join the daily BXP rush. Spin or enter the lotto for a chance to win crypto. Players are winning up to 10x their entry every 6 hours",
       primaryCategory: "games",
       screenshotUrls: ["https://base-spin.vercel.app/screenshot1.png"],
       heroImageUrl: "https://base-spin.vercel.app/hero.png",

@@ -31,12 +31,14 @@ const NotifyUsers = () => {
         });
       },
       onSuccess: (response) => {
+        console.log(response);
         if (response.status === 200) setResult("Notification sent!");
         else if (response.status === 429)
           setResult("Rate limited. Try again later.");
         else setResult("Error sending notification.");
       },
-      onError: () => {
+      onError: (error) => {
+        console.log(error);
         setResult("Error sending notification.");
       },
     });

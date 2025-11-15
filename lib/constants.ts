@@ -59,10 +59,10 @@ const notificationsBtn = [
     body: "Open app and claim daily free spin ⚡!",
   },
   {
-    id: 4,
-    name: "MINT Nft",
-    title: "🛞 You forgot to spin!",
-    body: "Get Exclusive rewards and utilities for our community ⚡!",
+    id: 5,
+    name: "Mint NFT",
+    title: "🎉 MINT your Pixel Cat!",
+    body: "Get Exclusive rewards and utilities for Holder ⚡!",
   },
 ];
 

@@ -37,7 +37,7 @@ const Contract = ({ contract }: { contract: string }) => {
   });
   const { data: spinGameUSDTBalance } = useBalance({
     address: contractAbi[currentKey].address as `0x${string}`,
-    token: "0x12fda487aeb2dcf96c7bec0ad0eb7c8d73152d8b",
+    token: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
   });
   return (
     <div className="bg-primary p-2 rounded-md overflow-hidden flex flex-col justify-center items-center">
@@ -48,14 +48,15 @@ const Contract = ({ contract }: { contract: string }) => {
       <span className=" text-white font-semibold">
         {(contract === "claimPrize" ||
           contract === "DailyLottery" ||
-          contract === "BXPSwap") &&
+          contract === "FlexibleBXPSwap") &&
           spinGameBXPBalance &&
           parseInt(formatUnits(spinGameBXPBalance?.value, 18)) + " BXP"}{" "}
       </span>
       <span className=" text-white font-semibold">
-        {contract === "BXPSwap" &&
+        {contract === "FlexibleBXPSwap" &&
           spinGameUSDTBalance &&
-          parseInt(formatUnits(spinGameUSDTBalance?.value, 18)) + " USDT"}{" "}
+          parseFloat(formatUnits(spinGameUSDTBalance?.value, 6)).toFixed(2) +
+            " USDC"}{" "}
       </span>
     </div>
   );

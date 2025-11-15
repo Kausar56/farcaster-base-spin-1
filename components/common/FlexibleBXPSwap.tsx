@@ -191,7 +191,7 @@ export default function FlexibleBXPSwap() {
         <div className="p-3">
           {/* Success Message */}
           {isSwapSuccess && (
-            <div className="mb-4 bg-green-50 border-2 border-green-200 rounded-xl p-4 flex items-center gap-3 animate-pulse">
+            <div className="mb-2 bg-green-50 border-2 border-green-200 rounded-xl p-2 flex items-center gap-2 animate-pulse">
               <CheckCircle className="text-green-500 flex-shrink-0" size={28} />
               <div>
                 <p className="text-green-700 font-bold text-lg">

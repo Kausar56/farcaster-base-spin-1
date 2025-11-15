@@ -42,8 +42,6 @@ export async function POST(request: NextRequest) {
       message: { raw: structuredMessageHash },
     });
 
-    console.log({ userAddress, amount, signature });
-
     return NextResponse.json(
       { signature, nonce: nonce.toString(), isSuccess: true },
       { status: 200 }

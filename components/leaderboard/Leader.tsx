@@ -4,9 +4,22 @@ import React from "react";
 import { useFrame } from "../farcaster-provider";
 
 const Leader = ({ leader }: LeaderProps) => {
-  const { context } = useFrame();
+  const { context, actions } = useFrame();
+
+  const handleViewProfile = async () => {
+    try {
+      if (!actions || !context || !context?.user?.fid) return;
+      const fid = context?.user?.fid;
+      await actions.viewProfile({
+        fid,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div
+      onClick={handleViewProfile}
       className={`${
         context?.user?.username === leader?.username &&
         "border-2 border-orange-500"
