@@ -74,6 +74,7 @@ const SpinWheelGame = () => {
           selectedPrize={winDetails}
           setShowResult={setShowResult}
           isSigning={isSigning}
+          totalSpins={totalSpins}
         />
       )}
     </div>

@@ -1,5 +1,4 @@
 import { LeaderProps } from "@/types";
-import Image from "next/image";
 import React from "react";
 import { useFrame } from "../farcaster-provider";
 
@@ -8,10 +7,9 @@ const Leader = ({ leader }: LeaderProps) => {
 
   const handleViewProfile = async () => {
     try {
-      if (!actions || !context || !context?.user?.fid) return;
-      const fid = context?.user?.fid;
+      if (!actions || !leader?.fid) return;
       await actions.viewProfile({
-        fid,
+        fid: leader?.fid,
       });
     } catch (error) {
       console.log(error);

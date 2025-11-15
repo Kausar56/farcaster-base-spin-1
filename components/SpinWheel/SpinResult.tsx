@@ -12,6 +12,7 @@ type SpinResultProps = {
   setShowResult: (result: boolean) => void;
   signMessageData?: { signature: string; nonce: bigint; isSuccess: boolean };
   isSigning?: boolean;
+  totalSpins: number;
 };
 
 const SpinResult = ({
@@ -19,6 +20,7 @@ const SpinResult = ({
   setShowResult,
   signMessageData,
   isSigning,
+  totalSpins,
 }: SpinResultProps) => {
   const { actions } = useFrame();
 
@@ -55,6 +57,7 @@ const SpinResult = ({
         onSuccess(data) {
           toast.success("Claim success", { id: spinRewardToast });
           updateEarnedPrize(amount);
+          setShowResult(false);
         },
         onError: () => {
           toast.error("Claim failed", { id: spinRewardToast });
@@ -64,7 +67,7 @@ const SpinResult = ({
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && totalSpins === 1) {
       handleGenerateCustomOGImage();
       setShowResult(false);
     }

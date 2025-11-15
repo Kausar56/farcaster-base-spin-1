@@ -12,10 +12,16 @@ import { Toaster } from "react-hot-toast";
 import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
 import Airdrop from "../Airdrop";
+import { useEffect } from "react";
 
 export function Demo() {
-  const { route } = useFrame();
+  const { route, actions } = useFrame();
   const { isConnected } = useAccount();
+  useEffect(() => {
+    if (actions) {
+      actions?.addMiniApp();
+    }
+  }, [actions]);
   return isConnected ? (
     <>
       <DailyStreak />
