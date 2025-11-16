@@ -56,20 +56,20 @@ const RefundAndClaimBtn = () => {
     isNotClaimed &&
     pendingPrize && (
       <div
-        className={`w-full bg-gradient-to-br from-blue-600 to-blue-500 rounded-2xl p-3 shadow-xl text-white`}
+        className={`w-full space-y-2 bg-gradient-to-br from-blue-600 to-blue-500 rounded-2xl px-3 py-2 shadow-xl text-white`}
       >
         <div className="flex items-center gap-2 mb-1">
-          <Box className="w-5 h-5" />
-          <h3 className="font-bold text-sm">Your unclaimed rewards!</h3>
+          <Box className="w-5 h-5 animate-bounce" />
+          <h3 className="font-bold text-sm">Claim your rewards 🎉!</h3>
         </div>
 
         <button
           disabled={isPending || isLoading || isFetching}
           onClick={handleClaimPrize}
-          className="mt-2 w-full bg-blue-400 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full"
+          className=" w-full bg-blue-400 hover:bg-blue-300 text-white font-bold py-2 px-4 rounded-full"
         >
           {isSuccess
-            ? "Claimed"
+            ? "Claimed 🎉"
             : isPending
             ? "Claiming..."
             : `Claim ${

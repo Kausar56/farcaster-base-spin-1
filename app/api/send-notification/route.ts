@@ -51,6 +51,7 @@ export async function POST(request: NextRequest) {
 
       if (res.status === 200) {
         const json = await res.json();
+        // console.log(json);
         totalSuccessful += json.successfulTokens?.length || 0;
         totalInvalid += json.invalidTokens?.length || 0;
         totalRateLimited += json.rateLimitedTokens?.length || 0;
@@ -65,6 +66,13 @@ export async function POST(request: NextRequest) {
       console.error(`Batch ${i} fetch error:`, error);
     }
   }
+
+  console.log({
+    successful: totalSuccessful,
+    invalid: totalInvalid,
+    rateLimited: totalRateLimited,
+    totalBatches: Math.ceil(allKeys.length / BATCH_SIZE),
+  });
 
   return NextResponse.json({
     success: true,

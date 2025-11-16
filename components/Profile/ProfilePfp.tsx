@@ -33,7 +33,7 @@ const ProfilePfp = () => {
       </div>
 
       {/* Refund & claim */}
-      <RefundAndClaimBtn />
+      {/* <RefundAndClaimBtn /> */}
 
       {/* Xp & streak */}
       <XpAndStreak />

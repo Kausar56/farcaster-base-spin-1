@@ -15,6 +15,7 @@ import useCheckLastRoundResult from "./hooks/useCheckLastRoundResult";
 import RoundCancelled from "./RoundCancelled";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { AlertCircle } from "lucide-react";
+import RefundAndClaimBtn from "../Profile/RefundAndClaimBtn";
 
 export default function Lottery() {
   const { inCooldown, isLoadingLotteryStatus, refetchLotteryData } =
@@ -46,19 +47,7 @@ export default function Lottery() {
           {/* Draw Countdown Timer */}
           {!inCooldown && <DrawCountDown />}
 
-          {!inCooldown && (
-            <div className="bg-primary rounded-2xl px-6 py-2 shadow-lg">
-              <p className="flex gap-2 items-center text-white text-xs font-semibold">
-                <span>
-                  <AlertCircle className="h-4 w-4" />
-                </span>
-                <span>
-                  If you <span className="text-orange-300 font-bold">win</span>{" "}
-                  previous round, rewards will be available on profile tab!
-                </span>
-              </p>
-            </div>
-          )}
+          {!inCooldown && <RefundAndClaimBtn />}
 
           {/* Cooldown Banner */}
           {inCooldown && <CooldownBanner />}

@@ -44,7 +44,7 @@ const notificationsBtn = [
     id: 2,
     name: "Winner Selected",
     title: "🏆 Lottery Winners selected!",
-    body: "Check and claim rewards from profile tab 🥇!",
+    body: "Check and claim rewards from lottery tab 🥇!",
   },
   {
     id: 3,
@@ -68,7 +68,7 @@ const notificationsBtn = [
     id: 6,
     name: "Unclaimed",
     title: "🎗️ Unclaimed rewards reminder!",
-    body: "Check profile tab for any unclaimed rewards ⚡!",
+    body: "Open app and check for any unclaimed rewards ⚡!",
   },
 ];
 

@@ -19,7 +19,7 @@ const InfoCards = () => {
         </div>
         <div className="flex gap-2">
           <span className="text-blue-600 font-bold">4.</span>
-          <span>6-hour cooldown, then new round begins!</span>
+          <span>15-minute cooldown, then new round begins!</span>
         </div>
       </div>
     </div>
