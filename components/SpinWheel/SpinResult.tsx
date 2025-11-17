@@ -1,6 +1,6 @@
 import { contractAbi } from "@/abi/abi";
 import { Coins, Frown, Gift, Trophy, X } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 import { parseEther } from "viem";
 import { useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
@@ -12,7 +12,7 @@ type SpinResultProps = {
   setShowResult: (result: boolean) => void;
   signMessageData?: { signature: string; nonce: bigint; isSuccess: boolean };
   isSigning?: boolean;
-  totalSpins: number;
+  spinCount: number;
 };
 
 const SpinResult = ({
@@ -20,11 +20,11 @@ const SpinResult = ({
   setShowResult,
   signMessageData,
   isSigning,
-  totalSpins,
+  spinCount,
 }: SpinResultProps) => {
   const { actions } = useFrame();
 
-  const { writeContractAsync, isPending, isSuccess, isPaused, isError } =
+  const { writeContractAsync, isPending, isSuccess, isError } =
     useWriteContract();
 
   const { updateEarnedPrize } = useUpdateEarnedPrize();
@@ -54,10 +54,14 @@ const SpinResult = ({
         ],
       },
       {
-        onSuccess(data) {
+        onSuccess() {
           toast.success("Claim success", { id: spinRewardToast });
           updateEarnedPrize(amount);
           setShowResult(false);
+
+          if (spinCount === 1) {
+            handleGenerateCustomOGImage();
+          }
         },
         onError: () => {
           toast.error("Claim failed", { id: spinRewardToast });
@@ -66,13 +70,6 @@ const SpinResult = ({
     );
   };
 
-  useEffect(() => {
-    if (isSuccess && totalSpins === 1) {
-      handleGenerateCustomOGImage();
-      setShowResult(false);
-    }
-  }, [isSuccess]);
-
   const handleGenerateCustomOGImage = () => {
     actions?.composeCast({
       text: `🎉 I just claimed ${selectedPrize} playing the Base Spin Game! 🚀
@@ -80,8 +77,6 @@ const SpinResult = ({
     Think you can beat my score? Try it now 👇`,
       embeds: ["https://farcaster.xyz/miniapps/OVGXH7QGFT1j/base-spin"],
     });
-
-    setShowResult(false);
   };
 
   return (

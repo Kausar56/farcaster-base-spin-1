@@ -4,12 +4,6 @@ import { formatUnits } from "viem";
 import { useBalance } from "wagmi";
 
 const ContractBalance = () => {
-  const { data: spinGameBalance } = useBalance({
-    address: contractAbi.claimPrize.address,
-  });
-  const { data: quizGameBalance } = useBalance({
-    address: contractAbi.DailyLottery.address,
-  });
   return (
     <div className="w-full flex flex-col items-center gap-2 bg-white rounded-2xl shadow-lg p-2">
       <div>

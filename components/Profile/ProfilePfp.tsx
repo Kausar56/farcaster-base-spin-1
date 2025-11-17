@@ -29,6 +29,10 @@ const ProfilePfp = () => {
             {context?.user?.displayName}
           </p>
           <p className="text-sm text-indigo-600">@{context?.user?.username}</p>
+          {/* <p className="text-xs bg-blue-100 rounded-2xl text-blue-900 px-2 py-1">
+            Invite code:{" "}
+            <span className="font-semibold"> {context?.user?.fid}</span>
+          </p> */}
         </div>
       </div>
 
