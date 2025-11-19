@@ -6,12 +6,22 @@ import { SafeAreaContainer } from "@/components/safe-area-container";
 import Image from "next/image";
 import useAuth from "../useAuth";
 import Auth from "../Auth";
+import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { context, isLoading, isSDKLoaded } = useFrame();
+  const { context, isLoading, isSDKLoaded, setAuthData, authData } = useFrame();
   const fid = context?.user?.fid;
   const { authCheck } = useAuth();
   const { data, isLoading: authLoading, refetch } = authCheck(fid);
+
+  useEffect(() => {
+    if (data?.success && setAuthData) {
+      setAuthData(data.user);
+    }
+
+    console.log("auth data:", data);
+  }, [data, setAuthData]);
 
   if (isLoading || authLoading) {
     return (
@@ -46,7 +56,35 @@ export default function Home() {
   return (
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       <div className="bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen overflow-x-hidden">
-        {data && data.success ? <Demo /> : <Auth refetch={refetch} />}
+        {authData ? <Demo /> : <Auth refetch={refetch} />}
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+          gutter={15}
+          containerClassName=""
+          containerStyle={{}}
+          toasterId="default"
+          toastOptions={{
+            // Define default options
+            className: "",
+            duration: 5000,
+            removeDelay: 1000,
+            style: {
+              background:
+                "linear-gradient(90deg,rgba(2, 0, 36, 1) 0%, rgba(19, 19, 173, 1) 0%, rgba(7, 124, 227, 1) 100%)",
+              color: "#fff",
+            },
+
+            // Default options for specific types
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: "green",
+                secondary: "black",
+              },
+            },
+          }}
+        />
       </div>
       {/* <Demo /> */}
     </SafeAreaContainer>

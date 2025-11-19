@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
       if (res.status === 200) {
         const json = await res.json();
-        // console.log(json);
+        console.log(json);
         totalSuccessful += json.successfulTokens?.length || 0;
         totalInvalid += json.invalidTokens?.length || 0;
         totalRateLimited += json.rateLimitedTokens?.length || 0;

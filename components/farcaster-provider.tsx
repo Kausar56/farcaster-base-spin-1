@@ -11,6 +11,16 @@ export type RouteUnion =
   | "admin"
   | "airdrop";
 
+interface AuthData {
+  fid: string;
+  username: string;
+  address: string;
+  pfp: string;
+  earned: number;
+  invited: number;
+  refer_income: number;
+}
+
 interface FrameContextValue {
   context: Context.MiniAppContext | undefined;
   isLoading: boolean;
@@ -20,6 +30,9 @@ interface FrameContextValue {
   haptics: typeof sdk.haptics | undefined;
   route: RouteUnion;
   setRoute: (page: RouteUnion) => void;
+  quickAuth: typeof sdk.quickAuth | undefined;
+  authData: AuthData | undefined;
+  setAuthData: (data: AuthData) => void;
 }
 
 const FrameProviderContext = createContext<FrameContextValue | undefined>(
@@ -40,6 +53,7 @@ interface FrameProviderProps {
 
 export function FrameProvider({ children }: FrameProviderProps) {
   const [route, setRoute] = useState<RouteUnion>("lottery");
+  const [authData, setAuthData] = useState<AuthData | undefined>(undefined);
   const farcasterContextQuery = useQuery({
     queryKey: ["farcaster-context"],
     queryFn: async () => {
@@ -66,7 +80,10 @@ export function FrameProvider({ children }: FrameProviderProps) {
         isSDKLoaded: isReady && Boolean(farcasterContextQuery.data?.context),
         isEthProviderAvailable: Boolean(sdk.wallet.ethProvider),
         route,
+        quickAuth: sdk.quickAuth,
         setRoute,
+        authData,
+        setAuthData,
       }}
     >
       {children}

@@ -178,10 +178,10 @@ export default function FlexibleBXPSwap() {
       {/* Main Card */}
       <div className="bg-white rounded-2xl shadow-2xl border border-blue-100 overflow-hidden">
         {/* Header */}
-        <div className="bg-primary text-white px-6 py-3 text-center">
-          <div className="flex items-center justify-center gap-2 mb-1">
-            <Zap size={28} />
-            <h1 className="text-xl font-bold">Swap BXP</h1>
+        <div className="bg-primary text-white p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <Zap className="w-5 h-5" />
+            <h1 className="text-md font-bold">Swap BXP</h1>
           </div>
           <p className="text-blue-100 text-sm">
             Instant Exchange • 1 BXP = {getBxpToUsdtRate()} USDC

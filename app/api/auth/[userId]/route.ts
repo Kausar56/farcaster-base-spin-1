@@ -17,12 +17,12 @@ export async function GET(
   try {
     await dbConnect();
     const user = await User.findOne({ fid: userId });
-    if (user) {
-      return NextResponse.json({ success: true, data: user }, { status: 200 });
+    if (!user) {
+      return NextResponse.json({ success: false, user: user }, { status: 404 });
     }
-    return NextResponse.json({ success: false, data: user }, { status: 404 });
+    return NextResponse.json({ success: true, user: user }, { status: 200 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return NextResponse.json({ success: false }, { status: 400 });
   }
 }

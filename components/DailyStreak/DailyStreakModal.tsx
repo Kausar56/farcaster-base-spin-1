@@ -50,12 +50,12 @@ const DailyStreakModal = ({
       <div className="bg-gradient-to-tr from-blue-600 to-blue-500 relative rounded-2xl p-4 text-center max-w-md w-full">
         <span
           onClick={() => setShow(false)}
-          className="absolute right-3 top-3 text-red-500 p-1"
+          className="absolute right-3 top-3 text-red-500 p-1 cursor-pointer duration-75 hover:bg-white/20 rounded-full"
         >
           <X size={24} />
         </span>
         <PartyPopper className="mx-auto mb-4 text-yellow-500" size={48} />
-        <h2 className="text-3xl font-bold mb-4 text-white">Daily Streak!</h2>
+        <h2 className="text-3xl font-bold mb-4 text-white">Daily GM!</h2>
 
         <div className="flex items-center justify-center gap-2 mb-6">
           <Coins className="text-yellow-500" size={24} />

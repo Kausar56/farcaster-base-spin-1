@@ -17,13 +17,13 @@ export async function GET() {
       ogTitle: "Base Spin - Fun Lotto and Spin",
       ogDescription:
         "Don't miss the next draw! Join lottery and spin to earn BXP token.",
-      subtitle: "ETH Lotto and Spin Fun",
+      subtitle: "Base Lotto and Spin Fun",
       description:
         "Join the daily BXP rush. Spin or enter the lotto for a chance to win crypto. Players are winning up to 10x their entry every 6 hours",
       primaryCategory: "games",
       screenshotUrls: ["https://base-spin.vercel.app/screenshot1.png"],
       heroImageUrl: "https://base-spin.vercel.app/hero.png",
-      ogImageUrl: "https://base-spin.vercel.app/og-image.png",
+      ogImageUrl: "https://base-spin.vercel.app/hero.png",
       castShareUrl:
         "https://warpcast.com/~/compose?text=I+just+entered+this+Farcaster+Lottery+%F0%9F%92%B0%0A%0ATry+your+luck!+%F0%9F%91%87%0Ahttps%3A%2F%2Ffarcaster.xyz%2Fminiapps%2FOVGXH7QGFT1j%2Fbase-spin",
     },

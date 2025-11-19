@@ -16,50 +16,52 @@ const Leaderboard = () => {
   return (
     <>
       <AppHeader headerName="Leaderboard" />
-      <div className="w-full px-4 flex flex-col items-center gap-4 mb-8">
-        <div className="bg-white -mt-4 rounded-xl px-6 py-6 shadow-lg w-full flex justify-between">
-          <h1 className="text-gray-800 text-md font-bold text-center">
-            User Rank
-          </h1>
-          <h1 className="text-gray-800 text-md font-bold text-center">
-            Earned BXP
-          </h1>
+      <div className="w-full px-4 flex flex-col items-center gap-4 mb-4  ">
+        <div className="w-full bg-white rounded-xl  shadow-lg -mt-4 mb-16">
+          <div className="py-4 w-full flex justify-between px-4">
+            <h1 className="text-gray-800 text-md font-bold text-center">
+              User Rank
+            </h1>
+            <h1 className="text-gray-800 text-md font-bold text-center">
+              Earned BXP
+            </h1>
+          </div>
+
+          {isLoading && (
+            <div className="w-full flex flex-col items-center justify-center">
+              <Loader className="animate-spin text-blue-600 h-8 w-8" />
+            </div>
+          )}
+
+          {!isLoading && data && (
+            <div className="w-full flex flex-col gap-2 bg-white rounded-xl p-3 shadow-lg ">
+              {data?.users?.map(
+                (
+                  user: {
+                    fid: number;
+                    address: string;
+                    earned: number;
+                    username: string;
+                    pfp: string;
+                  },
+                  index: number
+                ) => (
+                  <Leader
+                    key={index}
+                    leader={{
+                      fid: user.fid,
+                      address: user.address,
+                      earned: user.earned,
+                      username: user.username,
+                      index: index + 1,
+                      pfp: user.pfp,
+                    }}
+                  />
+                )
+              )}
+            </div>
+          )}
         </div>
-
-        {isLoading && (
-          <div className="w-full flex flex-col items-center justify-center mt-4">
-            <Loader className="animate-spin text-blue-600 h-8 w-8" />
-          </div>
-        )}
-
-        {!isLoading && data && (
-          <div className="w-full flex flex-col gap-2 bg-white rounded-xl p-3 shadow-lg mb-16">
-            {data?.users?.map(
-              (
-                user: {
-                  fid: number;
-                  address: string;
-                  earned: number;
-                  username: string;
-                  pfp: string;
-                },
-                index: number
-              ) => (
-                <Leader
-                  key={index}
-                  leader={{
-                    fid: user.fid,
-                    address: user.address,
-                    earned: user.earned,
-                    username: user.username,
-                    index: index + 1,
-                    pfp: user.pfp,
-                  }}
-                />
-              )
-            )}
-          </div>
-        )}
       </div>
     </>
   );

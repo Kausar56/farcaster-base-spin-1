@@ -5,6 +5,8 @@ import { contractAbi } from "@/abi/abi";
 
 export async function POST(request: NextRequest) {
   const { userAddress, amount } = await request.json();
+  const fid = request.headers.get("x-fid");
+  console.log("Request for FID:", fid);
 
   // Validate input
   if (!userAddress || !amount) {

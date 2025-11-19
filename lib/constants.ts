@@ -70,6 +70,12 @@ const notificationsBtn = [
     title: "🎗️ Unclaimed rewards reminder!",
     body: "Open app and check for any unclaimed rewards ⚡!",
   },
+  {
+    id: 7,
+    name: "Invite started",
+    title: "🎉 Invite & Earn rewards!",
+    body: "Invite your friends & earn more BXP ⚡!",
+  },
 ];
 
 export { APP_URL, spinOptions, notificationsBtn };

@@ -55,9 +55,9 @@ const WinnerStatus = () => {
 
   const handleSharePost = () => {
     actions?.composeCast({
-      text: `🎉 I just won ${
-        pendingPrize ? pendingPrize[0].toString() : "ETH"
-      } playing the Base Spin Lottery Game! 🚀
+      text: `🎉 I just claimed ${
+        pendingPrize && formatUnits(pendingPrize[0], 18)
+      } BXP playing the Base Spin Lottery Game! 🚀
 
     Think you can beat my score? Try it now 👇`,
       embeds: ["https://farcaster.xyz/miniapps/OVGXH7QGFT1j/base-spin"],

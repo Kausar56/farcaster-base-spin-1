@@ -100,13 +100,8 @@ const XpAndStreak = () => {
     }
   }, [isClaimSuccess]);
   return (
-    <div className="flex justify-between items-center bg-white rounded-xl p-3 w-full shadow-lg">
-      <div>
-        <p className="text-blue-600 text-sm mb-1">Daily Streak</p>
-        <p className="text-xl font-bold text-orange-500">
-          {totalStreak?.toString()} 🔥
-        </p>
-      </div>
+    <div className="flex flex-col justify-center items-center gap-2">
+      <p className="text-xl font-bold text-orange-500">1 🔥</p>
 
       <button
         disabled={!isCanClaim || confirming}
@@ -120,7 +115,7 @@ const XpAndStreak = () => {
         {isPending || confirming
           ? "Claiming..."
           : isCanClaim
-          ? "Daily streak"
+          ? "Daily GM"
           : formattedTime}
       </button>
     </div>

@@ -6,25 +6,35 @@ type AuthArgs = {
   address?: `0x${string}`;
   username: string;
   pfp: string;
+  inviter?: number;
 };
 
 const useAuth = () => {
-  const { setRoute } = useFrame();
+  const { setRoute, quickAuth, setAuthData } = useFrame();
   const {
     mutateAsync: registerAsync,
     data: registerData,
     isPending: registerPending,
     isSuccess: registerSuccess,
   } = useMutation({
-    mutationFn: async ({ fid, address, username, pfp }: AuthArgs) => {
+    mutationFn: async ({ fid, address, username, pfp, inviter }: AuthArgs) => {
+      if (!quickAuth) {
+        throw new Error("QuickAuth is not available");
+      }
+      const { token } = await quickAuth.getToken();
+
       const res = await fetch("/api/auth", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           fid,
           address,
           username,
           pfp,
+          inviter,
         }),
       });
 
@@ -37,7 +47,10 @@ const useAuth = () => {
       return (await res.json()) as { success?: boolean; [key: string]: any };
     },
     onSuccess: (data) => {
-      if (setRoute && data?.success) setRoute("lottery");
+      if (setRoute && setAuthData && data?.success) {
+        setRoute("lottery");
+        setAuthData(data?.user);
+      }
     },
   });
 
@@ -46,8 +59,16 @@ const useAuth = () => {
       queryKey: ["auth", fid],
       queryFn: async () => {
         const url = `/api/auth/${fid}`;
+        if (!quickAuth) {
+          throw new Error("QuickAuth is not available");
+        }
+        const { token } = await quickAuth.getToken();
 
-        const res = await fetch(url);
+        const res = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!res.ok) {
           throw new Error("Failed to fetch auth");
         }
@@ -69,9 +90,16 @@ const useAuth = () => {
       userAddress: `0x${string}`;
       amount: string;
     }) => {
+      if (!quickAuth) {
+        throw new Error("QuickAuth is not available");
+      }
+      const { token } = await quickAuth.getToken();
       const res = await fetch("/api/auth/signature", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           userAddress,
           amount,

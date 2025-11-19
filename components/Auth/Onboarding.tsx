@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import {
   ChevronRight,
   Coins,
@@ -16,6 +16,8 @@ export default function OnboardingApp({ refetch }: { refetch: () => void }) {
   const { register, registerPending } = useAuth();
   const { address } = useAccount();
   const { actions, context } = useFrame();
+  const [inviter, setInviter] = useState<string | undefined>(undefined);
+  const [showInviterInput, setShowInviterInput] = useState(false);
 
   const handleRegister = async () => {
     if (!context) return;
@@ -24,16 +26,28 @@ export default function OnboardingApp({ refetch }: { refetch: () => void }) {
     const username = context?.user?.username;
     if (!fid || !address || !username || !pfp) return;
 
+    if (showInviterInput && !inviter) {
+      toast.error("Please enter inviter's fid");
+      return;
+    }
+    if (showInviterInput && inviter && isNaN(Number(inviter))) {
+      toast.error("Inviter's fid must be a number");
+      return;
+    }
+
     try {
       handleVibrate();
       await register(
-        { fid, address, username, pfp },
+        {
+          fid,
+          address,
+          username,
+          pfp,
+          inviter: inviter ? Number(inviter) : undefined,
+        },
         {
           onSuccess: () => {
             refetch();
-          },
-          onError: () => {
-            toast.error("Try again!");
           },
         }
       );
@@ -43,7 +57,7 @@ export default function OnboardingApp({ refetch }: { refetch: () => void }) {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Try again!");
+      toast.error("Failed. Try again!");
     }
   };
 
@@ -102,6 +116,14 @@ export default function OnboardingApp({ refetch }: { refetch: () => void }) {
               <span className="font-semibold">Daily Streak</span>
               <span className="bg-white/30 px-3 py-1 rounded-full text-sm">
                 +50 BXP
+              </span>
+            </div>
+          </div>
+          <div className="bg-gradient-to-r from-yellow-400 to-orange-500 p-2 rounded-2xl shadow-lg transform hover:scale-105 transition">
+            <div className="flex items-center justify-between text-white">
+              <span className="font-semibold">Invite Friends</span>
+              <span className="bg-white/30 px-3 py-1 rounded-full text-sm">
+                Each +50 BXP
               </span>
             </div>
           </div>
@@ -182,33 +204,57 @@ export default function OnboardingApp({ refetch }: { refetch: () => void }) {
 
         {/* Content */}
         <div className="p-8 pt-6">
-          <div className="mb-8 flex justify-center">
+          <div className="mb-3 flex justify-center">
             {steps[currentStep].icon}
           </div>
 
-          <div className="mb-8">{steps[currentStep].illustration}</div>
+          <div className="mb-3">{steps[currentStep].illustration}</div>
 
-          <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-3 text-center">
             {steps[currentStep].title}
           </h2>
 
-          <p className="text-gray-600 text-center leading-relaxed mb-8">
+          <p className="text-gray-600 text-center leading-relaxed mb-4">
             {steps[currentStep].description}
           </p>
 
           {/* Action Buttons */}
           <div className="space-y-3">
             {currentStep === steps.length - 1 ? (
-              <button
-                onClick={handleGetStarted}
-                disabled={registerPending}
-                className="w-full bg-primary text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
-              >
-                <span>
-                  {registerPending ? "Please wait..." : "Start Earning Now"}
-                </span>
-                <Sparkles className="w-5 h-5" />
-              </button>
+              <>
+                {showInviterInput && (
+                  <input
+                    type="text"
+                    placeholder="Enter invite code. E.g., 123456"
+                    value={inviter}
+                    onChange={(e) => setInviter(e.target.value)}
+                    className="w-full text-center font-semibold text-sm outline-none text-blue-700  px-2 py-2 border border-gray-300 rounded-full focus:ring-2 focus:ring-blue-400 transition"
+                  />
+                )}
+                <button
+                  onClick={handleGetStarted}
+                  disabled={registerPending}
+                  className="w-full bg-primary text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center space-x-2"
+                >
+                  <span>
+                    {registerPending ? "Please wait..." : "Start Earning Now"}
+                  </span>
+                  <Sparkles className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setShowInviterInput(!showInviterInput)}
+                  className="w-full text-center text-sm font-semibold text-blue-800 hover:text-blue-900 transition"
+                >
+                  {showInviterInput ? (
+                    "Don't have an invite code?"
+                  ) : (
+                    <span>
+                      Have an invite code?{" "}
+                      <span className="text-orange-500">Get 50 BXP!</span>
+                    </span>
+                  )}
+                </button>
+              </>
             ) : (
               <button
                 onClick={handleNext}

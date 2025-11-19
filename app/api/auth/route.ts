@@ -8,6 +8,7 @@ const requestSchema = z.object({
   fid: z.number(),
   username: z.string(),
   pfp: z.string(),
+  inviter: z.number().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -34,7 +35,19 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ success: false }, { status: 400 });
     }
-    return NextResponse.json({ success: true, data: user }, { status: 201 });
+
+    if (requestBody.data.inviter && requestBody.data.inviter !== user.fid) {
+      await User.updateOne(
+        { fid: requestBody.data.inviter },
+        { $inc: { invited: 1, refer_income: 50 } }
+      );
+      await User.updateOne(
+        { fid: requestBody.data.fid },
+        { $inc: { bxp: 50 } }
+      );
+    }
+
+    return NextResponse.json({ success: true, user: user }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false }, { status: 400 });
   }

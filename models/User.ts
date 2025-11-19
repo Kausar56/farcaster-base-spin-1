@@ -21,6 +21,14 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    invited: {
+      type: Number,
+      default: 0,
+    },
+    refer_income: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
