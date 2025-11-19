@@ -6,6 +6,8 @@ export const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN,
 });
 
+const KEY_PREFIX = "notification:";
+
 function getUserNotificationDetailsKey(fid: number): string {
   return `${fid}`;
 }
@@ -17,24 +19,27 @@ export async function getUserNotificationDetails(
     getUserNotificationDetailsKey(fid)
   );
 }
+
 export async function getUsersNotificationDetails(): Promise<
-  MiniAppNotificationDetails[] | []
+  MiniAppNotificationDetails[]
 > {
   let cursor = "0";
   const allUsers: MiniAppNotificationDetails[] = [];
 
   do {
     const [newCursor, keys] = await redis.scan(cursor, {
-      match: "*",
+      match: `*`,
       count: 1000,
     });
     cursor = newCursor;
 
-    for (const key of keys) {
-      const details = await redis.get<MiniAppNotificationDetails>(key);
-      if (details) {
-        allUsers.push(details);
-      }
+    if (keys.length > 0) {
+      const details = (await redis.mget(
+        ...keys
+      )) as (MiniAppNotificationDetails | null)[];
+      allUsers.push(
+        ...details.filter((d): d is MiniAppNotificationDetails => d !== null)
+      );
     }
   } while (cursor !== "0");
 
@@ -52,4 +57,40 @@ export async function deleteUserNotificationDetails(
   fid: number
 ): Promise<void> {
   await redis.del(getUserNotificationDetailsKey(fid));
+}
+
+export async function removeInvalidNotificationTokens(
+  invalidTokens: string[]
+): Promise<void> {
+  if (!Array.isArray(invalidTokens) || invalidTokens.length === 0) {
+    return;
+  }
+
+  const invalidTokenSet = new Set(invalidTokens);
+  const delPromises: Promise<number>[] = [];
+  let cursor = "0";
+
+  do {
+    const [nextCursor, keys] = await redis.scan(cursor, {
+      match: `${KEY_PREFIX}*`,
+      count: 1000,
+    });
+    cursor = nextCursor;
+
+    if (keys.length > 0) {
+      const details = (await redis.mget(...keys)) as ({
+        url: string;
+        token: string;
+      } | null)[];
+
+      keys.forEach((key, index) => {
+        const detail = details[index];
+        if (detail && invalidTokenSet.has(detail.token)) {
+          delPromises.push(redis.del(key));
+        }
+      });
+    }
+  } while (cursor !== "0");
+
+  await Promise.all(delPromises);
 }

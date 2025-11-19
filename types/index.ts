@@ -13,5 +13,6 @@ export interface LeaderProps {
     username: string;
     index: number;
     pfp: string;
+    invited: number;
   };
 }

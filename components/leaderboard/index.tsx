@@ -22,8 +22,12 @@ const Leaderboard = () => {
             <h1 className="text-gray-800 text-md font-bold text-center">
               User Rank
             </h1>
+
             <h1 className="text-gray-800 text-md font-bold text-center">
-              Earned BXP
+              Invited
+            </h1>
+            <h1 className="text-gray-800 text-md font-bold text-center">
+              BXP Earned
             </h1>
           </div>
 
@@ -43,6 +47,7 @@ const Leaderboard = () => {
                     earned: number;
                     username: string;
                     pfp: string;
+                    invited: number;
                   },
                   index: number
                 ) => (
@@ -55,6 +60,7 @@ const Leaderboard = () => {
                       username: user.username,
                       index: index + 1,
                       pfp: user.pfp,
+                      invited: user.invited,
                     }}
                   />
                 )

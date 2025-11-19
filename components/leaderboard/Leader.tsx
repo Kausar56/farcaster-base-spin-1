@@ -23,7 +23,7 @@ const Leader = ({ leader }: LeaderProps) => {
         "border-2 border-orange-500"
       } bg-primary text-white p-2 rounded-md cursor-pointer text-sm font-semibold duration-300 hover:bg-indigo-400/20 flex items-center justify-between`}
     >
-      <div className="flex items-center gap-2">
+      <div className="w-2/4 flex items-center gap-2">
         <p className="text-md">
           {leader?.index === 1 ? (
             <span className="text-2xl">🥇</span>
@@ -40,7 +40,7 @@ const Leader = ({ leader }: LeaderProps) => {
             <img src={leader?.pfp} alt="pfp" className="w-full h-full" />
           )}
         </div>
-        <p>
+        <p className="text-xs">
           {context?.user?.username === leader?.username ? (
             <span className="text-orange-500">You</span>
           ) : (
@@ -48,7 +48,8 @@ const Leader = ({ leader }: LeaderProps) => {
           )}
         </p>
       </div>
-      <p>{leader?.earned} BXP</p>
+      <p className=" text-center text-orange-500">{leader?.invited}</p>
+      <p className=" text-center">{leader?.earned} BXP</p>
     </div>
   );
 };
