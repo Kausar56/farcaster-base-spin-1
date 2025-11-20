@@ -126,7 +126,7 @@ const SpinResult = ({
         )}
 
         <button
-          className="mt-4 px-6 py-2 bg-blue-200/20 hover:bg-blue-200/50 rounded-full font-semibold hover:shadow-lg transition-shadow"
+          className="mt-4 text-white px-6 py-2 bg-blue-200/20 hover:bg-blue-200/50 rounded-full font-semibold hover:shadow-lg transition-shadow"
           onClick={() => setShowResult(false)}
         >
           Close

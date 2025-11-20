@@ -144,7 +144,7 @@ const PixelCatHolderAirdrop = () => {
       <div className="bg-primary text-white p-3">
         <div className="flex justify-center items-center gap-2 mb-1">
           <Coins className="w-5 h-5" />
-          <h1 className="text-lg font-bold">Weekly Airdrop {tokenId}</h1>
+          <h1 className="text-lg font-bold">Weekly Airdrop</h1>
         </div>
         <p className="text-blue-100 text-sm text-center">
           Airdrop for PixelCat NFT Holders

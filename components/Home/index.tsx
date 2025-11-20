@@ -7,14 +7,14 @@ import Leaderboard from "../leaderboard";
 import Admin from "../admin/Admin";
 import Lottery from "../Lottery";
 // import Giveaway from "../Giveaway";
-import DailyStreak from "../DailyStreak";
+// import DailyStreak from "../DailyStreak";
 import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
 import Airdrop from "../Airdrop";
 import { useEffect } from "react";
 import ClaimAirdrop from "../popup/ClaimAirdrop";
 
-export function Demo() {
+export function App() {
   const { route, actions } = useFrame();
   const { isConnected } = useAccount();
   useEffect(() => {

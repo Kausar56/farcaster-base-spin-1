@@ -1,6 +1,6 @@
 "use client";
 
-import { Demo } from "@/components/Home";
+import { App } from "@/components/Home";
 import { useFrame } from "@/components/farcaster-provider";
 import { SafeAreaContainer } from "@/components/safe-area-container";
 import Image from "next/image";
@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       <div className="bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen overflow-x-hidden">
-        {authData ? <Demo /> : <Auth refetch={refetch} />}
+        {authData ? <App /> : <Auth refetch={refetch} />}
         <Toaster
           position="top-center"
           reverseOrder={false}

@@ -1,9 +1,8 @@
-import { useFrame } from '@/components/farcaster-provider'
-import { APP_URL } from '@/lib/constants'
-import { useMutation } from '@tanstack/react-query'
+import { useFrame } from "@/components/farcaster-provider";
+import { APP_URL } from "@/lib/constants";
 
 export function FarcasterActions() {
-  const { actions } = useFrame()
+  const { actions } = useFrame();
 
   return (
     <div className="space-y-4 border border-[#333] rounded-md p-4">
@@ -30,7 +29,7 @@ export function FarcasterActions() {
               className="bg-white text-black rounded-md p-2 text-sm"
               onClick={() =>
                 actions?.composeCast({
-                  text: 'Check out this Monad Farcaster MiniApp Template!',
+                  text: "Check out this Monad Farcaster MiniApp Template!",
                   embeds: [`${APP_URL}`],
                 })
               }
@@ -40,7 +39,7 @@ export function FarcasterActions() {
             <button
               type="button"
               className="bg-white text-black rounded-md p-2 text-sm"
-              onClick={() => actions?.openUrl('https://docs.monad.xyz')}
+              onClick={() => actions?.openUrl("https://docs.monad.xyz")}
             >
               openUrl
             </button>
@@ -48,7 +47,7 @@ export function FarcasterActions() {
               type="button"
               className="bg-white text-black rounded-md p-2 text-sm"
               onClick={() =>
-                actions?.signIn({ nonce: '1201', acceptAuthAddress: true })
+                actions?.signIn({ nonce: "1201", acceptAuthAddress: true })
               }
             >
               signIn
@@ -66,5 +65,5 @@ export function FarcasterActions() {
         )}
       </div>
     </div>
-  )
+  );
 }
