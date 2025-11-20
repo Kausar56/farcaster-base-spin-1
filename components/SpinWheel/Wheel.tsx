@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 // import { Wheel } from "react-custom-roulette";
 import SpinButton from "./SpinButton";
 import dynamic from "next/dynamic";
-import { UseMutateFunction } from "@tanstack/react-query";
 import { useAccount } from "wagmi";
 import { spinOptions } from "@/lib/constants";
 
@@ -22,12 +21,6 @@ type WheelSpinProps = {
   totalSpins: number;
   dailySpins: number;
   saveData: (totalSpins: number, dailySpin: number) => void;
-  signMessage: UseMutateFunction<
-    { signature: string; nonce: bigint; isSuccess: boolean },
-    Error,
-    { userAddress: `0x${string}`; amount: string },
-    unknown
-  >;
 };
 
 const WheelSpin = ({
@@ -37,7 +30,6 @@ const WheelSpin = ({
   totalSpins,
   canSpin,
   saveData,
-  signMessage,
 }: WheelSpinProps) => {
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
@@ -51,14 +43,6 @@ const WheelSpin = ({
       setPrizeNumber(newPrizeNumber);
       setWinDetails(spinOptions[newPrizeNumber].option);
       setMustSpin(true);
-
-      if (spinOptions[newPrizeNumber].option != "Nothing!") {
-        const prize = spinOptions[newPrizeNumber].option.split(" ")[0];
-        signMessage({
-          userAddress: address,
-          amount: prize,
-        });
-      }
 
       if (audioRef.current && !isPlaying) {
         // Reset to start so playback always begins from the start
@@ -104,8 +88,32 @@ const WheelSpin = ({
     saveData(newDailySpins, newTotalSpins);
   };
 
+  // const handleSpeakerClick = () => {
+  //   if (audioRef.current) {
+  //     audioRef.current.paused
+  //       ? audioRef.current.play()
+  //       : audioRef.current.pause();
+  //     setIsPlaying(!audioRef.current.paused);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const audioPause = localStorage.getItem("spinAudioPause")?.toString();
+  //   return () => {
+  //     // Cleanup audio on unmount
+  //     if (audioRef.current) {
+  //       audioRef.current.pause();
+  //       try {
+  //         audioRef.current.currentTime = 0;
+  //       } catch (e) {
+  //         // ignore
+  //       }
+  //     }
+  //   };
+  // }, []);
+
   return (
-    <div className="w-full mt-4 flex flex-col items-center justify-center mb-4">
+    <div className="w-full mt-4 flex flex-col items-center justify-center mb-20">
       <audio
         className="hidden"
         ref={audioRef}
@@ -135,6 +143,10 @@ const WheelSpin = ({
         handleSpinClick={handleSpinClick}
         mustSpin={mustSpin}
       />
+
+      {/* <button className="text-gray-600">
+        <Volume2 />
+      </button> */}
     </div>
   );
 };

@@ -2,27 +2,28 @@ import { contractAbi } from "@/abi/abi";
 import { Coins, Frown, Gift, Trophy, X } from "lucide-react";
 import React from "react";
 import { parseEther } from "viem";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { useFrame } from "../farcaster-provider";
 import useUpdateEarnedPrize from "../useUpdateEarnedPrize";
 import toast from "react-hot-toast";
+import useAuth from "../useAuth";
+import { sign } from "crypto";
+import Modal from "../common/Modal";
 
 type SpinResultProps = {
   selectedPrize: string;
   setShowResult: (result: boolean) => void;
-  signMessageData?: { signature: string; nonce: bigint; isSuccess: boolean };
-  isSigning?: boolean;
   spinCount: number;
 };
 
 const SpinResult = ({
   selectedPrize,
   setShowResult,
-  signMessageData,
-  isSigning,
   spinCount,
 }: SpinResultProps) => {
   const { actions } = useFrame();
+  const { address } = useAccount();
+  const { signMessage, isSigning } = useAuth();
 
   const { writeContractAsync, isPending, isSuccess, isError } =
     useWriteContract();
@@ -30,46 +31,50 @@ const SpinResult = ({
   const { updateEarnedPrize } = useUpdateEarnedPrize();
 
   const claimPrize = async () => {
-    if (
-      !selectedPrize ||
-      isPending ||
-      isSuccess ||
-      !signMessageData ||
-      !signMessageData?.signature ||
-      !signMessageData?.nonce
-    ) {
+    if (!selectedPrize || isPending || isSigning) {
       return;
     }
-    const amount = selectedPrize.split(" ")[0];
-    const spinRewardToast = toast.loading("Claiming...");
-    await writeContractAsync(
-      {
-        abi: contractAbi.claimPrize.abi,
-        address: contractAbi.claimPrize.address,
-        functionName: "claimSpinWinPrize",
-        args: [
-          parseEther(amount),
-          signMessageData?.nonce!,
-          signMessageData?.signature! as `0x${string}`,
-        ],
-      },
-      {
-        onSuccess() {
-          toast.success("Claim success", { id: spinRewardToast });
-          updateEarnedPrize(amount);
-          setShowResult(false);
+    try {
+      const spinRewardToast = toast.loading("Initializing...");
+      const data = await signMessage({
+        userAddress: address!,
+        amount: selectedPrize.split(" ")[0],
+      });
 
-          if (spinCount === 1) {
-            handleGenerateCustomOGImage();
-          }
-        },
-        onError: () => {
-          toast.error("Claim failed", { id: spinRewardToast });
-        },
+      const signature = data?.signature;
+      const nonce = data?.nonce;
+
+      if (!signature || !nonce) {
+        return;
       }
-    );
-  };
+      const amount = selectedPrize.split(" ")[0];
+      toast.loading("Claiming...", { id: spinRewardToast });
+      await writeContractAsync(
+        {
+          abi: contractAbi.claimPrize.abi,
+          address: contractAbi.claimPrize.address,
+          functionName: "claimSpinWinPrize",
+          args: [parseEther(amount), nonce, signature as `0x${string}`],
+        },
+        {
+          onSuccess() {
+            toast.success("Claim success", { id: spinRewardToast });
+            updateEarnedPrize(amount);
+            setShowResult(false);
 
+            if (spinCount === 1) {
+              handleGenerateCustomOGImage();
+            }
+          },
+          onError: () => {
+            toast.error("Claim failed", { id: spinRewardToast });
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error claiming prize:", error);
+    }
+  };
   const handleGenerateCustomOGImage = () => {
     actions?.composeCast({
       text: `🎉 I just claimed ${selectedPrize} playing the Base Spin Game! 🚀
@@ -80,15 +85,8 @@ const SpinResult = ({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 ">
-      <div className="bg-violet-600/20 relative backdrop-blur-md rounded-3xl p-8 text-center max-w-md w-full transform">
-        <span
-          onClick={() => setShowResult(false)}
-          className="absolute right-3 top-3 text-red-500 p-1"
-        >
-          <X size={24} />
-        </span>
-
+    <Modal>
+      <div className="g-primary relative rounded-2xl p-4 text-center max-w-md w-full">
         {selectedPrize === "Nothing!" ? (
           <Frown className="mx-auto mb-4 text-yellow-500" size={48} />
         ) : (
@@ -100,7 +98,7 @@ const SpinResult = ({
         {selectedPrize !== "Nothing!" && (
           <div className="flex items-center justify-center gap-2 mb-6">
             <Coins className="text-yellow-500" size={24} />
-            <span className="text-2xl font-bold text-green-600">
+            <span className="text-2xl font-bold text-green-400">
               +{selectedPrize}
             </span>
           </div>
@@ -115,19 +113,26 @@ const SpinResult = ({
             <button
               onClick={claimPrize}
               disabled={isPending || isSigning}
-              className="px-6 flex mx-auto gap-2 items-center py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full font-semibold hover:shadow-lg animate-bounce transition-shadow"
+              className="px-6 flex mx-auto gap-2 items-center py-3 bg-gradient-to-r from-blue-300 to-blue-100 text-blue-600 rounded-full font-semibold hover:shadow-lg animate-bounce transition-shadow"
             >
               <Gift />
               {isSigning
                 ? "Initializing..."
                 : !isError && isPending
                 ? "Claiming..."
-                : "Claim!"}
+                : "Claim Prize"}
             </button>
           )
         )}
+
+        <button
+          className="mt-4 px-6 py-2 bg-blue-200/20 hover:bg-blue-200/50 rounded-full font-semibold hover:shadow-lg transition-shadow"
+          onClick={() => setShowResult(false)}
+        >
+          Close
+        </button>
       </div>
-    </div>
+    </Modal>
   );
 };
 

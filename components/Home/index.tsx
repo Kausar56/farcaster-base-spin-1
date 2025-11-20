@@ -12,6 +12,7 @@ import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
 import Airdrop from "../Airdrop";
 import { useEffect } from "react";
+import ClaimAirdrop from "../popup/ClaimAirdrop";
 
 export function Demo() {
   const { route, actions } = useFrame();
@@ -23,7 +24,8 @@ export function Demo() {
   }, [actions]);
   return isConnected ? (
     <>
-      <DailyStreak />
+      {/* <DailyStreak /> */}
+      <ClaimAirdrop />
       <div className="">
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}

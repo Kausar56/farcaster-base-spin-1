@@ -13,7 +13,6 @@ const SpinWheelGame = () => {
   const [totalSpins, setTotalSpins] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [canSpin, setCanSpin] = useState(true);
-  const { signMessage, isSigning, signMessageData } = useAuth();
 
   // Load saved data on component mount
   useEffect(() => {
@@ -31,7 +30,7 @@ const SpinWheelGame = () => {
     }
 
     setTotalSpins(savedData.totalSpins || 0);
-    // localStorage.removeItem("animalSpinData");
+    localStorage.removeItem("animalSpinData");
   }, []);
 
   const saveData = (newDailySpins: number, newTotalSpins: number) => {
@@ -64,16 +63,13 @@ const SpinWheelGame = () => {
         saveData={saveData}
         dailySpins={dailySpins}
         totalSpins={totalSpins}
-        signMessage={signMessage}
       />
 
       {/* Result Display */}
       {showResult && winDetails && (
         <SpinResult
-          signMessageData={signMessageData}
           selectedPrize={winDetails}
           setShowResult={setShowResult}
-          isSigning={isSigning}
           spinCount={dailySpins}
         />
       )}

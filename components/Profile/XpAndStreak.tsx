@@ -15,11 +15,11 @@ import toast from "react-hot-toast";
 
 const XpAndStreak = () => {
   const { address } = useAccount();
-  const { signMessage, signMessageData } = useAuth();
+  const { signMessage, isSigning } = useAuth();
   const { updateEarnedPrize } = useUpdateEarnedPrize();
   const { writeContractAsync, isPending, data } = useWriteContract();
 
-  const { data: totalStreak } = useReadContract({
+  const { data: totalStreak, refetch: refetchTotalStreak } = useReadContract({
     address: contractAbi.claimPrize.address,
     abi: contractAbi.claimPrize.abi,
     functionName: "userGMCount",
@@ -35,7 +35,7 @@ const XpAndStreak = () => {
   const {
     data: isDailyClaimAvailable,
     isLoading: dailyClaimAvailableLoading,
-    refetch,
+    refetch: refetchDailyClaimAvailable,
   } = useReadContract({
     address: contractAbi.claimPrize.address,
     abi: contractAbi.claimPrize.abi,
@@ -48,14 +48,21 @@ const XpAndStreak = () => {
   });
 
   const handleClaim = async () => {
-    const signature = signMessageData?.signature;
-    const nonce = signMessageData?.nonce;
+    if (!dailyClaimAmount || dailyClaimAvailableLoading) return;
+    const dailyClaiming = toast.loading("Signing...");
+    const data = await signMessage({
+      userAddress: address as `0x${string}`,
+      amount: formatUnits(dailyClaimAmount, 18),
+    });
+
+    const signature = data?.signature;
+    const nonce = data?.nonce;
 
     if (!signature || !nonce) {
       return;
     }
     try {
-      const dailyClaiming = toast.loading("Claiming...");
+      toast.loading("Claiming...", { id: dailyClaiming });
       await writeContractAsync(
         {
           address: contractAbi.claimPrize.address,
@@ -81,38 +88,31 @@ const XpAndStreak = () => {
   const { isSuccess: isClaimSuccess, isLoading: confirming } =
     useWaitForTransactionReceipt({
       hash: data,
+      confirmations: 1,
     });
 
   const isCanClaim = isDailyClaimAvailable && isDailyClaimAvailable[0];
 
   useEffect(() => {
-    if (isCanClaim && address && dailyClaimAmount) {
-      signMessage({
-        userAddress: address,
-        amount: formatUnits(dailyClaimAmount, 18),
-      });
-    }
-  }, [isCanClaim, address, dailyClaimAmount]);
-
-  useEffect(() => {
     if (isClaimSuccess) {
-      refetch();
+      refetchDailyClaimAvailable();
+      refetchTotalStreak();
     }
   }, [isClaimSuccess]);
   return (
     <div className="flex flex-col justify-center items-center gap-2">
-      <p className="text-xl font-bold text-orange-500">1 🔥</p>
+      <p className="text-xl font-bold text-orange-500">{totalStreak} 🔥</p>
 
       <button
-        disabled={!isCanClaim || confirming}
+        disabled={!isCanClaim || confirming || isSigning}
         onClick={handleClaim}
         className={`${
-          isPending || !isCanClaim || confirming
+          isPending || !isCanClaim || confirming || isSigning
             ? "bg-gray-300 text-gray-500 cursor-not-allowed"
             : "bg-primary hover:bg-blue-600 text-white"
         }  font-bold py-2 px-4 rounded-xl transition-all transform hover:scale-105 active:scale-95  shadow-lg`}
       >
-        {isPending || confirming
+        {isPending || confirming || isSigning
           ? "Claiming..."
           : isCanClaim
           ? "Daily GM"

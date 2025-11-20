@@ -18,16 +18,10 @@ const useAuth = () => {
     isSuccess: registerSuccess,
   } = useMutation({
     mutationFn: async ({ fid, address, username, pfp, inviter }: AuthArgs) => {
-      if (!quickAuth) {
-        throw new Error("QuickAuth is not available");
-      }
-      const { token } = await quickAuth.getToken();
-
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           fid,
@@ -59,16 +53,7 @@ const useAuth = () => {
       queryKey: ["auth", fid],
       queryFn: async () => {
         const url = `/api/auth/${fid}`;
-        if (!quickAuth) {
-          throw new Error("QuickAuth is not available");
-        }
-        const { token } = await quickAuth.getToken();
-
-        const res = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(url);
         if (!res.ok) {
           throw new Error("Failed to fetch auth");
         }
@@ -79,7 +64,7 @@ const useAuth = () => {
   };
 
   const {
-    mutate: signMessage,
+    mutateAsync: signMessage,
     isPending: isSigning,
     data: signMessageData,
   } = useMutation({

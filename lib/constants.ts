@@ -76,6 +76,18 @@ const notificationsBtn = [
     title: "🎉 Invite & Earn rewards!",
     body: "Invite your friends & earn more BXP ⚡!",
   },
+  {
+    id: 8,
+    name: "Draw ending",
+    title: "🚩 Draw is ending soon!",
+    body: "Hurry up and participate before end! 🏃‍➡️",
+  },
+  {
+    id: 8,
+    name: "Weekly Airdrop",
+    title: "✔️ Check Airdrop Eligibility!",
+    body: "Weekly airdrop program enabled, check now! ✨",
+  },
 ];
 
 export { APP_URL, spinOptions, notificationsBtn };

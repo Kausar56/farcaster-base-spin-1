@@ -59,5 +59,5 @@ export async function middleware(request: NextRequest) {
 
 // middleware  route matcher
 export const config = {
-  matcher: ["/api/auth/:path*"], // PROTECT all /api/auth/* routes
+  matcher: ["/api/auth/signature/:path*"], // PROTECT all /api/auth/* routes
 };
