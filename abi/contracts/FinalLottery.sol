@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
-/// @title DailyLottery - Fully Configurable Lottery System with Pull Payment Pattern (Chainlink VRF V2.5)
+/// @title DailyLottery - Free Entry Lottery with ERC20 Token Prizes (Chainlink VRF V2.5)
 /// @author Your Name
-/// @notice Lottery with adjustable entry fee, draw intervals, and cool-down periods using Chainlink VRF V2.5 for secure randomness.
+/// @notice Lottery with free entry and fixed ERC20 token prize pool distribution
 
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 // VRF V2.5 Imports (includes ConfirmedOwner)
 import {VRFConsumerBaseV2Plus} from "@chainlink/contracts/src/v0.8/vrf/dev/VRFConsumerBaseV2Plus.sol";
 import {VRFV2PlusClient} from "@chainlink/contracts/src/v0.8/vrf/dev/libraries/VRFV2PlusClient.sol";
@@ -19,6 +21,8 @@ contract DailyLottery is
     VRFConsumerBaseV2Plus,
     AutomationCompatibleInterface
 {
+    using SafeERC20 for IERC20;
+
     /*//////////////////////////////////////////////////////////////
                             CHAINLINK VRF V2.5
     //////////////////////////////////////////////////////////////*/
@@ -31,7 +35,9 @@ contract DailyLottery is
 
     // The number of random words to request
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
-    uint32 private constant CALLBACK_GAS_LIMIT = 1000000;
+    uint32 public callbackGasLimit;
+    uint32 public constant MIN_CALLBACK_GAS_LIMIT = 500000;   // 500k minimum
+    uint32 public constant MAX_CALLBACK_GAS_LIMIT = 5000000;  // 5M maximum
 
     // Whether to pay in native tokens (true) or LINK (false)
     bool private immutable i_nativePayment;
@@ -50,14 +56,22 @@ contract DailyLottery is
     bool private s_hasPendingDraw;
 
     /*//////////////////////////////////////////////////////////////
+                            ERC20 PRIZE TOKEN
+    //////////////////////////////////////////////////////////////*/
+
+    /// @notice The ERC20 token used for prizes (e.g., XP Token)
+    IERC20 public immutable prizeToken;
+
+    /// @notice Fixed prize pool amount per round (in token wei)
+    uint256 public prizePoolAmount;
+
+    /*//////////////////////////////////////////////////////////////
                             CONSTANTS
     //////////////////////////////////////////////////////////////*/
 
     /// @notice Minimum participants required for a draw to occur
     uint256 public constant MIN_PARTICIPANTS = 3;
 
-    uint256 public constant MIN_ENTRY_FEE = 0.0000001 ether;
-    uint256 public constant MAX_ENTRY_FEE = 10 ether;
     uint256 public constant MIN_DRAW_INTERVAL = 10 minutes;
     uint256 public constant MAX_DRAW_INTERVAL = 7 days;
     uint256 public constant MIN_COOLDOWN_PERIOD = 5 minutes;
@@ -67,7 +81,6 @@ contract DailyLottery is
                             CONFIGURABLE VARIABLES
     //////////////////////////////////////////////////////////////*/
 
-    uint256 public entryFee;
     uint256 public drawInterval;
     uint256 public cooldownPeriod;
 
@@ -78,8 +91,6 @@ contract DailyLottery is
     uint256 public roundId;
     uint256 public roundStartTime;
     uint256 public nextDrawTime;
-    uint256 public roundPot;
-    uint256 public carryOverPot;
     address[] private participants;
     mapping(address => bool) public hasEntered;
     bool public isInCooldown;
@@ -120,40 +131,32 @@ contract DailyLottery is
         uint256[] randomWords
     );
 
-    event Entered(
-        address indexed user,
-        uint256 indexed roundId,
-        uint256 entryFee
-    );
+    event Entered(address indexed user, uint256 indexed roundId);
 
     event WinnersDrawn(
         uint256 indexed roundId,
         address[] winners,
-        uint256 totalPot,
-        uint256 distributed,
+        uint256 totalPrizePool,
         uint256 winnersCount,
         uint256 perWinnerAmount
     );
 
     event RoundCancelled(
         uint256 indexed roundId,
-        uint256 participants,
-        uint256 potCarriedOver
+        uint256 participants
     );
 
     event RoundStarted(
         uint256 indexed roundId,
         uint256 startTime,
         uint256 drawTime,
-        uint256 entryFee
+        uint256 prizePool
     );
 
-    event EntryFeeUpdated(uint256 oldFee, uint256 newFee);
     event DrawIntervalUpdated(uint256 oldInterval, uint256 newInterval);
     event CooldownPeriodUpdated(uint256 oldPeriod, uint256 newPeriod);
-    event ReserveWithdrawn(address indexed to, uint256 amount);
+    event PrizePoolAmountUpdated(uint256 oldAmount, uint256 newAmount);
     event OwnerForcedDraw(uint256 indexed roundId, address indexed caller);
-    //
     event DrawPendingDueToPause(
         uint256 indexed roundId,
         uint256 indexed requestId
@@ -172,6 +175,7 @@ contract DailyLottery is
         uint256 amount,
         string reason
     );
+    event TokensDeposited(address indexed from, uint256 amount);
 
     /*//////////////////////////////////////////////////////////////
                                 CONSTRUCTOR
@@ -183,16 +187,23 @@ contract DailyLottery is
     /// @param keyHash Key hash (gas lane) for the VRF
     /// @param subscriptionId VRF subscription ID
     /// @param nativePayment Whether to pay in native tokens (true) or LINK (false)
+    /// @param _prizeToken Address of the ERC20 token for prizes
+    /// @param _prizePoolAmount Initial prize pool amount per round
     constructor(
         address initialOwner,
         address vrfCoordinator,
         bytes32 keyHash,
         uint256 subscriptionId,
-        bool nativePayment
+        bool nativePayment,
+        address _prizeToken,
+        uint256 _prizePoolAmount
     )
-        VRFConsumerBaseV2Plus(vrfCoordinator) // Initialize VRFConsumerBaseV2Plus (includes ConfirmedOwner)
+        VRFConsumerBaseV2Plus(vrfCoordinator)
     {
-        // Transfer ownership to initial owner (VRFConsumerBaseV2Plus sets msg.sender as owner)
+        require(_prizeToken != address(0), "DailyLottery: Invalid token address");
+        require(_prizePoolAmount > 0, "DailyLottery: Prize pool must be greater than 0");
+
+        // Transfer ownership to initial owner
         if (initialOwner != msg.sender) {
             transferOwnership(initialOwner);
         }
@@ -202,28 +213,27 @@ contract DailyLottery is
         i_subscriptionId = subscriptionId;
         i_nativePayment = nativePayment;
 
+        // Set prize token
+        prizeToken = IERC20(_prizeToken);
+        prizePoolAmount = _prizePoolAmount;
+
         // Default Lottery settings
-        entryFee = 0.000005 ether;
-        drawInterval = 10 minutes;
-        cooldownPeriod = 5 minutes;
+        drawInterval = 6 hours;
+        cooldownPeriod = 15 minutes;
 
         roundId = 1;
         roundStartTime = block.timestamp;
         nextDrawTime = block.timestamp + drawInterval;
         isInCooldown = false;
+        callbackGasLimit = 2500000;
 
-        emit RoundStarted(roundId, roundStartTime, nextDrawTime, entryFee);
+        emit RoundStarted(roundId, roundStartTime, nextDrawTime, prizePoolAmount);
     }
 
     /*//////////////////////////////////////////////////////////////
                     CHAINLINK AUTOMATION
-//////////////////////////////////////////////////////////////*/
+    //////////////////////////////////////////////////////////////*/
 
-    /**
-     * @notice Called off-chain by Chainlink nodes to see if upkeep is needed.
-     * @dev Returns true if either draw time has ended or cooldown has ended.
-     *      Automation is disabled when contract is paused.
-     */
     function checkUpkeep(
         bytes calldata
     )
@@ -239,7 +249,7 @@ contract DailyLottery is
 
         bool canDraw = (!isInCooldown &&
             block.timestamp >= nextDrawTime &&
-            s_requestId == 0); // No pending VRF request
+            s_requestId == 0);
 
         bool canExitCooldown = (isInCooldown &&
             block.timestamp >= roundStartTime);
@@ -255,18 +265,12 @@ contract DailyLottery is
         }
     }
 
-    /**
-     * @notice Called on-chain by Chainlink Keepers when checkUpkeep returns true.
-     * @dev Automatically draws winners or exits cooldown. Non-reentrant protection
-     *      is provided by the functions it calls (drawWinners, _exitCooldown).
-     */
     function performUpkeep(bytes calldata performData) external override {
         require(performData.length > 0, "DailyLottery: Empty perform data");
 
         (string memory action) = abi.decode(performData, (string));
 
         if (keccak256(bytes(action)) == keccak256(bytes("DRAW"))) {
-            // Verify conditions again (protection against front-running/stale data)
             require(!isInCooldown, "DailyLottery: Round in cool-down period");
             require(
                 block.timestamp >= nextDrawTime,
@@ -277,12 +281,11 @@ contract DailyLottery is
 
             // Check minimum participants and either draw or cancel
             if (participants.length < MIN_PARTICIPANTS || participants.length == 0) {
-                _cancelRoundAndRefund();
+                _cancelRound();
             } else {
                 _requestRandomness();
             }
         } else if (keccak256(bytes(action)) == keccak256(bytes("EXIT"))) {
-            // Verify conditions again
             require(isInCooldown, "DailyLottery: Not in cool-down");
             require(
                 block.timestamp >= roundStartTime,
@@ -295,9 +298,6 @@ contract DailyLottery is
         }
     }
 
-    /**
-     * @notice Internal function to exit cooldown and start accepting entries
-     */
     function _exitCooldown() internal {
         isInCooldown = false;
     }
@@ -306,14 +306,14 @@ contract DailyLottery is
                             EXTERNAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function enter() external payable nonReentrant whenNotPaused {
+    /// @notice Enter the lottery (FREE - no entry fee required)
+    function enter() external nonReentrant whenNotPaused {
         // Auto-exit cooldown if period elapsed
         if (isInCooldown && block.timestamp >= roundStartTime) {
             isInCooldown = false;
         }
 
         require(!isInCooldown, "DailyLottery: Round in cool-down period");
-        require(msg.value == entryFee, "DailyLottery: Incorrect entry fee");
         require(
             !hasEntered[msg.sender],
             "DailyLottery: Already entered this round"
@@ -323,14 +323,8 @@ contract DailyLottery is
         hasEntered[msg.sender] = true;
         hasParticipated[roundId][msg.sender] = true;
 
-        unchecked {
-            roundPot += msg.value;
-        }
-
-        emit Entered(msg.sender, roundId, entryFee);
+        emit Entered(msg.sender, roundId);
     }
-
-    // Previous drawWinners Func here.....
 
     /// @notice Owner can force a draw (for testing/emergency)
     function forceDraw() external onlyOwner nonReentrant {
@@ -341,7 +335,6 @@ contract DailyLottery is
         require(!isInCooldown, "DailyLottery: Round in cool-down period");
 
         emit OwnerForcedDraw(roundId, msg.sender);
-        // Initiate VRF request
         _requestRandomness();
     }
 
@@ -372,6 +365,7 @@ contract DailyLottery is
                         PULL PAYMENT FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    /// @notice Withdraw prize tokens
     function withdrawPrize() external nonReentrant {
         uint256 amount = pendingWithdrawals[msg.sender];
         require(amount > 0, "DailyLottery: No prize to withdraw");
@@ -383,20 +377,8 @@ contract DailyLottery is
             totalPendingWithdrawals -= amount;
         }
 
-        // Transfer funds
-        (bool success, ) = msg.sender.call{value: amount}("");
-
-        if (!success) {
-            // Revert state if transfer fails
-            pendingWithdrawals[msg.sender] = amount;
-            unchecked {
-                totalPendingWithdrawals += amount;
-                failedPaymentCount[msg.sender]++;
-            }
-
-            emit WithdrawalFailed(msg.sender, amount, "Transfer failed");
-            revert("DailyLottery: Prize transfer failed");
-        }
+        // Transfer ERC20 tokens
+        prizeToken.safeTransfer(msg.sender, amount);
 
         emit PrizeWithdrawn(msg.sender, amount);
     }
@@ -405,7 +387,6 @@ contract DailyLottery is
         address[] calldata winners
     ) external onlyOwner nonReentrant {
         uint256 successCount = 0;
-        uint256 failCount = 0;
 
         for (uint256 i = 0; i < winners.length; ) {
             address winner = winners[i];
@@ -420,26 +401,29 @@ contract DailyLottery is
                 }
 
                 // Try to transfer
-                (bool success, ) = winner.call{value: amount, gas: 50000}("");
-
-                if (success) {
-                    emit PrizeWithdrawn(winner, amount);
-                    unchecked {
-                        successCount++;
+                try prizeToken.transfer(winner, amount) returns (bool success) {
+                    if (success) {
+                        emit PrizeWithdrawn(winner, amount);
+                        unchecked {
+                            successCount++;
+                        }
+                    } else {
+                        // Revert state if failed
+                        pendingWithdrawals[winner] = amount;
+                        unchecked {
+                            totalPendingWithdrawals += amount;
+                            failedPaymentCount[winner]++;
+                        }
+                        emit WithdrawalFailed(winner, amount, "Token transfer returned false");
                     }
-                } else {
+                } catch {
                     // Revert state if failed
                     pendingWithdrawals[winner] = amount;
                     unchecked {
                         totalPendingWithdrawals += amount;
                         failedPaymentCount[winner]++;
-                        failCount++;
                     }
-                    emit WithdrawalFailed(
-                        winner,
-                        amount,
-                        "Batch transfer failed"
-                    );
+                    emit WithdrawalFailed(winner, amount, "Token transfer reverted");
                 }
             }
 
@@ -448,11 +432,7 @@ contract DailyLottery is
             }
         }
 
-        // Emit summary event or revert if all failed
-        require(
-            successCount > 0 || failCount == 0,
-            "DailyLottery: All batch withdrawals failed"
-        );
+        require(successCount > 0, "DailyLottery: All batch withdrawals failed");
     }
 
     function checkPendingPrize(
@@ -464,18 +444,6 @@ contract DailyLottery is
     /*//////////////////////////////////////////////////////////////
                         CONFIGURATION FUNCTIONS
     //////////////////////////////////////////////////////////////*/
-
-    function setEntryFee(uint256 newEntryFee) external onlyOwner {
-        require(
-            newEntryFee >= MIN_ENTRY_FEE && newEntryFee <= MAX_ENTRY_FEE,
-            "DailyLottery: Entry fee out of bounds"
-        );
-
-        uint256 oldFee = entryFee;
-        entryFee = newEntryFee;
-
-        emit EntryFeeUpdated(oldFee, newEntryFee);
-    }
 
     function setDrawInterval(uint256 newInterval) external onlyOwner {
         require(
@@ -503,36 +471,65 @@ contract DailyLottery is
         emit CooldownPeriodUpdated(oldPeriod, newPeriod);
     }
 
-    function withdrawReserve(
-        address payable to,
+    /// @notice Update the prize pool amount for future rounds
+    /// @param newAmount New prize pool amount in token wei
+    function setPrizePoolAmount(uint256 newAmount) external onlyOwner {
+        require(newAmount > 0, "DailyLottery: Prize pool must be greater than 0");
+        
+        uint256 oldAmount = prizePoolAmount;
+        prizePoolAmount = newAmount;
+
+        emit PrizePoolAmountUpdated(oldAmount, newAmount);
+    }
+
+    /// @notice Owner deposits prize tokens into contract
+    /// @param amount Amount of tokens to deposit
+    function depositPrizeTokens(uint256 amount) external onlyOwner {
+        require(amount > 0, "DailyLottery: Amount must be greater than 0");
+        
+        prizeToken.safeTransferFrom(msg.sender, address(this), amount);
+        
+        emit TokensDeposited(msg.sender, amount);
+    }
+
+    /// @notice Emergency withdraw tokens (only for excess/stuck tokens)
+    /// @param token Token address to withdraw
+    /// @param to Address to send tokens to
+    /// @param amount Amount to withdraw
+    function emergencyWithdrawTokens(
+        address token,
+        address to,
         uint256 amount
     ) external onlyOwner nonReentrant {
-        require(
-            to != address(0),
-            "DailyLottery: Cannot withdraw to zero address"
-        );
-        require(amount > 0, "DailyLottery: Amount must be greater than zero");
+        require(to != address(0), "DailyLottery: Invalid address");
+        require(amount > 0, "DailyLottery: Amount must be greater than 0");
 
-        // Calculate available reserve (excluding active pot and pending prizes)
-        uint256 lockedFunds = roundPot + carryOverPot + totalPendingWithdrawals;
-        // Safe calculation
-        uint256 availableReserve;
-        if (address(this).balance > lockedFunds) {
-            availableReserve = address(this).balance - lockedFunds;
-        } else {
-            availableReserve = 0;
+        IERC20 tokenContract = IERC20(token);
+        
+        // If it's the prize token, ensure we don't withdraw locked funds
+        if (token == address(prizeToken)) {
+            uint256 balance = tokenContract.balanceOf(address(this));
+            uint256 availableBalance = balance - totalPendingWithdrawals;
+            
+            require(
+                amount <= availableBalance,
+                "DailyLottery: Insufficient available balance (funds locked for prizes)"
+            );
         }
 
-        require(
-            amount <= availableReserve,
-            "DailyLottery: Insufficient reserve (funds locked in active pot or pending prizes)"
-        );
-
-        (bool success, ) = to.call{value: amount}("");
-        require(success, "DailyLottery: Withdraw transfer failed");
-
-        emit ReserveWithdrawn(to, amount);
+        tokenContract.safeTransfer(to, amount);
     }
+
+    /// @notice Update the VRF callback gas limit
+/// @param newLimit New gas limit (must be between MIN and MAX)
+function setCallbackGasLimit(uint32 newLimit) external onlyOwner {
+    require(
+        newLimit >= MIN_CALLBACK_GAS_LIMIT && newLimit <= MAX_CALLBACK_GAS_LIMIT,
+        "DailyLottery: Gas limit out of bounds"
+    );
+    require(s_requestId == 0, "DailyLottery: Cannot change during pending draw");
+    callbackGasLimit = newLimit;
+}
 
     /*//////////////////////////////////////////////////////////////
                     WINNER CHECKING VIEW FUNCTIONS
@@ -579,7 +576,6 @@ contract DailyLottery is
             bool wasCancelled
         )
     {
-        // Only return result if we're in cooldown (just after a draw)
         if (!isInCooldown || roundId == 1) {
             return (false, 0, 0, false);
         }
@@ -648,7 +644,7 @@ contract DailyLottery is
         view
         returns (
             uint256 currentRound,
-            uint256 currentEntryFee,
+            uint256 currentPrizePool,
             uint256 currentDrawInterval,
             uint256 currentCooldownPeriod,
             bool inCooldown,
@@ -657,7 +653,7 @@ contract DailyLottery is
         )
     {
         currentRound = roundId;
-        currentEntryFee = entryFee;
+        currentPrizePool = prizePoolAmount;
         currentDrawInterval = drawInterval;
         currentCooldownPeriod = cooldownPeriod;
         inCooldown = isInCooldown;
@@ -670,7 +666,6 @@ contract DailyLottery is
         }
     }
 
-    /// @notice Get comprehensive draw status - updated to reflect pending VRF request
     function getDrawStatus()
         external
         view
@@ -679,8 +674,7 @@ contract DailyLottery is
             uint256 drawTime,
             bool canDrawNow,
             uint256 participantCount,
-            uint256 currentPot,
-            uint256 totalPot,
+            uint256 currentPrizePool,
             bool meetsMinimum,
             uint256 expectedWinners,
             uint256 estimatedPrizePerWinner,
@@ -690,13 +684,11 @@ contract DailyLottery is
     {
         drawTime = nextDrawTime;
         participantCount = participants.length;
-        currentPot = roundPot;
-        totalPot = roundPot + carryOverPot;
+        currentPrizePool = prizePoolAmount;
         meetsMinimum = participantCount >= MIN_PARTICIPANTS;
         inCooldown = isInCooldown;
         pendingRequestId = s_requestId;
 
-        // Cannot draw if a request is already pending
         bool isRequestPending = s_requestId != 0;
 
         if (
@@ -716,13 +708,11 @@ contract DailyLottery is
             canDrawNow = false;
         }
 
-        // Calculate expected winners and prize
         if (meetsMinimum && !isInCooldown) {
             (
                 expectedWinners,
-                ,
                 estimatedPrizePerWinner
-            ) = _calculateSmartDistribution(participantCount, totalPot);
+            ) = _calculateSmartDistribution(participantCount, prizePoolAmount);
         }
     }
 
@@ -730,21 +720,16 @@ contract DailyLottery is
         external
         view
         returns (
-            uint256 totalBalance,
-            uint256 activeRoundPot,
-            uint256 carryOver,
+            uint256 totalTokenBalance,
             uint256 pendingPrizes,
-            uint256 availableReserve
+            uint256 availableTokens
         )
     {
-        totalBalance = address(this).balance;
-        activeRoundPot = roundPot;
-        carryOver = carryOverPot;
+        totalTokenBalance = prizeToken.balanceOf(address(this));
         pendingPrizes = totalPendingWithdrawals;
 
-        uint256 lockedFunds = roundPot + carryOverPot + totalPendingWithdrawals;
-        availableReserve = totalBalance > lockedFunds
-            ? totalBalance - lockedFunds
+        availableTokens = totalTokenBalance > pendingPrizes
+            ? totalTokenBalance - pendingPrizes
             : 0;
     }
 
@@ -752,15 +737,10 @@ contract DailyLottery is
                             VRF INTERFACE
     //////////////////////////////////////////////////////////////*/
 
-    /// @notice Chainlink VRF V2.5 Callback function
-    /// @dev Called by the VRF Coordinator when randomness is available
-    /// @param requestId The request ID originally returned by requestRandomWords()
-    /// @param randomWords The array of random words
     function fulfillRandomWords(
         uint256 requestId,
         uint256[] calldata randomWords
     ) internal override {
-        // Revert if the request ID does not match the current one
         require(
             requestId == s_requestId,
             "DailyLottery: Unexpected request ID"
@@ -770,7 +750,6 @@ contract DailyLottery is
             "DailyLottery: No random words returned"
         );
 
-        // Reset request ID immediately to allow a new request in the next round
         s_requestId = 0;
 
         emit VRFFulfilled(requestId, roundId, randomWords);
@@ -782,7 +761,6 @@ contract DailyLottery is
             return;
         }
 
-        // Continue the draw process now that we have the random number
         _executeDrawAndDistribute(randomWords[0]);
     }
 
@@ -790,26 +768,22 @@ contract DailyLottery is
                             INTERNAL FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    /// @notice Request randomness from Chainlink VRF V2.5
     function _requestRandomness() internal {
-        // Prevent a new request if one is already pending
         require(
             s_requestId == 0,
             "DailyLottery: A VRF request is already pending"
         );
 
-        // Save participants and pot before clearing them in the _startCooldownAndNewRound step
         s_currentParticipantsCount = participants.length;
-        s_currentTotalPot = roundPot + carryOverPot;
+        s_currentTotalPot = prizePoolAmount;
         s_requestParticipants[roundId] = participants;
 
-        // Request a single random number using VRF V2.5
         s_requestId = s_vrfCoordinator.requestRandomWords(
             VRFV2PlusClient.RandomWordsRequest({
                 keyHash: i_keyHash,
                 subId: i_subscriptionId,
                 requestConfirmations: REQUEST_CONFIRMATIONS,
-                callbackGasLimit: CALLBACK_GAS_LIMIT,
+                callbackGasLimit: callbackGasLimit,
                 numWords: 1,
                 extraArgs: VRFV2PlusClient._argsToBytes(
                     VRFV2PlusClient.ExtraArgsV1({
@@ -819,86 +793,52 @@ contract DailyLottery is
             })
         );
 
-        // Prepare for the next round immediately, the actual prize allocation happens in the callback
         _startCooldownAndNewRound();
 
         emit VRFRequested(s_requestId, roundId - 1, i_keyHash);
     }
 
-    /// @notice Cancel round and refund all participants
-    function _cancelRoundAndRefund() internal {
+    function _cancelRound() internal {
         uint256 currentRoundId = roundId;
-        uint256 potToRefund = roundPot;
-        uint256 refundAmount = entryFee;
 
-        // Refund all participants using pull payment pattern
-        for (uint256 i = 0; i < participants.length; ) {
-            address participant = participants[i];
-
-            unchecked {
-                pendingWithdrawals[participant] += refundAmount;
-                totalPendingWithdrawals += refundAmount;
-                ++i;
-            }
-
-            emit PrizeAllocated(participant, currentRoundId, refundAmount);
-        }
-
-        // 3. Round mark as cancelled
         isRoundCancelled[currentRoundId] = true;
 
-        emit RoundCancelled(currentRoundId, participants.length, potToRefund);
+        emit RoundCancelled(currentRoundId, participants.length);
 
-        carryOverPot = 0;
-        roundPot = 0;
-
-        // Start new round
         _startCooldownAndNewRound();
     }
 
-    /// @notice Execute winner selection and fund distribution (Pull Payment Pattern)
-    /// @param randomWord The random number from the VRF callback
     function _executeDrawAndDistribute(uint256 randomWord) internal {
-        // Use the saved data from the request transaction (roundId - 1 is the round that just ended)
         uint256 drawRoundId = roundId - 1;
         address[] memory currentParticipants = s_requestParticipants[
             drawRoundId
         ];
 
-        // Ensure we clean up the temporary storage for the previous round
         delete s_requestParticipants[drawRoundId];
 
         uint256 totalPot = s_currentTotalPot;
         uint256 participantCount = s_currentParticipantsCount;
 
-        // Calculate smart distribution
         (
             uint256 winnerCount,
-            uint256 distributionPercentage,
             uint256 prizePerWinner
         ) = _calculateSmartDistribution(participantCount, totalPot);
 
-        // Select winners using the random word
         address[] memory winners = _selectWinners(
             winnerCount,
             currentParticipants,
             randomWord
         );
 
-        uint256 distributeAmount = (totalPot * distributionPercentage) / 100;
-
-        // Store round results for winner tracking
         roundWinners[drawRoundId] = winners;
         roundPrizePerWinner[drawRoundId] = prizePerWinner;
         roundTotalPot[drawRoundId] = totalPot;
         roundWinnerCount[drawRoundId] = winners.length;
 
-        // Allocate prizes to winners (Pull Payment Pattern)
         for (uint256 i = 0; i < winners.length; ) {
             address winner = winners[i];
             isWinner[drawRoundId][winner] = true;
 
-            // Add to pending withdrawals instead of direct transfer
             unchecked {
                 pendingWithdrawals[winner] += prizePerWinner;
                 totalPendingWithdrawals += prizePerWinner;
@@ -915,18 +855,12 @@ contract DailyLottery is
             drawRoundId,
             winners,
             totalPot,
-            distributeAmount,
             winners.length,
             prizePerWinner
         );
-
-        // Reset carry over pot
-        carryOverPot = 0;
     }
 
-    /// @notice Start cool-down period and prepare for new round
     function _startCooldownAndNewRound() internal {
-        // Clear participants for the *new* round
         uint256 len = participants.length;
         for (uint256 i = 0; i < len; ) {
             hasEntered[participants[i]] = false;
@@ -936,17 +870,15 @@ contract DailyLottery is
         }
 
         delete participants;
-        roundPot = 0;
         unchecked {
             ++roundId;
         }
 
-        // Enter cool-down mode
         isInCooldown = true;
         roundStartTime = block.timestamp + cooldownPeriod;
         nextDrawTime = roundStartTime + drawInterval;
 
-        emit RoundStarted(roundId, roundStartTime, nextDrawTime, entryFee);
+        emit RoundStarted(roundId, roundStartTime, nextDrawTime, prizePoolAmount);
     }
 
     function exitCooldown() external onlyOwner {
@@ -967,40 +899,32 @@ contract DailyLottery is
         pure
         returns (
             uint256 winnerCount,
-            uint256 distributionPercentage,
             uint256 prizePerWinner
         )
     {
         if (participantCount < 5) {
-            winnerCount = 1;
-            distributionPercentage = 80;
+            winnerCount = 2;
+            
         } else if (participantCount >= 5 && participantCount < 10) {
-            winnerCount = 1;
-            distributionPercentage = 80;
-        } else if (participantCount >= 10 && participantCount < 20) {
             winnerCount = 3;
-            distributionPercentage = 75;
-        } else if (participantCount >= 20 && participantCount < 40) {
+            
+        } else if (participantCount >= 10 && participantCount < 20) {
             winnerCount = 4;
-            distributionPercentage = 70;
-        } else if (participantCount >= 40 && participantCount < 80) {
+            
+        } else if (participantCount >= 20 && participantCount < 40) {
             winnerCount = 5;
-            distributionPercentage = 65;
+           
+        } else if (participantCount >= 40 && participantCount < 80) {
+            winnerCount = 10;
         } else {
-            winnerCount = 6;
-            distributionPercentage = 60;
+            winnerCount = 20;
         }
 
-        uint256 distributeAmount = (totalPot * distributionPercentage) / 100;
-        prizePerWinner = distributeAmount / winnerCount;
+        prizePerWinner = totalPot / winnerCount;
 
-        return (winnerCount, distributionPercentage, prizePerWinner);
+        return (winnerCount, prizePerWinner);
     }
 
-    /// @notice Select unique winners using the VRF random word
-    /// @param count Number of winners to select
-    /// @param currentParticipants Array of participants for the drawing round
-    /// @param randomSeed The secure random number from Chainlink VRF
     function _selectWinners(
         uint256 count,
         address[] memory currentParticipants,
@@ -1013,18 +937,17 @@ contract DailyLottery is
 
         address[] memory winners = new address[](actualWinnerCount);
         bool[] memory isChosen = new bool[](participantCount);
-        uint256 entropy = randomSeed; // Use the VRF random word as the initial entropy
+        uint256 entropy = randomSeed;
 
         uint256 selectedCount = 0;
         uint256 attempts = 0;
-        uint256 maxAttempts = actualWinnerCount * 10; // Safety break
+        uint256 maxAttempts = actualWinnerCount * 10;
 
         if (maxAttempts > 500) {
-            maxAttempts = 500; // Absolute maximum
+            maxAttempts = 500;
         }
 
         while (selectedCount < actualWinnerCount && attempts < maxAttempts) {
-            // Use keccak256 with the entropy and attempt count for multiple 'random' selections
             uint256 randomIndex = uint256(
                 keccak256(abi.encodePacked(entropy, attempts))
             ) % participantCount;
@@ -1042,7 +965,6 @@ contract DailyLottery is
             }
         }
 
-        // Ensure we got all winners
         require(
             selectedCount == actualWinnerCount,
             "DailyLottery: Failed to select all winners"
@@ -1053,22 +975,19 @@ contract DailyLottery is
 
     /*//////////////////////////////////////////////////////////////
                     EMERGENCY FUNCTIONS
-//////////////////////////////////////////////////////////////*/
+    //////////////////////////////////////////////////////////////*/
 
-/// @notice Emergency withdraw - only if contract is paused and stuck
-/// @dev Should only be used if VRF fails permanently or critical bug found
-/// @param to Address to send funds to
-function emergencyWithdrawAll(address payable to) external onlyOwner {
-    require(paused(), "DailyLottery: Must be paused for emergency withdraw");
-    require(to != address(0), "DailyLottery: Invalid address");
-    
-    uint256 balance = address(this).balance;
-    require(balance > 0, "DailyLottery: No funds to withdraw");
-    
-    (bool success, ) = to.call{value: balance}("");
-    require(success, "DailyLottery: Emergency withdraw failed");
-    
-}
+    /// @notice Emergency withdraw - only if contract is paused and stuck
+    function emergencyWithdrawAll(address payable to) external onlyOwner {
+        require(paused(), "DailyLottery: Must be paused for emergency withdraw");
+        require(to != address(0), "DailyLottery: Invalid address");
+        
+        uint256 balance = address(this).balance;
+        require(balance > 0, "DailyLottery: No funds to withdraw");
+        
+        (bool success, ) = to.call{value: balance}("");
+        require(success, "DailyLottery: Emergency withdraw failed");
+    }
 
     /*//////////////////////////////////////////////////////////////
                             RECEIVE FUNCTIONS

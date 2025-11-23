@@ -5653,7 +5653,7 @@ export const contractAbi = {
     ],
   },
   DailyLottery: {
-    address: "0xdC79d7fA367b2EE539AB05CCa95D43bEF60E40ED",
+    address: "0x62bF7D9Dd1BAc19e9A6C486B5721978Edd3b1968",
     abi: [
       {
         inputs: [],
@@ -5686,11 +5686,11 @@ export const contractAbi = {
         inputs: [
           {
             internalType: "uint256",
-            name: "amount",
+            name: "pseudoRandomWord",
             type: "uint256",
           },
         ],
-        name: "depositPrizeTokens",
+        name: "emergencyFulfillVRF",
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
@@ -5809,25 +5809,6 @@ export const contractAbi = {
         inputs: [
           {
             indexed: false,
-            internalType: "uint32",
-            name: "oldLimit",
-            type: "uint32",
-          },
-          {
-            indexed: false,
-            internalType: "uint32",
-            name: "newLimit",
-            type: "uint32",
-          },
-        ],
-        name: "CallbackGasLimitUpdated",
-        type: "event",
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: false,
             internalType: "uint256",
             name: "oldPeriod",
             type: "uint256",
@@ -5854,6 +5835,19 @@ export const contractAbi = {
         ],
         name: "CoordinatorSet",
         type: "event",
+      },
+      {
+        inputs: [
+          {
+            internalType: "uint256",
+            name: "amount",
+            type: "uint256",
+          },
+        ],
+        name: "depositPrizeTokens",
+        outputs: [],
+        stateMutability: "nonpayable",
+        type: "function",
       },
       {
         anonymous: false,
@@ -5891,45 +5885,6 @@ export const contractAbi = {
           },
         ],
         name: "DrawPendingDueToPause",
-        type: "event",
-      },
-      {
-        inputs: [
-          {
-            internalType: "uint256",
-            name: "pseudoRandomWord",
-            type: "uint256",
-          },
-        ],
-        name: "emergencyFulfillVRF",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: "uint256",
-            name: "roundId",
-            type: "uint256",
-          },
-        ],
-        name: "EmergencyModeDisabled",
-        type: "event",
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: "uint256",
-            name: "roundId",
-            type: "uint256",
-          },
-        ],
-        name: "EmergencyModeEnabled",
         type: "event",
       },
       {
@@ -6007,25 +5962,6 @@ export const contractAbi = {
         outputs: [],
         stateMutability: "nonpayable",
         type: "function",
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: "uint256",
-            name: "roundId",
-            type: "uint256",
-          },
-          {
-            indexed: false,
-            internalType: "uint256",
-            name: "count",
-            type: "uint256",
-          },
-        ],
-        name: "MaxParticipantsReached",
-        type: "event",
       },
       {
         anonymous: false,
@@ -6184,7 +6120,7 @@ export const contractAbi = {
             type: "address",
           },
           {
-            indexed: true,
+            indexed: false,
             internalType: "uint256",
             name: "amount",
             type: "uint256",
@@ -7105,11 +7041,6 @@ export const contractAbi = {
             name: "canReset",
             type: "bool",
           },
-          {
-            internalType: "uint256",
-            name: "estimatedGasNeeded",
-            type: "uint256",
-          },
         ],
         stateMutability: "view",
         type: "function",
@@ -7133,19 +7064,6 @@ export const contractAbi = {
             internalType: "bool",
             name: "",
             type: "bool",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "MAX_BATCH_WITHDRAWAL",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
           },
         ],
         stateMutability: "view",
@@ -7180,32 +7098,6 @@ export const contractAbi = {
       {
         inputs: [],
         name: "MAX_DRAW_INTERVAL",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "MAX_HISTORY_QUERY_RANGE",
-        outputs: [
-          {
-            internalType: "uint256",
-            name: "",
-            type: "uint256",
-          },
-        ],
-        stateMutability: "view",
-        type: "function",
-      },
-      {
-        inputs: [],
-        name: "MAX_PARTICIPANTS",
         outputs: [
           {
             internalType: "uint256",
