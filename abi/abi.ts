@@ -761,41 +761,8 @@
 //     ],
 //   },
 //   DailyLottery: {
-//     address: "0x72c805415e9bf9931b13f3bd42ee17a73319b5c8",
+//     address: "0x72c2e7Bc5C79EDBA7D44d9d447d16D6A0fC494A7",
 //     abi: [
-//       {
-//         inputs: [],
-//         name: "acceptOwnership",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "address[]",
-//             name: "winners",
-//             type: "address[]",
-//           },
-//         ],
-//         name: "batchWithdrawPrizes",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "address payable",
-//             name: "to",
-//             type: "address",
-//           },
-//         ],
-//         name: "emergencyWithdrawAll",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
 //       {
 //         inputs: [
 //           {
@@ -938,19 +905,6 @@
 //         type: "event",
 //       },
 //       {
-//         inputs: [
-//           {
-//             internalType: "uint256",
-//             name: "amount",
-//             type: "uint256",
-//           },
-//         ],
-//         name: "depositPrizeTokens",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
 //         anonymous: false,
 //         inputs: [
 //           {
@@ -989,36 +943,6 @@
 //         type: "event",
 //       },
 //       {
-//         inputs: [
-//           {
-//             internalType: "address",
-//             name: "token",
-//             type: "address",
-//           },
-//           {
-//             internalType: "address",
-//             name: "to",
-//             type: "address",
-//           },
-//           {
-//             internalType: "uint256",
-//             name: "amount",
-//             type: "uint256",
-//           },
-//         ],
-//         name: "emergencyWithdrawTokens",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "enter",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
 //         anonymous: false,
 //         inputs: [
 //           {
@@ -1036,20 +960,6 @@
 //         ],
 //         name: "Entered",
 //         type: "event",
-//       },
-//       {
-//         inputs: [],
-//         name: "exitCooldown",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "forceDraw",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
 //       },
 //       {
 //         anonymous: false,
@@ -1109,13 +1019,6 @@
 //         type: "event",
 //       },
 //       {
-//         inputs: [],
-//         name: "pause",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
 //         anonymous: false,
 //         inputs: [
 //           {
@@ -1140,19 +1043,6 @@
 //         ],
 //         name: "PendingDrawCompleted",
 //         type: "event",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "bytes",
-//             name: "performData",
-//             type: "bytes",
-//           },
-//         ],
-//         name: "performUpkeep",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
 //       },
 //       {
 //         anonymous: false,
@@ -1218,24 +1108,6 @@
 //         type: "event",
 //       },
 //       {
-//         inputs: [
-//           {
-//             internalType: "uint256",
-//             name: "requestId",
-//             type: "uint256",
-//           },
-//           {
-//             internalType: "uint256[]",
-//             name: "randomWords",
-//             type: "uint256[]",
-//           },
-//         ],
-//         name: "rawFulfillRandomWords",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
 //         anonymous: false,
 //         inputs: [
 //           {
@@ -1286,71 +1158,6 @@
 //         type: "event",
 //       },
 //       {
-//         inputs: [
-//           {
-//             internalType: "uint32",
-//             name: "newLimit",
-//             type: "uint32",
-//           },
-//         ],
-//         name: "setCallbackGasLimit",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "uint256",
-//             name: "newPeriod",
-//             type: "uint256",
-//           },
-//         ],
-//         name: "setCooldownPeriod",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "address",
-//             name: "_vrfCoordinator",
-//             type: "address",
-//           },
-//         ],
-//         name: "setCoordinator",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "uint256",
-//             name: "newInterval",
-//             type: "uint256",
-//           },
-//         ],
-//         name: "setDrawInterval",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "uint256",
-//             name: "newAmount",
-//             type: "uint256",
-//           },
-//         ],
-//         name: "setPrizePoolAmount",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
-//       },
-//       {
 //         anonymous: false,
 //         inputs: [
 //           {
@@ -1368,19 +1175,6 @@
 //         ],
 //         name: "TokensDeposited",
 //         type: "event",
-//       },
-//       {
-//         inputs: [
-//           {
-//             internalType: "address",
-//             name: "to",
-//             type: "address",
-//           },
-//         ],
-//         name: "transferOwnership",
-//         outputs: [],
-//         stateMutability: "nonpayable",
-//         type: "function",
 //       },
 //       {
 //         anonymous: false,
@@ -1412,12 +1206,62 @@
 //           },
 //           {
 //             indexed: false,
+//             internalType: "uint256",
+//             name: "randomWord",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "VRFEmergencyFulfilled",
+//         type: "event",
+//       },
+//       {
+//         anonymous: false,
+//         inputs: [
+//           {
+//             indexed: true,
+//             internalType: "uint256",
+//             name: "requestId",
+//             type: "uint256",
+//           },
+//           {
+//             indexed: true,
+//             internalType: "uint256",
+//             name: "roundId",
+//             type: "uint256",
+//           },
+//           {
+//             indexed: false,
 //             internalType: "uint256[]",
 //             name: "randomWords",
 //             type: "uint256[]",
 //           },
 //         ],
 //         name: "VRFFulfilled",
+//         type: "event",
+//       },
+//       {
+//         anonymous: false,
+//         inputs: [
+//           {
+//             indexed: true,
+//             internalType: "uint256",
+//             name: "requestId",
+//             type: "uint256",
+//           },
+//           {
+//             indexed: true,
+//             internalType: "uint256",
+//             name: "roundId",
+//             type: "uint256",
+//           },
+//           {
+//             indexed: false,
+//             internalType: "string",
+//             name: "reason",
+//             type: "string",
+//           },
+//         ],
+//         name: "VRFRequestCancelled",
 //         type: "event",
 //       },
 //       {
@@ -1513,21 +1357,114 @@
 //       },
 //       {
 //         inputs: [],
-//         name: "unpause",
-//         outputs: [],
-//         stateMutability: "nonpayable",
+//         name: "MAX_CALLBACK_GAS_LIMIT",
+//         outputs: [
+//           {
+//             internalType: "uint32",
+//             name: "",
+//             type: "uint32",
+//           },
+//         ],
+//         stateMutability: "view",
 //         type: "function",
 //       },
 //       {
 //         inputs: [],
-//         name: "withdrawPrize",
+//         name: "MAX_COOLDOWN_PERIOD",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "MAX_DRAW_INTERVAL",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "MIN_CALLBACK_GAS_LIMIT",
+//         outputs: [
+//           {
+//             internalType: "uint32",
+//             name: "",
+//             type: "uint32",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "MIN_COOLDOWN_PERIOD",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "MIN_DRAW_INTERVAL",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "MIN_PARTICIPANTS",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "acceptOwnership",
 //         outputs: [],
 //         stateMutability: "nonpayable",
 //         type: "function",
 //       },
 //       {
-//         stateMutability: "payable",
-//         type: "receive",
+//         inputs: [
+//           {
+//             internalType: "address[]",
+//             name: "winners",
+//             type: "address[]",
+//           },
+//         ],
+//         name: "batchWithdrawPrizes",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
 //       },
 //       {
 //         inputs: [],
@@ -1540,6 +1477,13 @@
 //           },
 //         ],
 //         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "cancelStuckVRFRequest",
+//         outputs: [],
+//         stateMutability: "nonpayable",
 //         type: "function",
 //       },
 //       {
@@ -1672,6 +1616,19 @@
 //         type: "function",
 //       },
 //       {
+//         inputs: [
+//           {
+//             internalType: "uint256",
+//             name: "amount",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "depositPrizeTokens",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
 //         inputs: [],
 //         name: "drawInterval",
 //         outputs: [
@@ -1687,12 +1644,95 @@
 //       {
 //         inputs: [
 //           {
+//             internalType: "uint256",
+//             name: "pseudoRandomWord",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "emergencyFulfillVRF",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "address payable",
+//             name: "to",
+//             type: "address",
+//           },
+//         ],
+//         name: "emergencyWithdrawAll",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "address",
+//             name: "token",
+//             type: "address",
+//           },
+//           {
+//             internalType: "address",
+//             name: "to",
+//             type: "address",
+//           },
+//           {
+//             internalType: "uint256",
+//             name: "amount",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "emergencyWithdrawTokens",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "enter",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "exitCooldown",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
 //             internalType: "address",
 //             name: "",
 //             type: "address",
 //           },
 //         ],
 //         name: "failedPaymentCount",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "",
+//             type: "uint256",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "forceDraw",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "generateEmergencyRandomness",
 //         outputs: [
 //           {
 //             internalType: "uint256",
@@ -1922,6 +1962,44 @@
 //         type: "function",
 //       },
 //       {
+//         inputs: [],
+//         name: "getVRFRequestInfo",
+//         outputs: [
+//           {
+//             internalType: "uint256",
+//             name: "requestId",
+//             type: "uint256",
+//           },
+//           {
+//             internalType: "bool",
+//             name: "hasPending",
+//             type: "bool",
+//           },
+//           {
+//             internalType: "uint256",
+//             name: "participantCount",
+//             type: "uint256",
+//           },
+//           {
+//             internalType: "uint256",
+//             name: "savedPot",
+//             type: "uint256",
+//           },
+//           {
+//             internalType: "uint32",
+//             name: "gasLimit",
+//             type: "uint32",
+//           },
+//           {
+//             internalType: "bool",
+//             name: "isPaused",
+//             type: "bool",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
 //         inputs: [
 //           {
 //             internalType: "address",
@@ -2010,6 +2088,29 @@
 //         type: "function",
 //       },
 //       {
+//         inputs: [],
+//         name: "isVRFRequestStuck",
+//         outputs: [
+//           {
+//             internalType: "bool",
+//             name: "isStuck",
+//             type: "bool",
+//           },
+//           {
+//             internalType: "uint256",
+//             name: "waitTime",
+//             type: "uint256",
+//           },
+//           {
+//             internalType: "bool",
+//             name: "canReset",
+//             type: "bool",
+//           },
+//         ],
+//         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
 //         inputs: [
 //           {
 //             internalType: "uint256",
@@ -2028,97 +2129,6 @@
 //             internalType: "bool",
 //             name: "",
 //             type: "bool",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MAX_CALLBACK_GAS_LIMIT",
-//         outputs: [
-//           {
-//             internalType: "uint32",
-//             name: "",
-//             type: "uint32",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MAX_COOLDOWN_PERIOD",
-//         outputs: [
-//           {
-//             internalType: "uint256",
-//             name: "",
-//             type: "uint256",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MAX_DRAW_INTERVAL",
-//         outputs: [
-//           {
-//             internalType: "uint256",
-//             name: "",
-//             type: "uint256",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MIN_CALLBACK_GAS_LIMIT",
-//         outputs: [
-//           {
-//             internalType: "uint32",
-//             name: "",
-//             type: "uint32",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MIN_COOLDOWN_PERIOD",
-//         outputs: [
-//           {
-//             internalType: "uint256",
-//             name: "",
-//             type: "uint256",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MIN_DRAW_INTERVAL",
-//         outputs: [
-//           {
-//             internalType: "uint256",
-//             name: "",
-//             type: "uint256",
-//           },
-//         ],
-//         stateMutability: "view",
-//         type: "function",
-//       },
-//       {
-//         inputs: [],
-//         name: "MIN_PARTICIPANTS",
-//         outputs: [
-//           {
-//             internalType: "uint256",
-//             name: "",
-//             type: "uint256",
 //           },
 //         ],
 //         stateMutability: "view",
@@ -2148,6 +2158,13 @@
 //           },
 //         ],
 //         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "pause",
+//         outputs: [],
+//         stateMutability: "nonpayable",
 //         type: "function",
 //       },
 //       {
@@ -2183,6 +2200,19 @@
 //         type: "function",
 //       },
 //       {
+//         inputs: [
+//           {
+//             internalType: "bytes",
+//             name: "performData",
+//             type: "bytes",
+//           },
+//         ],
+//         name: "performUpkeep",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
 //         inputs: [],
 //         name: "prizePoolAmount",
 //         outputs: [
@@ -2206,6 +2236,24 @@
 //           },
 //         ],
 //         stateMutability: "view",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "uint256",
+//             name: "requestId",
+//             type: "uint256",
+//           },
+//           {
+//             internalType: "uint256[]",
+//             name: "randomWords",
+//             type: "uint256[]",
+//           },
+//         ],
+//         name: "rawFulfillRandomWords",
+//         outputs: [],
+//         stateMutability: "nonpayable",
 //         type: "function",
 //       },
 //       {
@@ -2342,6 +2390,71 @@
 //         type: "function",
 //       },
 //       {
+//         inputs: [
+//           {
+//             internalType: "uint32",
+//             name: "newLimit",
+//             type: "uint32",
+//           },
+//         ],
+//         name: "setCallbackGasLimit",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "uint256",
+//             name: "newPeriod",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "setCooldownPeriod",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "address",
+//             name: "_vrfCoordinator",
+//             type: "address",
+//           },
+//         ],
+//         name: "setCoordinator",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "uint256",
+//             name: "newInterval",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "setDrawInterval",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "uint256",
+//             name: "newAmount",
+//             type: "uint256",
+//           },
+//         ],
+//         name: "setPrizePoolAmount",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
 //         inputs: [],
 //         name: "totalPendingWithdrawals",
 //         outputs: [
@@ -2353,6 +2466,37 @@
 //         ],
 //         stateMutability: "view",
 //         type: "function",
+//       },
+//       {
+//         inputs: [
+//           {
+//             internalType: "address",
+//             name: "to",
+//             type: "address",
+//           },
+//         ],
+//         name: "transferOwnership",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "unpause",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         inputs: [],
+//         name: "withdrawPrize",
+//         outputs: [],
+//         stateMutability: "nonpayable",
+//         type: "function",
+//       },
+//       {
+//         stateMutability: "payable",
+//         type: "receive",
 //       },
 //     ],
 //   },
@@ -5653,7 +5797,7 @@ export const contractAbi = {
     ],
   },
   DailyLottery: {
-    address: "0x62bF7D9Dd1BAc19e9A6C486B5721978Edd3b1968",
+    address: "0xA803314D7045f3AC31E7E0C1373d7124C40ECa66",
     abi: [
       {
         inputs: [],
