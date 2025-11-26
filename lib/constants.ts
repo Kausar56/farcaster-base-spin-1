@@ -61,7 +61,7 @@ const notificationsBtn = [
   {
     id: 5,
     name: "Mint NFT",
-    title: "🎉 MINT your Pixel Cat!",
+    title: "🎉 MINT your Warplet Monster!",
     body: "Get Exclusive rewards and utilities for Holder ⚡!",
   },
   {

@@ -56,7 +56,7 @@ export default function Home() {
   return (
     <SafeAreaContainer insets={context?.client.safeAreaInsets}>
       <div className="bg-gradient-to-b from-blue-50 to-blue-100 min-h-screen overflow-x-hidden">
-        {authData ? <App /> : <Auth refetch={refetch} />}
+        {authData && !isLoading ? <App /> : <Auth refetch={refetch} />}
         <Toaster
           position="top-center"
           reverseOrder={false}

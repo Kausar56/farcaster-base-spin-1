@@ -15,12 +15,12 @@ const ClaimAirdropDialog = ({
   const handleCheckEligibility = () => {
     setRoute("airdrop");
     setShow(false);
-    localStorage.setItem("hasSeenAirdropDialog", "true");
+    localStorage.setItem("hasSeenAirdrop", "true");
   };
 
   const handleClose = () => {
     setShow(false);
-    localStorage.setItem("hasSeenAirdropDialog", "true");
+    localStorage.setItem("hasSeenAirdrop", "true");
   };
   return (
     <Modal>
@@ -36,7 +36,7 @@ const ClaimAirdropDialog = ({
 
         <div className="flex items-center justify-center gap-2 mb-6">
           <span className="text-md font-bold text-gray-100">
-            Pixel Cat holder will get Airdrop every week! 🎉
+            Warplet Monster holder will get Airdrop every week! 🎉
           </span>
         </div>
 

@@ -43,7 +43,8 @@ const Contract = ({ contract }: { contract: string }) => {
         {(contract === "claimPrize" ||
           contract === "DailyLottery" ||
           contract === "FlexibleBXPSwap" ||
-          contract === "PixelCatHolderAirdrop") &&
+          contract === "PixelCatHolderAirdrop" ||
+          contract === "WarpletMonstarAirdrop") &&
           spinGameBXPBalance &&
           parseInt(formatUnits(spinGameBXPBalance?.value, 18)) + " BXP"}{" "}
       </span>

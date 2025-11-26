@@ -7,6 +7,8 @@ import {
   Zap,
   Trophy,
   Users,
+  PlusIcon,
+  MinusIcon,
 } from "lucide-react";
 import {
   useAccount,
@@ -19,7 +21,7 @@ import { parseEther } from "viem";
 import { contractAbi } from "@/abi/abi";
 
 // Contract configuration
-const CONTRACT_CONFIG = contractAbi.PixelCatNFT;
+const CONTRACT_CONFIG = contractAbi.WarpletMonstarNft;
 
 const MAX_SUPPLY = 10000;
 const MINT_PRICE = "0.0003";
@@ -27,12 +29,28 @@ const MINT_PRICE = "0.0003";
 const NFTMintPage = () => {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
+  const [mintQuantity, setMintQuantity] = useState(1);
+
+  const handleAddQuantity = () => {
+    if (mintQuantity >= 10) return;
+    setMintQuantity(mintQuantity + 1);
+  };
+  const handleReduceQuantity = () => {
+    if (mintQuantity <= 1) return;
+    setMintQuantity(mintQuantity - 1);
+  };
 
   // Read contract data
   const { data: totalSupply } = useReadContract({
     address: CONTRACT_CONFIG.address as `0x${string}`,
     abi: CONTRACT_CONFIG.abi,
     functionName: "totalSupply",
+  });
+  // Read contract data
+  const { data: maxPerWallet } = useReadContract({
+    address: CONTRACT_CONFIG.address as `0x${string}`,
+    abi: CONTRACT_CONFIG.abi,
+    functionName: "maxPerWallet",
   });
 
   const { data: canMintData, refetch: refetchCanMint } = useReadContract({
@@ -84,8 +102,8 @@ const NFTMintPage = () => {
       address: CONTRACT_CONFIG.address as `0x${string}`,
       abi: CONTRACT_CONFIG.abi,
       functionName: "mint",
-      args: [BigInt(1)],
-      value: parseEther(MINT_PRICE),
+      args: [BigInt(mintQuantity)],
+      value: parseEther((parseFloat(MINT_PRICE) * mintQuantity).toString()),
     });
   };
 
@@ -102,10 +120,12 @@ const NFTMintPage = () => {
         {/* NFT Preview */}
         <div className="p-4 flex items-center justify-center gap-4">
           <div className="flex-1 w-full bg-primary overflow-hidden aspect-square bg-white bg-opacity-10 rounded-2xl backdrop-blur-sm flex items-center justify-center border-2 border-white border-opacity-20">
-            <img src="/pixel-cat.png" />
+            <img src="/monster.png" />
           </div>
           <div className="flex-1">
-            <h2 className="text-blue-600 font-bold text-3xl">Pixel Cat</h2>
+            <h2 className="text-purple-600 font-bold text-2xl">
+              Warplet Monster
+            </h2>
             <p className="text-xs text-gray-700 font-semibold">
               Exclusive rewards and utilities for Holder
             </p>
@@ -132,13 +152,12 @@ const NFTMintPage = () => {
               {MAX_SUPPLY - supply} remaining
             </p>
           </div>
-
           <div className="flex justify-between items-center gap-4">
             {/* Price */}
             <div className="flex-1 bg-blue-50 flex flex-col justify-center items-center rounded-xl p-2">
               <span className="text-gray-600 font-medium">Price</span>
               <p className="text-md font-bold text-blue-500">
-                {MINT_PRICE} ETH
+                {(parseFloat(MINT_PRICE) * mintQuantity).toFixed(4)} ETH
               </p>
             </div>
 
@@ -146,11 +165,29 @@ const NFTMintPage = () => {
             <div className="flex-1 flex flex-col items-center bg-blue-50 rounded-xl p-2">
               <div className="text-gray-600 font-medium">Limit</div>
               <span className="text-md font-bold text-blue-500">
-                <strong>1</strong>
+                <strong>{maxPerWallet?.toString()}</strong>
               </span>
             </div>
           </div>
+          {/* Select Quantity */}
+          <div className="flex justify-between items-center gap-4 bg-blue-50 p-2 rounded-xl">
+            <div
+              onClick={handleReduceQuantity}
+              className="w-8 h-8 flex justify-center items-center text-gray-600 bg-blue-100 rounded-full cursor-pointer select-none"
+            >
+              <MinusIcon />
+            </div>
+            <div className="text-md font-bold text-blue-500">
+              {mintQuantity}
+            </div>
 
+            <div
+              onClick={handleAddQuantity}
+              className="w-8 h-8 flex justify-center items-center text-gray-600 bg-blue-100 rounded-full cursor-pointer select-none"
+            >
+              <PlusIcon />
+            </div>
+          </div>
           {/* Success Message */}
           {showSuccess && (
             <div className="bg-green-50 border-2 border-green-200 rounded-xl p-2 flex items-start space-x-2">
@@ -163,7 +200,6 @@ const NFTMintPage = () => {
               </div>
             </div>
           )}
-
           {/* Connect/Mint Button */}
           {!isConnected ? (
             <button
@@ -189,14 +225,14 @@ const NFTMintPage = () => {
                   <span>Minting...</span>
                 </>
               ) : !canMint ? (
-                <span>Already Minted (1/1)</span>
+                <span>Already Minted (1/{maxPerWallet?.toString()})</span>
               ) : showSuccess ? (
                 <>
                   <Check className="w-5 h-5" />
                   <span>Minted!</span>
                 </>
               ) : (
-                <span>Mint NFT</span>
+                <span>Mint {mintQuantity} NFT</span>
               )}
             </button>
           )}
@@ -204,10 +240,10 @@ const NFTMintPage = () => {
           {/* Footer */}
           <div className="text-center text-sm text-gray-500">
             <p>
-              Coming soon on{" "}
-              <a href="#" className="text-blue-500 hover:underline">
-                OpenSea
-              </a>{" "}
+              Minted{" "}
+              <span className="text-blue-500 hover:underline">
+                {userMintCount} / {maxPerWallet?.toString()}
+              </span>{" "}
             </p>
           </div>
         </div>
