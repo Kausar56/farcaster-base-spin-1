@@ -16,7 +16,7 @@ type MenuButton = {
 
 const menus: MenuButton[] = [
   {
-    name: "Lottery",
+    name: "Draw",
     Icon: Ticket,
     route: "lottery",
   },

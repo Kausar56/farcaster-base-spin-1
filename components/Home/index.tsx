@@ -13,6 +13,7 @@ import ConnectWalletPage from "../common/ConnectWalletPage";
 import Airdrop from "../Airdrop";
 import { useEffect } from "react";
 import ClaimAirdrop from "../popup/ClaimAirdrop";
+import ScoreCheck from "../popup/ScoreCheck";
 
 export function App() {
   const { route, actions } = useFrame();
@@ -25,7 +26,8 @@ export function App() {
   return isConnected ? (
     <>
       {/* <DailyStreak /> */}
-      <ClaimAirdrop />
+      {/* <ClaimAirdrop /> */}
+      <ScoreCheck />
       <div className="">
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}

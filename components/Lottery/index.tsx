@@ -36,7 +36,7 @@ export default function Lottery() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 pb-6">
       {/* Header */}
-      <AppHeader headerName="Daily Lottery" />
+      <AppHeader headerName="Draw" />
 
       {isLoadingLotteryStatus ||
       isLoadingDrawStatus ||
