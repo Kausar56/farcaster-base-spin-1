@@ -16,6 +16,9 @@ import RoundCancelled from "./RoundCancelled";
 import LoadingSkeleton from "./LoadingSkeleton";
 import { AlertCircle } from "lucide-react";
 import RefundAndClaimBtn from "../Profile/RefundAndClaimBtn";
+import { useAccount } from "wagmi";
+import { base } from "viem/chains";
+import { useFrame } from "../farcaster-provider";
 
 export default function Lottery() {
   const { inCooldown, isLoadingLotteryStatus, refetchLotteryData } =
@@ -23,6 +26,8 @@ export default function Lottery() {
   const { meetsMinimum, isLoadingDrawStatus, refetchDrawStatus } =
     useGetDrawStatus();
   const { wasCancelled, isLoadingLastRoundResult } = useCheckLastRoundResult();
+  const { chainId } = useAccount();
+  const { setRoute } = useFrame();
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -38,9 +43,13 @@ export default function Lottery() {
       {/* Header */}
       <AppHeader headerName="Draw" />
 
-      {isLoadingLotteryStatus ||
-      isLoadingDrawStatus ||
-      isLoadingLastRoundResult ? (
+      {chainId !== base.id ? (
+        <p className="text-blue-500 text-center mt-8 font-bold text-xl">
+          Please Switch To Base Mainnet
+        </p>
+      ) : isLoadingLotteryStatus ||
+        isLoadingDrawStatus ||
+        isLoadingLastRoundResult ? (
         <LoadingSkeleton />
       ) : (
         <div className="px-4 -mt-4 space-y-3">
@@ -74,6 +83,16 @@ export default function Lottery() {
           {inCooldown && <InfoCards />}
         </div>
       )}
+
+      <div
+        onClick={() => setRoute("airdrop")}
+        className="fixed flex-col   cursor-pointer flex justify-center items-center bg-gradient  right-4 bottom-24"
+      >
+        <img src="/gift.gif" className="animate-bounce h-16 w-16" />
+        <p className="text-xs animate-pulse font-bold bg-orange-500 text-white py-1 px-2 rounded-xl">
+          Claim Reward
+        </p>
+      </div>
     </div>
   );
 }

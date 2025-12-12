@@ -28,7 +28,7 @@ const ConnectedAddress = () => {
       </Button>
     ) : (
       <Button onClick={() => switchChain({ chainId: base.id })}>
-        {switching ? "Switching" : "Switch chain"}
+        {switching ? "Switching" : `Switch To ${base.name}`}
       </Button>
     );
   }

@@ -6,14 +6,14 @@ import { Profile } from "../Profile";
 import Leaderboard from "../leaderboard";
 import Admin from "../admin/Admin";
 import Lottery from "../Lottery";
-// import Giveaway from "../Giveaway";
-// import DailyStreak from "../DailyStreak";
+
 import { useAccount } from "wagmi";
 import ConnectWalletPage from "../common/ConnectWalletPage";
 import Airdrop from "../Airdrop";
 import { useEffect } from "react";
-import ClaimAirdrop from "../popup/ClaimAirdrop";
+
 import ScoreCheck from "../popup/ScoreCheck";
+import FreeDrop from "../popup/ClaimAirdrop";
 
 export function App() {
   const { route, actions } = useFrame();
@@ -25,9 +25,8 @@ export function App() {
   }, [actions]);
   return isConnected ? (
     <>
-      {/* <DailyStreak /> */}
-      {/* <ClaimAirdrop /> */}
-      <ScoreCheck />
+      {/* <FreeDrop /> */}
+      {/* <ScoreCheck /> */}
       <div className="">
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}

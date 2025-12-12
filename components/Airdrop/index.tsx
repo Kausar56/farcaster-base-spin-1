@@ -1,8 +1,9 @@
 import React from "react";
 import NFTMintPage from "./MIntNft";
 import AppHeader from "../common/AppHeader";
-import PixelCatHolderAirdrop from "./PixelCatHolderAirdrop";
+
 import WarpletHolderAirdrop from "./WarpleHolderAirdrop";
+import FreeDrop from "../popup/ClaimAirdrop";
 
 const Airdrop = () => {
   return (
@@ -10,6 +11,7 @@ const Airdrop = () => {
       <AppHeader headerName="Airdrop" />
       <div className="px-4 -mt-4 space-y-4 mb-20">
         {/* <PixelCatHolderAirdrop /> */}
+        <FreeDrop />
         <WarpletHolderAirdrop />
         <NFTMintPage />
       </div>
