@@ -26,7 +26,7 @@ export function App() {
   return isConnected ? (
     <>
       {/* <FreeDrop /> */}
-      {/* <ScoreCheck /> */}
+      <ScoreCheck />
       <div className="">
         {route === "lottery" && <Lottery />}
         {route === "spin" && <SpinWheelGame />}

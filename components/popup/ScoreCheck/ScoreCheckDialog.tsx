@@ -11,7 +11,7 @@ const ScoreCheckDialog = ({
   const { actions } = useFrame();
   const handleClose = () => {
     setShow(false);
-    localStorage.setItem("hasCheckedScore", "true");
+    localStorage.setItem("hasCheckedScore1", "true");
   };
 
   const handleCheckScore = async () => {

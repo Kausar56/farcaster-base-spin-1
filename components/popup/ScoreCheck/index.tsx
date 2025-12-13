@@ -1,4 +1,3 @@
-import Modal from "@/components/common/Modal";
 import React, { useEffect, useState } from "react";
 import ScoreCheckDialog from "./ScoreCheckDialog";
 
@@ -6,7 +5,7 @@ const ScoreCheck = () => {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const hasSeenDialog = JSON.parse(
-      localStorage.getItem("hasCheckedScore") || "false"
+      localStorage.getItem("hasCheckedScore1") || "false"
     );
     if (!hasSeenDialog) {
       setShow(true);
