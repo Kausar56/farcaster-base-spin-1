@@ -4,6 +4,7 @@ import AppHeader from "../common/AppHeader";
 
 import WarpletHolderAirdrop from "./WarpleHolderAirdrop";
 import FreeDrop from "../popup/ClaimAirdrop";
+import ChristmasBox from "./ChristmasBox";
 
 const Airdrop = () => {
   return (
@@ -11,9 +12,10 @@ const Airdrop = () => {
       <AppHeader headerName="Airdrop" />
       <div className="px-4 -mt-4 space-y-4 mb-20">
         {/* <PixelCatHolderAirdrop /> */}
-        <FreeDrop />
-        <WarpletHolderAirdrop />
-        <NFTMintPage />
+        <ChristmasBox />
+        {/* <FreeDrop /> */}
+        {/* <WarpletHolderAirdrop /> */}
+        {/* <NFTMintPage /> */}
       </div>
     </div>
   );
