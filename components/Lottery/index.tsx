@@ -27,7 +27,7 @@ export default function Lottery() {
     useGetDrawStatus();
   const { wasCancelled, isLoadingLastRoundResult } = useCheckLastRoundResult();
   const { chainId } = useAccount();
-  const { setRoute } = useFrame();
+  const { setRoute, actions } = useFrame();
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -85,12 +85,14 @@ export default function Lottery() {
       )}
 
       <div
-        onClick={() => setRoute("airdrop")}
+        onClick={() =>
+          actions?.openUrl("https://farcaster.xyz/rajvaibd/0xb74a626c")
+        }
         className="fixed flex-col   cursor-pointer flex justify-center items-center bg-gradient  right-4 bottom-24"
       >
         <img src="/gift.gif" className="animate-bounce h-16 w-16" />
         <p className="text-xs animate-pulse font-bold bg-orange-500 text-white py-1 px-2 rounded-xl">
-          Claim Reward
+          $10k Reward
         </p>
       </div>
     </div>
