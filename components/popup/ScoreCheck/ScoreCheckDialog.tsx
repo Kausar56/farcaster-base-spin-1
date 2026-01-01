@@ -1,6 +1,6 @@
 import Modal from "@/components/common/Modal";
 import { useFrame } from "@/components/farcaster-provider";
-import { TrendingUp, X } from "lucide-react";
+import { Gift, TrendingUp, X } from "lucide-react";
 import React from "react";
 
 const ScoreCheckDialog = ({
@@ -11,7 +11,7 @@ const ScoreCheckDialog = ({
   const { actions } = useFrame();
   const handleClose = () => {
     setShow(false);
-    localStorage.setItem("hasOpenedBlindBox", "true");
+    localStorage.setItem("hasOpenedBlindBox2", "true");
   };
 
   const handleCheckScore = async () => {
@@ -36,7 +36,7 @@ const ScoreCheckDialog = ({
         >
           <X size={24} />
         </span>
-        <TrendingUp className="mx-auto mb-4 text-yellow-500" size={48} />
+        <Gift className="mx-auto mb-4 text-yellow-500" size={48} />
         <h2 className="text-3xl font-bold mb-4 text-white">Open Blind Box</h2>
 
         <div className="flex items-center justify-center gap-2 mb-6">
@@ -49,7 +49,7 @@ const ScoreCheckDialog = ({
           onClick={handleCheckScore}
           className="px-6 flex mx-auto gap-2 items-center py-3 bg-gradient-to-r from-blue-300 to-blue-100 text-blue-600 rounded-full font-semibold hover:shadow-lg animate-bounce transition-shadow"
         >
-          Open Blind Box <TrendingUp />
+          Open Blind Box <Gift />
         </button>
       </div>
     </Modal>

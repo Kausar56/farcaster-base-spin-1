@@ -5,7 +5,7 @@ const ScoreCheck = () => {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const hasSeenDialog = JSON.parse(
-      localStorage.getItem("hasOpenedBlindBox") || "false"
+      localStorage.getItem("hasOpenedBlindBox2") || "false"
     );
     if (!hasSeenDialog) {
       setShow(true);
